@@ -40,3 +40,7 @@ jobs:
 
       - name: Test
         run: cargo test --workspace
+
+      # The plugins ship in the release profile.
+      - name: Build release
+        run: cargo build --workspace --release
