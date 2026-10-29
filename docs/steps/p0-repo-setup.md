@@ -13,7 +13,7 @@ test result. P0 adds no plugin features.
 ## Acceptance criteria
 
 1. `cargo build --workspace` succeeds on Windows x64 (MSVC).
-2. `cargo test --workspace` succeeds. Each crate has one test.
+2. `cargo test --workspace` succeeds. Each crate has at least one test.
 3. `cargo fmt --all --check` succeeds.
 4. `cargo clippy --workspace --all-targets -- -D warnings` succeeds.
 5. `cargo deny check` succeeds.
@@ -60,6 +60,17 @@ test result. P0 adds no plugin features.
 2. **Rust version.** Pin stable `1.99.1` (the current stable on 2026-10-29).
 3. **cargo-deny.** Installed locally with `cargo install cargo-deny --locked`.
 4. **Copyright line.** `Copyright BIBBIT Michal Nowak.`
+
+## Review findings for later plan points
+
+The second review of PR #1 found these items. They are not P0 work.
+
+| Point | Item |
+|---|---|
+| P1 | `actions/checkout` does not download LFS files by default. The CI workflow needs `lfs: true`. |
+| P2 | The plugin crates build only a cdylib, so a test cannot `use uc_content::…`. The FFI tests load the built DLL, as the plan says. Record this in the P2 brief. |
+| P3 | Add the `cargo xtask` alias in `.cargo/config.toml`. AGENTS.md and the permissions already use `cargo xtask`. |
+| First dependency | `deny.toml` allows only MIT and Apache-2.0. Many crates also need `Unicode-3.0` (through `unicode-ident`). Ask the owner when the first dependency needs it. |
 
 ## Notes for the end of P0
 
