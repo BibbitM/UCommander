@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # Weekly run, so that new security advisories show before the next PR.
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+# A new push to the same PR cancels the older run. Runs on main always finish.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    name: check
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          lfs: true
+          persist-credentials: false
+
+      # Installs the toolchain and components from rust-toolchain.toml.
+      - name: Install Rust toolchain
+        run: rustup toolchain install
+
+      # Must come after the toolchain step: the cache key uses the compiler version.
+      - name: Cache Rust build output
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+
+      - name: Format check
+        run: cargo fmt --all --check
+
+      - name: Lint
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Test
+        run: cargo test --workspace
+
+      # The plugins ship in the release profile.
+      - name: Build release
+        run: cargo build --workspace --release
+
+  deny:
+    name: deny
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Installs the toolchain and components from rust-toolchain.toml.
+      - name: Install Rust toolchain
+        run: rustup toolchain install
+
+      # Prebuilt binary, the same version as the local installation.
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@86f7a0ffb25f40114606501a311ebcfaf882ea32 # v2.88.0
+        with:
+          tool: cargo-deny@0.20.2
+
+      - name: Dependency check
+        run: cargo deny check

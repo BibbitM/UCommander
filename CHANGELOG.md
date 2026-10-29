@@ -11,3 +11,5 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - Repository setup: Cargo workspace, licenses, agent instructions, feature
   scope and plan.
+- CI on GitHub Actions: format check, lint, test, release build and
+  dependency check for each PR and for each push to `main`.

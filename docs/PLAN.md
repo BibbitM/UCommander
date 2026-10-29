@@ -10,8 +10,8 @@ Status values: `Planned`, `In progress`, `In review`, `Done`.
 
 | Pt | Name | Content | Release | Status |
 |---|---|---|---|---|
-| P0 | Repository setup | Workspace, licenses, README, AGENTS.md, docs, lints, cargo-deny, PR template, RustRover run configurations. | — | In review |
-| P1 | CI | `ci.yml`: format check, lint, test, cargo-deny, release build. Branch protection on `main`. | — | Planned |
+| P0 | Repository setup | Workspace, licenses, README, AGENTS.md, docs, lints, cargo-deny, PR template, RustRover run configurations. | — | Done |
+| P1 | CI | `ci.yml`: format check, lint, test, cargo-deny, release build. Branch protection on `main`. | — | In review |
 | P2 | Content plugin skeleton | `uc-tc` content API. `uc-content` with one field: "Is UE package" (magic number check). FFI test harness. | — | Planned |
 | P3 | Package and install | `cargo xtask check`, `cargo xtask package` (ZIPs with `pluginst.inf`), `cargo xtask install`. | — | Planned |
 | P4 | Release workflow | `release.yml`: tag `v*` → build, test, ZIPs, GitHub Release. | v0.1.0 | Planned |

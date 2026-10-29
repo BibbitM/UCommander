@@ -132,6 +132,8 @@ Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
 - Body: the intent. Tell why the change is necessary and what it makes
   possible. Wrap at 72 characters.
 - After a push, do not rewrite history: no amend, no rebase, no force push.
+- Exception: Dependabot makes its own commits and PR titles. They do not
+  follow the title rules. Do not change them.
 
 ### 7.3 Gates
 
