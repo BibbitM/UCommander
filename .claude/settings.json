@@ -25,12 +25,18 @@
       "PowerShell(git commit *)"
     ],
     "ask": [
+      "Bash(git commit --amend*)",
+      "Bash(git commit *--amend*)",
+      "Bash(git commit *--no-verify*)",
       "Bash(git push *)",
       "Bash(git tag *)",
       "Bash(gh pr create *)",
       "Bash(gh pr merge *)",
       "Bash(gh repo create *)",
       "Bash(gh release *)",
+      "PowerShell(git commit --amend*)",
+      "PowerShell(git commit *--amend*)",
+      "PowerShell(git commit *--no-verify*)",
       "PowerShell(git push *)",
       "PowerShell(git tag *)",
       "PowerShell(gh pr create *)",
