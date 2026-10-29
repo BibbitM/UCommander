@@ -9,6 +9,11 @@ version = "0.0.0"
 [[package]]
 name = "uc-content"
 version = "0.0.0"
+dependencies = [
+ "uc-format",
+ "uc-tc",
+ "uc-test-host",
+]
 
 [[package]]
 name = "uc-format"
