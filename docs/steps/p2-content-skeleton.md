@@ -73,7 +73,9 @@ convention; TC 32-bit `__stdcall` is not in scope).
 | 6 | Add plugin test host | `crates/uc-test-host`: load DLL, get export, unload. Test: load `kernel32.dll` and find `GetTickCount`. |
 | 7 | Export field list from content plugin | `ContentGetSupportedField`, `ContentGetDetectString`, `ContentSetDefaultParams`, `ContentPluginUnloading`. FFI tests for field 0, field 1, small buffer, detect string. |
 | 8 | Report package file tag in content plugin | `ContentGetValueW`. FFI tests with synthetic files in a temporary folder: tag, other bytes, short file, missing file, unknown field. |
-| 9 | Build plugin crates as rlib for tests | **Changed.** Increment 7 showed that `cargo test` does not build a cdylib-only crate for its integration tests: the tests loaded an old DLL. With `crate-type = ["cdylib", "rlib"]`, `cargo test` builds a new DLL first, locally and in CI, so CI needs no extra step. This commit comes before increment 7. The tests still call only the DLL exports. |
+| 9a | Build plugin crates as rlib for tests | Increment 7 showed that the FFI tests loaded an old DLL from an earlier `cargo build`. This commit adds the `rlib` crate type. **Correction:** its commit message says that `cargo test` then builds a new DLL. That is true only when a DLL exists already. In a new target folder, `cargo test` makes no DLL (checked with and without `cargo clippy` first). See 9b and 9c. |
+| 9b | Detect missing and stale plugin DLLs in tests | `uc-test-host::fresh_plugin_dll`: stops with "Run `cargo build --workspace` before `cargo test`" when the DLL is missing, or older than the rlib. `cargo build` makes the rlib and the DLL in the same compiler run, so a newer rlib means a stale DLL. This is why 9a is still necessary. |
+| 9c | Build plugins before tests in CI | `ci.yml`: `cargo build --workspace` before `cargo test`. |
 | 10 | Update changelog, plan and README for P2 | `CHANGELOG.md`, `docs/PLAN.md`, README "Manual installation (development)". |
 
 Each feature increment follows the TDD sequence in `AGENTS.md` §6. P2 has no
