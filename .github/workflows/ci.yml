@@ -46,6 +46,10 @@ jobs:
       - name: Lint
         run: cargo clippy --workspace --all-targets -- -D warnings
 
+      # The FFI tests load the plugin DLLs, and cargo test does not build them.
+      - name: Build
+        run: cargo build --workspace
+
       - name: Test
         run: cargo test --workspace
 
