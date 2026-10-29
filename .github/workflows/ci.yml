@@ -12,10 +12,10 @@ on:
 permissions:
   contents: read
 
-# A new push to the same branch or PR cancels the older run.
+# A new push to the same PR cancels the older run. Runs on main always finish.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   CARGO_TERM_COLOR: always
