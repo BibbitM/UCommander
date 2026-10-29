@@ -39,7 +39,7 @@ test result. P0 adds no plugin features.
 | 8 | Add Claude Code permissions | `.claude/settings.json`: allow cargo and `git commit`; ask for `git push`, `git tag`, `gh pr create`, `gh pr merge`. |
 | 9 | Add feature scope and plan | `docs/FEATURES.md` (agreed IDs and priorities), `docs/PLAN.md` (plan points, status). |
 | 10 | Add changelog and PR template | `CHANGELOG.md` ("Keep a Changelog"), `.github/pull_request_template.md`. |
-| 11 | Add RustRover run configurations | `.run/` with "Test workspace", "Clippy" and "Check all". |
+| 11 | Add RustRover run configurations | `.run/` with "Format check", "Clippy", "Test workspace", "Deny", and the compound "Check all" that starts all four. |
 
 ## Out of scope
 
