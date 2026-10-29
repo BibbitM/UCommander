@@ -35,13 +35,13 @@ exports, as TC does. All later plugin tests use this harness.
 
 ## API scope
 
-From the Content-Plugin Guide 2.12. **Each item must be checked against the
-guide in increment 1.**
+From the Content-Plugin Guide 2.12. Checked against the guide in increment 1;
+see `docs/tc-api/content.md`.
 
 | Export | P2 | Notes |
 |---|---|---|
 | `ContentGetSupportedField` | Yes | Field names, types, units. |
-| `ContentGetValue` (ANSI) | Yes | TC requires the ANSI form. It converts the path and calls the same code as the Unicode form. |
+| `ContentGetValue` (ANSI) | No | Changed after the guide check: TC 64-bit accepts a Unicode-only plugin, and calls the ANSI form only when `ContentGetValueW` is missing. |
 | `ContentGetValueW` | Yes | TC 64-bit uses this form when it exists. |
 | `ContentGetDetectString` | Yes | `EXT="UASSET" \| EXT="UMAP"` |
 | `ContentSetDefaultParams` | Yes | Store the plugin interface version and the INI path. No use yet. |
@@ -72,7 +72,7 @@ convention; TC 32-bit `__stdcall` is not in scope).
 | 5 | Add panic guard for exports | `uc-tc`: guard. Unit test: a panic gives the error value. |
 | 6 | Add plugin test host | `crates/uc-test-host`: load DLL, get export, unload. Test: load `kernel32.dll` and find `GetTickCount`. |
 | 7 | Export field list from content plugin | `ContentGetSupportedField`, `ContentGetDetectString`, `ContentSetDefaultParams`, `ContentPluginUnloading`. FFI tests for field 0, field 1, small buffer, detect string. |
-| 8 | Report package file tag in content plugin | `ContentGetValueW`, `ContentGetValue`. FFI tests with synthetic files in a temporary folder: tag, other bytes, short file, missing file, unknown field. |
+| 8 | Report package file tag in content plugin | `ContentGetValueW`. FFI tests with synthetic files in a temporary folder: tag, other bytes, short file, missing file, unknown field. |
 | 9 | Build plugins before FFI tests in CI | Only if increment 7 shows that `cargo test` does not build the DLL first. Otherwise this increment is not necessary, and the brief records why. |
 | 10 | Update changelog, plan and README for P2 | `CHANGELOG.md`, `docs/PLAN.md`, README "Manual installation (development)". |
 
