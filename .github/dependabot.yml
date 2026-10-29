@@ -1,8 +1,12 @@
 version: 2
 updates:
-  # The workflows pin each action to a commit SHA. Dependabot opens a PR
-  # when a new version is available.
+  # The workflows pin each action to a commit SHA. Dependabot opens one PR
+  # each week with all new action versions.
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
