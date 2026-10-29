@@ -1,5 +1,7 @@
 # UCommander
 
+[![CI](https://github.com/BibbitM/UCommander/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BibbitM/UCommander/actions/workflows/ci.yml)
+
 Total Commander plugins for Unreal Engine files.
 
 > **Status:** In development. There is no release yet.
