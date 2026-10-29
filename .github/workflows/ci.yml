@@ -49,15 +49,23 @@ jobs:
       - name: Build release
         run: cargo build --workspace --release
 
-  # The cargo-deny action runs only on Linux. The result is the same as on
-  # Windows, because deny.toml sets the Windows target.
   deny:
     name: deny
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     timeout-minutes: 10
     steps:
       - name: Check out
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # Installs the toolchain and components from rust-toolchain.toml.
+      - name: Install Rust toolchain
+        run: rustup toolchain install
+
+      # Prebuilt binary, the same version as the local installation.
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@86f7a0ffb25f40114606501a311ebcfaf882ea32 # v2.88.0
+        with:
+          tool: cargo-deny@0.20.2
+
       - name: Dependency check
-        uses: EmbarkStudios/cargo-deny-action@3c6349835b2b7b196a839186cb8b78e02f7b5f25 # v2.1.1
+        run: cargo deny check
