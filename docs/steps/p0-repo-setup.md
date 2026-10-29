@@ -32,8 +32,8 @@ test result. P0 adds no plugin features.
 | 1 | Add licenses | `LICENSE-MIT`, `LICENSE-APACHE`. Copyright line: `Copyright BIBBIT Michal Nowak.` |
 | 2 | Add README | Name, purpose, status ("in development"), license section. No install steps yet. |
 | 3 | Add git ignore and attributes rules | `.gitignore`: `target/`, `.idea/` (except shared files), `xtask.toml`, local config. `.gitattributes`: line endings, LFS rules for `tests/fixtures/**/*.uasset`, `*.umap`, `*.uexp`, `*.ubulk`, `*.pak`, `*.utoc`, `*.ucas`. |
-| 4 | Add Cargo workspace | Root `Cargo.toml`: workspace members, shared version `0.0.0`, edition 2024, `license = "MIT OR Apache-2.0"`, `publish = false`, workspace lints. `rust-toolchain.toml` (channel `1.99.1`, target `x86_64-pc-windows-msvc`, components `rustfmt` and `clippy`), `rustfmt.toml`. |
-| 5 | Add empty crates | `uc-format`, `uc-tc`, `uc-content`, `uc-lister`, `uc-packer` (cdylib), `uc-cli` (binary `uc`), `xtask`. One test in each crate. |
+| 4+5 | Add Cargo workspace and empty crates | One commit. A workspace without members does not build, so increments 4 and 5 are joined. Root `Cargo.toml`: workspace members, shared version `0.0.0`, edition 2024, `license = "MIT OR Apache-2.0"`, `publish = false`, workspace lints. `rust-toolchain.toml` (channel `1.99.1`, target `x86_64-pc-windows-msvc`, components `rustfmt` and `clippy`), `rustfmt.toml`. |
+| (5) | (joined with 4) | `uc-format`, `uc-tc`, `uc-content`, `uc-lister`, `uc-packer` (cdylib), `uc-cli` (binary `uc`), `xtask`. One test in each crate. |
 | 6 | Add cargo-deny configuration | `deny.toml`: allowed licenses, advisories, bans, sources. |
 | 7 | Add agent instructions | `AGENTS.md` (rules, commands, gates, naming, EULA and data rules). `CLAUDE.md` with one line: `@AGENTS.md`. |
 | 8 | Add Claude Code permissions | `.claude/settings.json`: allow cargo and `git commit`; ask for `git push`, `git tag`, `gh pr create`, `gh pr merge`. |
