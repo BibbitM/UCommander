@@ -1,0 +1,17 @@
+# Rust build output
+/target/
+
+# RustRover / JetBrains (shared run configurations are in /.run/)
+/.idea/
+
+# Local configuration (paths, keys). Never commit these files.
+/xtask.toml
+/ucommander.local.ini
+/.claude/settings.local.json
+
+# Plugin files renamed by "cargo xtask install"
+*.old
+
+# OS files
+Thumbs.db
+desktop.ini
