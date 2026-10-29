@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo build *)",
+      "Bash(cargo test *)",
+      "Bash(cargo fmt *)",
+      "Bash(cargo clippy *)",
+      "Bash(cargo deny *)",
+      "Bash(cargo xtask *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "PowerShell(cargo build *)",
+      "PowerShell(cargo test *)",
+      "PowerShell(cargo fmt *)",
+      "PowerShell(cargo clippy *)",
+      "PowerShell(cargo deny *)",
+      "PowerShell(cargo xtask *)",
+      "PowerShell(git status *)",
+      "PowerShell(git diff *)",
+      "PowerShell(git log *)",
+      "PowerShell(git add *)",
+      "PowerShell(git commit *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git tag *)",
+      "Bash(gh pr create *)",
+      "Bash(gh pr merge *)",
+      "Bash(gh repo create *)",
+      "Bash(gh release *)",
+      "PowerShell(git push *)",
+      "PowerShell(git tag *)",
+      "PowerShell(gh pr create *)",
+      "PowerShell(gh pr merge *)",
+      "PowerShell(gh repo create *)",
+      "PowerShell(gh release *)"
+    ]
+  }
+}
