@@ -1,6 +1,6 @@
 # P0 – Repository setup
 
-Status: **Approved – in progress**
+Status: **In review**
 
 Branch: `pt/p0-repo-setup` (from `main`)
 
