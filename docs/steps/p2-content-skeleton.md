@@ -44,7 +44,7 @@ see `docs/tc-api/content.md`.
 | `ContentGetValue` (ANSI) | No | Changed after the guide check: TC 64-bit accepts a Unicode-only plugin, and calls the ANSI form only when `ContentGetValueW` is missing. |
 | `ContentGetValueW` | Yes | TC 64-bit uses this form when it exists. |
 | `ContentGetDetectString` | Yes | `EXT="UASSET" \| EXT="UMAP"` |
-| `ContentSetDefaultParams` | Yes | Store the plugin interface version and the INI path. No use yet. |
+| `ContentSetDefaultParams` | Yes | Accepts the parameters, but does not store them yet: nothing uses them in P2. |
 | `ContentPluginUnloading` | Yes | Empty. |
 | `ContentGetSupportedFieldFlags`, `ContentStopGetValue`, `ContentGetDefaultSortOrder`, `ContentSetValue`, `ContentEditValue`, `ContentSendStateInformation`, `ContentCompareFiles` | No | Later plan points. |
 
@@ -73,7 +73,7 @@ convention; TC 32-bit `__stdcall` is not in scope).
 | 6 | Add plugin test host | `crates/uc-test-host`: load DLL, get export, unload. Test: load `kernel32.dll` and find `GetTickCount`. |
 | 7 | Export field list from content plugin | `ContentGetSupportedField`, `ContentGetDetectString`, `ContentSetDefaultParams`, `ContentPluginUnloading`. FFI tests for field 0, field 1, small buffer, detect string. |
 | 8 | Report package file tag in content plugin | `ContentGetValueW`. FFI tests with synthetic files in a temporary folder: tag, other bytes, short file, missing file, unknown field. |
-| 9 | Build plugins before FFI tests in CI | Only if increment 7 shows that `cargo test` does not build the DLL first. Otherwise this increment is not necessary, and the brief records why. |
+| 9 | Build plugin crates as rlib for tests | **Changed.** Increment 7 showed that `cargo test` does not build a cdylib-only crate for its integration tests: the tests loaded an old DLL. With `crate-type = ["cdylib", "rlib"]`, `cargo test` builds a new DLL first, locally and in CI, so CI needs no extra step. This commit comes before increment 7. The tests still call only the DLL exports. |
 | 10 | Update changelog, plan and README for P2 | `CHANGELOG.md`, `docs/PLAN.md`, README "Manual installation (development)". |
 
 Each feature increment follows the TDD sequence in `AGENTS.md` §6. P2 has no
@@ -101,6 +101,13 @@ for a 4-byte check.
    `https://plugins.ghisler.com/content/`. I put it in `target/` (ignored by
    git) and read it. The guide does not go into the repository.
 2. Do the manual test in TC (above).
+
+## Notes from the work
+
+- The FFI tests write files to `%TEMP%\uc-content-tests-<process id>\`. They do
+  not delete the folder. The files are small (less than 100 bytes each).
+- `ContentGetValueW` writes the boolean with an unaligned write, because the
+  guide does not promise an aligned `FieldValue`.
 
 ## Out of scope
 
