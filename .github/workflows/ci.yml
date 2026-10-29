@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Weekly run, so that new security advisories show before the next PR.
+  schedule:
+    - cron: "0 6 * * 1"
 
 permissions:
   contents: read
