@@ -21,7 +21,8 @@ PR cannot be merged into `main` until all checks pass.
 6. The workflow has read-only permissions (`contents: read`).
 7. A new push to the same PR cancels the older run.
 8. Branch protection on `main`: PR required, the CI checks required, no
-   force push, no branch delete. The rules also apply to the owner.
+   force push, no branch delete, all conversations resolved. The rules also
+   apply to the owner.
 9. The README shows the CI status badge.
 
 ## Increments (one commit each)
@@ -38,6 +39,17 @@ PR cannot be merged into `main` until all checks pass.
 | 6 | Add CI badge to README | Status badge for `ci.yml`. |
 | 7 | Update changelog and plan for P1 | `CHANGELOG.md` and `docs/PLAN.md`. |
 
+### Review fixes (after the second review of PR #2)
+
+| Commit title | Content |
+|---|---|
+| Run dependency check on Windows | Job `deny` on `windows-latest` with the pinned toolchain, and cargo-deny 0.20.2 from `taiki-e/install-action`. Replaces increment 3: in the action container, rustup had to download the pinned toolchain on each run. |
+| Check advisories weekly | `schedule` trigger, Monday 06:00 UTC. |
+| Cancel only older PR runs | `cancel-in-progress` only for `pull_request`. Runs on `main` always finish. |
+| Do not keep the token after checkout | `persist-credentials: false` in both jobs. |
+| Group Dependabot action updates | One weekly PR for all action updates. |
+| Allow Dependabot commit titles | `AGENTS.md` §7.2: Dependabot titles are the only exception to the title rule. |
+
 ## Verification
 
 - **Pass:** the PR for P1 shows both jobs green.
@@ -52,6 +64,14 @@ PR cannot be merged into `main` until all checks pass.
 2. Approve the branch protection settings on `main`. I apply them with
    `gh api` after the first CI run, because GitHub needs the check names
    (`check`, `deny`) first. I do not merge the P1 PR before that.
+
+## Review findings for later plan points
+
+| Point | Item |
+|---|---|
+| All | Required checks match by job name only. Do not name a new job `check` or `deny`. |
+| P2 | The FFI tests load the built DLL. Make sure that CI builds the plugin crates before the tests load them. |
+| P4 | Set `contents: write` at the job level of the release job only. Do not use the build cache in the release build: a tag run can restore a cache from `main`. Use a concurrency group that does not start with `ci-`. |
 
 ## Out of scope
 
