@@ -27,5 +27,9 @@ name = "uc-tc"
 version = "0.0.0"
 
 [[package]]
+name = "uc-test-host"
+version = "0.0.0"
+
+[[package]]
 name = "xtask"
 version = "0.0.0"
