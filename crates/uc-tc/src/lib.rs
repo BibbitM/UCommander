@@ -1,5 +1,6 @@
 //! Types and safe FFI helpers for the Total Commander plugin API.
 
+pub mod buffers;
 pub mod content;
 
 #[cfg(test)]
