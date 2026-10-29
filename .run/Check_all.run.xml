@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Check all" type="CompoundRunConfigurationType">
+    <toRun name="Format check" type="CargoCommandRunConfiguration" />
+    <toRun name="Clippy" type="CargoCommandRunConfiguration" />
+    <toRun name="Test workspace" type="CargoCommandRunConfiguration" />
+    <toRun name="Deny" type="CargoCommandRunConfiguration" />
+    <method v="2" />
+  </configuration>
+</component>

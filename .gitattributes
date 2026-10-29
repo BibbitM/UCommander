@@ -1,0 +1,22 @@
+# Text files: LF in the repository and in the working tree.
+* text=auto eol=lf
+
+# Windows-only text files: CRLF in the working tree.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.inf text eol=crlf
+
+# Unreal Engine binary fixtures: Git LFS.
+**/tests/fixtures/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+**/tests/fixtures/**/*.umap   filter=lfs diff=lfs merge=lfs -text
+**/tests/fixtures/**/*.uexp   filter=lfs diff=lfs merge=lfs -text
+**/tests/fixtures/**/*.ubulk  filter=lfs diff=lfs merge=lfs -text
+**/tests/fixtures/**/*.uptnl  filter=lfs diff=lfs merge=lfs -text
+**/tests/fixtures/**/*.pak    filter=lfs diff=lfs merge=lfs -text
+**/tests/fixtures/**/*.utoc   filter=lfs diff=lfs merge=lfs -text
+**/tests/fixtures/**/*.ucas   filter=lfs diff=lfs merge=lfs -text
+
+# Other binary files.
+*.png binary
+*.ico binary
+*.zip binary

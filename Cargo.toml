@@ -1,0 +1,24 @@
+[workspace]
+resolver = "3"
+members = ["crates/*", "xtask"]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.99"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/BibbitM/UCommander"
+publish = false
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_debug_implementations = "warn"
+
+[workspace.lints.clippy]
+# Each unsafe block needs a "// SAFETY:" comment. The plugins use FFI.
+undocumented_unsafe_blocks = "warn"
+
+[profile.release]
+# A panic must not close Total Commander. Each exported function catches
+# panics, and that works only with "unwind".
+panic = "unwind"
