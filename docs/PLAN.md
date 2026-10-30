@@ -34,7 +34,8 @@ Status values: `Planned`, `In progress`, `In review`, `Done`.
 | 12 | Packer: actors in a legacy map | B6 | | Planned |
 | 13 | Packer: external actors of an OFPA map | B7 | v0.6.0 | Planned |
 | 14 | `.pak` read and extract | A1, A3–A5 | v0.7.0 | Planned |
-| 15 | IoStore read and extract | A2–A5 | v0.8.0 (MVP) | Planned |
+| 15 | IoStore read and extract | A2–A5 | v0.8.0 | Planned |
+| 16 | Polish localization | X11 | v0.9.0 (MVP) | Planned |
 
 ## After the MVP
 
