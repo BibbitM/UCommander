@@ -1,6 +1,6 @@
 //! The numeric values must match the Content-Plugin Guide 2.12 (`contplug.h` 2.10).
 
-use uc_tc::content::{FieldType, NO_MORE_FIELDS, ValueError};
+use uc_tc::content::{DefaultParams, FieldType, NO_MORE_FIELDS, ValueError};
 
 #[test]
 fn field_types_have_the_guide_values() {
@@ -41,4 +41,9 @@ fn value_errors_have_the_guide_values() {
     for (error, value) in expected {
         assert_eq!(error.code(), value, "{error:?}");
     }
+}
+
+#[test]
+fn default_params_have_the_size_of_the_c_struct() {
+    assert_eq!(size_of::<DefaultParams>(), 272);
 }

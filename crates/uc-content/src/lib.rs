@@ -1,6 +1,6 @@
 //! UCommanderContent: Total Commander content plugin (WDX) for Unreal Engine files.
 //!
-//! Each export calls its code through [`uc_tc::guard`], so a panic never
+//! Each export with code calls it through [`uc_tc::guard`], so a panic never
 //! reaches TC. The API notes are in `docs/tc-api/content.md`.
 
 #![allow(non_snake_case)]

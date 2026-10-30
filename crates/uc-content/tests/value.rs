@@ -59,7 +59,7 @@ fn a_file_that_starts_with_the_tag_is_a_package() {
     let (result, value) = get_bool(&path, IS_PACKAGE);
 
     assert_eq!(result, FT_BOOLEAN);
-    assert_ne!(value, 0);
+    assert_eq!(value, 1);
 }
 
 #[test]
@@ -83,7 +83,7 @@ fn a_path_with_non_ascii_characters_is_read() {
     let (result, value) = get_bool(&path, IS_PACKAGE);
 
     assert_eq!(result, FT_BOOLEAN);
-    assert_ne!(value, 0);
+    assert_eq!(value, 1);
 }
 
 #[test]

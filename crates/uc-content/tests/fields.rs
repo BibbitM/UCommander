@@ -6,16 +6,20 @@ use common::{GetDetectString, GetSupportedField, ansi_text, export, load};
 
 const FT_NOMOREFIELDS: i32 = 0;
 const FT_BOOLEAN: i32 = 6;
+const CANARY: c_char = 0x55;
 
 fn supported_field(index: i32, maxlen: usize) -> (i32, String, String) {
     let plugin = load();
     let get: GetSupportedField = export(&plugin, "ContentGetSupportedField");
-    let mut name = vec![0x55 as c_char; maxlen];
-    let mut units = vec![0x55 as c_char; maxlen];
+    // One byte more than `maxlen`: the plugin must not write it.
+    let mut name = vec![CANARY; maxlen + 1];
+    let mut units = vec![CANARY; maxlen + 1];
 
-    // SAFETY: both buffers have `maxlen` bytes.
+    // SAFETY: both buffers have more than `maxlen` bytes.
     let field_type = unsafe { get(index, name.as_mut_ptr(), units.as_mut_ptr(), maxlen as i32) };
 
+    assert_eq!(name[maxlen], CANARY, "name buffer overflow");
+    assert_eq!(units[maxlen], CANARY, "units buffer overflow");
     (field_type, ansi_text(&name), ansi_text(&units))
 }
 
@@ -39,10 +43,11 @@ fn a_negative_field_index_gives_no_more_fields() {
 
 #[test]
 fn a_small_buffer_gets_a_truncated_name_and_a_nul() {
-    let (field_type, name, _) = supported_field(0, 4);
+    let (field_type, name, units) = supported_field(0, 4);
 
     assert_eq!(field_type, FT_BOOLEAN);
     assert_eq!(name, "Is ");
+    assert_eq!(units, "");
 }
 
 #[test]
