@@ -68,7 +68,7 @@ fn utf16_maxlen_is_in_bytes() {
     let mut buffer = [0x5555u16; 4];
 
     // SAFETY: the pointer is valid for 4 u16 values = 8 bytes.
-    unsafe { write_utf16(buffer.as_mut_ptr(), 8, "Größe") };
+    unsafe { write_utf16(buffer.as_mut_ptr().cast(), 8, "Größe") };
 
     let expected: Vec<u16> = "Grö".encode_utf16().chain([0]).collect();
     assert_eq!(buffer.to_vec(), expected);
@@ -79,7 +79,7 @@ fn utf16_odd_maxlen_uses_whole_characters_only() {
     let mut buffer = [0x5555u16; 2];
 
     // SAFETY: 3 bytes contain one whole u16 value.
-    unsafe { write_utf16(buffer.as_mut_ptr(), 3, "Ab") };
+    unsafe { write_utf16(buffer.as_mut_ptr().cast(), 3, "Ab") };
 
     assert_eq!(buffer, [0, 0x5555]);
 }
@@ -105,6 +105,47 @@ fn null_wide_path_is_none() {
 #[test]
 fn empty_wide_path_is_none() {
     let wide = [0u16];
+
+    // SAFETY: the buffer is NUL-terminated.
+    let path = unsafe { read_wide_path(wide.as_ptr()) };
+
+    assert_eq!(path, None);
+}
+
+#[test]
+fn utf16_text_can_go_to_an_unaligned_buffer() {
+    let mut bytes = [0x55u8; 8];
+
+    // SAFETY: 6 bytes are writable at offset 1. The function accepts an
+    // unaligned pointer.
+    unsafe { write_utf16(bytes.as_mut_ptr().add(1), 6, "Ab") };
+
+    assert_eq!(bytes, [0x55, b'A', 0, b'b', 0, 0, 0, 0x55]);
+}
+
+#[test]
+fn utf16_null_pointer_writes_nothing() {
+    // SAFETY: the function must check for a null pointer.
+    unsafe { write_utf16(std::ptr::null_mut(), 8, "Ab") };
+}
+
+#[test]
+fn a_wide_path_with_the_maximum_length_is_read() {
+    let wide: Vec<u16> = std::iter::repeat_n(u16::from(b'a'), 32_767)
+        .chain([0])
+        .collect();
+
+    // SAFETY: the buffer is NUL-terminated.
+    let path = unsafe { read_wide_path(wide.as_ptr()) };
+
+    assert_eq!(path.map(|p| p.as_os_str().len()), Some(32_767));
+}
+
+#[test]
+fn a_wide_path_above_the_maximum_length_is_none() {
+    let wide: Vec<u16> = std::iter::repeat_n(u16::from(b'a'), 32_768)
+        .chain([0])
+        .collect();
 
     // SAFETY: the buffer is NUL-terminated.
     let path = unsafe { read_wide_path(wide.as_ptr()) };
