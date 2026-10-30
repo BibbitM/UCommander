@@ -56,7 +56,7 @@ convention; TC 32-bit `__stdcall` is not in scope).
 | Crate | Adds |
 |---|---|
 | `uc-format` | `has_package_file_tag(bytes) -> bool`. Pure function, no I/O. |
-| `uc-tc` | Content API constants (field types, return codes) as Rust types. Safe helpers: write an ANSI or UTF-16 string into a TC buffer with truncation and a NUL; read a TC path (`*const u16`, `*const c_char`). A panic guard that calls `catch_unwind` and returns an error value. |
+| `uc-tc` | Content API constants (field types, return codes) as Rust types. Safe helpers: write an ANSI or UTF-16 string into a TC buffer with truncation and a NUL; read a TC path (`*const u16`). A panic guard that calls `catch_unwind` and returns an error value. |
 | `uc-content` | The exports. Each export: guard → convert pointers → call safe Rust code. |
 | `uc-test-host` (new, `publish = false`) | Test helper. Loads a plugin DLL with `LoadLibraryW` and finds exports with `GetProcAddress`. Kernel32 declarations only, **no new crates.io dependency**. Later the lister and packer tests use it too. |
 
@@ -73,9 +73,7 @@ convention; TC 32-bit `__stdcall` is not in scope).
 | 6 | Add plugin test host | `crates/uc-test-host`: load DLL, get export, unload. Test: load `kernel32.dll` and find `GetTickCount`. |
 | 7 | Export field list from content plugin | `ContentGetSupportedField`, `ContentGetDetectString`, `ContentSetDefaultParams`, `ContentPluginUnloading`. FFI tests for field 0, field 1, small buffer, detect string. |
 | 8 | Report package file tag in content plugin | `ContentGetValueW`. FFI tests with synthetic files in a temporary folder: tag, other bytes, short file, missing file, unknown field. |
-| 9a | Build plugin crates as rlib for tests | Increment 7 showed that the FFI tests loaded an old DLL from an earlier `cargo build`. This commit adds the `rlib` crate type. **Correction:** its commit message says that `cargo test` then builds a new DLL. That is true only when a DLL exists already. In a new target folder, `cargo test` makes no DLL (checked with and without `cargo clippy` first). See 9b and 9c. |
-| 9b | Detect missing and stale plugin DLLs in tests | `uc-test-host::fresh_plugin_dll`: stops with "Run `cargo build --workspace` before `cargo test`" when the DLL is missing, or older than the rlib. `cargo build` makes the rlib and the DLL in the same compiler run, so a newer rlib means a stale DLL. This is why 9a is still necessary. |
-| 9c | Build plugins before tests in CI | `ci.yml`: `cargo build --workspace` before `cargo test`. |
+| 9 | Build plugin crates as rlib for tests | Increment 7 showed that the FFI tests loaded an old DLL from `target/<profile>/`. The `rlib` crate type makes `cargo test` build the DLL, because each integration test then depends on the library target. **Correction:** the DLL goes to `target/<profile>/deps/`, and only `cargo build` copies it to `target/<profile>/`. So the test host must load it from `deps/`. Commits `Detect missing and stale plugin DLLs in tests`, `Build plugins before tests in CI`, `Build before tests in RustRover` and `Add build order and plugin crate rules` came from a wrong conclusion ("`cargo test` does not build the DLL"). The second review found this. Commits `Load plugin DLLs from the deps folder`, `Remove the build step before CI tests`, `Remove the RustRover build task` and `Correct the plugin DLL rules` remove them. The message of the rlib commit is also partly wrong. History stays. |
 | 10 | Update changelog, plan and README for P2 | `CHANGELOG.md`, `docs/PLAN.md`, README "Manual installation (development)". |
 
 Each feature increment follows the TDD sequence in `AGENTS.md` §6. P2 has no
@@ -89,7 +87,8 @@ for a 4-byte check.
 1. Run `cargo build --workspace --release`.
 2. Copy `target\release\uc_content.dll` to a test folder, with the name
    `UCommanderContent.wdx64`.
-3. In TC, open Configuration → Plugins → Content plugins → Add.
+3. In TC, open Configuration → Options → Plugins → Content plugins (.WDX) →
+   Configure → Add.
 4. Select `UCommanderContent.wdx64`.
 5. Make a custom column with the field `UCommanderContent.Is package`.
 6. Open a folder with `.uasset` files. Make sure that the column shows "Yes".
@@ -111,13 +110,24 @@ for a 4-byte check.
 - `ContentGetValueW` writes the boolean with an unaligned write, because the
   guide does not promise an aligned `FieldValue`.
 
+## Review findings for later plan points
+
+| Point | Item |
+|---|---|
+| P2 manual test | The guide contradicts itself. `overview.htm` lists `ContentGetValue` as a minimum function, and `64_bit_support.htm` says that a Unicode-only 64-bit plugin is sufficient. If TC refuses the plugin at "Add", add an ANSI stub. |
+| 1 | `ContentGetValueW` writes an `i32` for each field. Select the value type by field type. |
+| Cache | Make the cache thread-safe before a field returns `ft_delayed`. |
+| P3 | Packaging must rename `uc_content.dll` to `UCommanderContent.wdx64`. |
+
 ## Out of scope
 
 - Real package parsing (point 1).
 - Field caching and `ft_delayed` (later, with slow fields).
 - `pluginst.inf`, ZIPs and `cargo xtask install` (P3).
 
-## Decisions to confirm
+## Decisions
+
+The owner approved these decisions with the brief.
 
 1. **Field name style.** Users save column sets and search rules with field
    names, so names must stay the same after 1.0. I propose sentence case with
