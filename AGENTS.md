@@ -59,6 +59,9 @@ Run these commands from the repository root.
 All five checks (format check, lint, build, test, dependency check) must pass
 before each commit. `cargo xtask check` replaces this list in plan point P3.
 
+Run the build before the tests: the FFI tests load the DLLs that `cargo build`
+makes.
+
 ## 4. Naming
 
 Follow the Rust API Guidelines.
@@ -86,6 +89,8 @@ Follow the Rust API Guidelines.
    a panic and never an unbounded allocation.
 7. Unknown custom versions and unknown data do not stop the parser. Skip
    them, and report a warning.
+8. Plugin crates use `crate-type = ["cdylib", "rlib"]`, and their FFI tests
+   use `fresh_plugin_dll`.
 
 ## 6. Tests
 
