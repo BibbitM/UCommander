@@ -4,14 +4,14 @@
 
 use std::ffi::c_char;
 
-use uc_test_host::{Plugin, fresh_plugin_dll};
+use uc_test_host::{Plugin, plugin_dll_path};
 
 pub type GetSupportedField = unsafe extern "system" fn(i32, *mut c_char, *mut c_char, i32) -> i32;
 pub type GetDetectString = unsafe extern "system" fn(*mut c_char, i32) -> i32;
 pub type GetValueW = unsafe extern "system" fn(*const u16, i32, i32, *mut u8, i32, i32) -> i32;
 
 pub fn load() -> Plugin {
-    let path = fresh_plugin_dll("uc_content");
+    let path = plugin_dll_path("uc_content");
     Plugin::load(&path).unwrap_or_else(|e| panic!("load {}: {e}", path.display()))
 }
 

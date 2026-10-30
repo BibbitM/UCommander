@@ -5,7 +5,6 @@ use std::ffi::{CString, c_char, c_void};
 use std::io;
 use std::os::windows::ffi::OsStrExt;
 use std::path::{Path, PathBuf};
-use std::time::{Duration, SystemTime};
 
 type Module = *mut c_void;
 
@@ -69,49 +68,12 @@ impl Drop for Plugin {
 /// Path of the plugin DLL `<crate_name>.dll` that Cargo built for the current
 /// test, for example `uc_content`.
 ///
-/// A test executable is in `target/<profile>/deps/`, and Cargo puts the DLL of
-/// a `cdylib` crate in `target/<profile>/`.
+/// Cargo puts the DLL next to the test executable, in `target/<profile>/deps/`.
+/// `cargo test` builds it there, because the plugin crate has the `rlib` crate
+/// type too, and each integration test depends on that library target. The
+/// copy in `target/<profile>/` comes only from `cargo build`.
 pub fn plugin_dll_path(crate_name: &str) -> PathBuf {
     let exe = std::env::current_exe().expect("path of the test executable");
-    let profile_dir = exe
-        .parent()
-        .and_then(Path::parent)
-        .expect("test executable is in target/<profile>/deps/");
-    profile_dir.join(format!("{crate_name}.dll"))
-}
-
-/// Path of the plugin DLL `<crate_name>.dll`, after a check that the DLL is
-/// up to date.
-///
-/// `cargo test` builds only the rlib of a plugin crate, not its DLL. So the
-/// DLL can be missing, or older than the code. `cargo build` makes the rlib and
-/// the DLL in the same compiler run, so an rlib that is newer than the DLL
-/// means that the DLL is stale.
-///
-/// # Panics
-///
-/// Panics with an instruction to run `cargo build --workspace` if the DLL is
-/// missing or stale.
-pub fn fresh_plugin_dll(crate_name: &str) -> PathBuf {
-    let dll = plugin_dll_path(crate_name);
-    let rlib = dll
-        .with_file_name("deps")
-        .join(format!("lib{crate_name}.rlib"));
-    let advice = "Run `cargo build --workspace` before `cargo test`.";
-
-    let Ok(dll_time) = modified(&dll) else {
-        panic!("{} is missing. {advice}", dll.display());
-    };
-    // Same compiler run: the rlib comes some milliseconds after the DLL.
-    let tolerance = Duration::from_secs(2);
-    if let Ok(rlib_time) = modified(&rlib)
-        && rlib_time > dll_time + tolerance
-    {
-        panic!("{} is older than the crate code. {advice}", dll.display());
-    }
-    dll
-}
-
-fn modified(path: &Path) -> io::Result<SystemTime> {
-    std::fs::metadata(path)?.modified()
+    let deps_dir = exe.parent().expect("test executable has a parent folder");
+    deps_dir.join(format!("{crate_name}.dll"))
 }
