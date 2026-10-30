@@ -1,6 +1,6 @@
 # P2 – Content plugin skeleton
 
-Status: **In review**
+Status: **Done** (PR #3)
 
 Branch: `pt/p2-content-skeleton` (from `main`)
 

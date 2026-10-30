@@ -1,6 +1,6 @@
 # P1 – CI
 
-Status: **In review**
+Status: **Done** (PR #2)
 
 Branch: `pt/p1-ci` (from `main`)
 
