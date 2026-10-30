@@ -13,3 +13,5 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   scope and plan.
 - CI on GitHub Actions: format check, lint, test, release build and
   dependency check for each PR and for each push to `main`.
+- `UCommanderContent` content plugin with the field **Is package**: "Yes"
+  for a `.uasset` or `.umap` file that starts with the UE package file tag.

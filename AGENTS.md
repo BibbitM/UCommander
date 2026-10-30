@@ -17,6 +17,7 @@ files. It is written in Rust and is open source (`MIT OR Apache-2.0`).
 | `crates/uc-lister` | cdylib. Lister plugin (WLX). | `UCommanderLister.wlx64` |
 | `crates/uc-packer` | cdylib. Packer plugin (WCX). | `UCommanderPacker.wcx64` |
 | `crates/uc-cli` | Binary `uc`. Shows package data. Development and test tool. | — |
+| `crates/uc-test-host` | Library, tests only. Loads a plugin DLL and calls its exports. | — |
 | `xtask` | Build automation (`cargo xtask`). | — |
 
 Targets: Windows x64 only (`x86_64-pc-windows-msvc`). TC 11.0 or later.
@@ -86,6 +87,8 @@ Follow the Rust API Guidelines.
    a panic and never an unbounded allocation.
 7. Unknown custom versions and unknown data do not stop the parser. Skip
    them, and report a warning.
+8. Plugin crates use `crate-type = ["cdylib", "rlib"]`, so that `cargo test`
+   builds the DLL. Their FFI tests load it with `plugin_dll_path`.
 
 ## 6. Tests
 

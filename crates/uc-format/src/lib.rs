@@ -1,5 +1,7 @@
 //! Parser for Unreal Engine package and container files.
 
+pub mod package;
+
 #[cfg(test)]
 mod tests {
     #[test]

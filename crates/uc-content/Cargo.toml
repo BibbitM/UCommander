@@ -9,7 +9,14 @@ repository.workspace = true
 publish.workspace = true
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [lints]
 workspace = true
+
+[dependencies]
+uc-format = { path = "../uc-format" }
+uc-tc = { path = "../uc-tc" }
+
+[dev-dependencies]
+uc-test-host = { path = "../uc-test-host" }

@@ -38,6 +38,20 @@ cargo build --workspace
 cargo test --workspace
 ```
 
+## Manual installation (development)
+
+There is no release and no installer yet. To try the content plugin:
+
+1. Run `cargo build --workspace --release`.
+2. Copy `target\release\uc_content.dll` to a folder for TC plugins, with the
+   name `UCommanderContent.wdx64`.
+3. In TC, open **Configuration → Options → Plugins → Content plugins
+   (.WDX) → Configure → Add**.
+4. Select `UCommanderContent.wdx64`.
+5. Make a custom column with the field `UCommanderContent.Is package`.
+
+TC keeps the DLL loaded. Close TC before you copy a new version.
+
 ## License
 
 Copyright BIBBIT Michal Nowak.
