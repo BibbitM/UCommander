@@ -39,6 +39,9 @@ jobs:
       # Must come after the toolchain step: the cache key uses the compiler version.
       - name: Cache Rust build output
         uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          # Saving takes about 48 s. PR runs use the cache from main.
+          save-if: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Format check
         run: cargo fmt --all --check
