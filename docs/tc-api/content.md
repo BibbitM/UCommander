@@ -23,8 +23,8 @@ from <https://www.ghisler.com/plugins.htm>. Header version in the guide:
   lists it as ANSI only, but `contplug.h` has `ContentStopGetValueW`. Check
   this before a plan point uses it.
 - The guide also contradicts itself about `ContentGetValue`: `overview.htm`
-  lists it as a minimum function. The manual test in TC shows if a
-  Unicode-only plugin loads.
+  lists it as a minimum function. The manual test on TC 11.x confirmed that TC
+  loads a Unicode-only 64-bit plugin.
 - So field names, unit names and the detect string are ANSI.
 - `ContentGetValueW` returns `ft_stringw` (not `ft_string`) for UTF-16 text.
 

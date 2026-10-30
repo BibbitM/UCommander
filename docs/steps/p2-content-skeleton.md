@@ -41,7 +41,7 @@ see `docs/tc-api/content.md`.
 | Export | P2 | Notes |
 |---|---|---|
 | `ContentGetSupportedField` | Yes | Field names, types, units. |
-| `ContentGetValue` (ANSI) | No | Changed after the guide check: TC 64-bit accepts a Unicode-only plugin, and calls the ANSI form only when `ContentGetValueW` is missing. |
+| `ContentGetValue` (ANSI) | No | Changed after the guide check: `64_bit_support.htm` says that a Unicode-only plugin is sufficient, but `overview.htm` lists this function as a minimum function. The manual test on TC 11.x confirmed that TC loads the plugin without it. |
 | `ContentGetValueW` | Yes | TC 64-bit uses this form when it exists. |
 | `ContentGetDetectString` | Yes | `EXT="UASSET" \| EXT="UMAP"` |
 | `ContentSetDefaultParams` | Yes | Accepts the parameters, but does not store them yet: nothing uses them in P2. |
@@ -107,6 +107,7 @@ for a 4-byte check.
 
 - The FFI tests write files to `%TEMP%\uc-content-tests-<process id>\`. They do
   not delete the folder. The files are small (less than 100 bytes each).
+- Manual test on TC 11.x: the plugin loads, and the "Is package" column works.
 - `ContentGetValueW` writes the boolean with an unaligned write, because the
   guide does not promise an aligned `FieldValue`.
 
@@ -114,7 +115,6 @@ for a 4-byte check.
 
 | Point | Item |
 |---|---|
-| P2 manual test | The guide contradicts itself. `overview.htm` lists `ContentGetValue` as a minimum function, and `64_bit_support.htm` says that a Unicode-only 64-bit plugin is sufficient. If TC refuses the plugin at "Add", add an ANSI stub. |
 | 1 | `ContentGetValueW` writes an `i32` for each field. Select the value type by field type. |
 | Cache | Make the cache thread-safe before a field returns `ft_delayed`. |
 | P3 | Packaging must rename `uc_content.dll` to `UCommanderContent.wdx64`. |
