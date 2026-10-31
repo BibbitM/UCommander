@@ -7,13 +7,17 @@ const USAGE: &str = "\
 Usage: cargo xtask <task>
 
 Tasks:
-  check    Run the format check, lint, tests and dependency check.";
+  check    Run the format check, lint, tests and dependency check.
+  package  Build the release plugin and make its ZIP in target/dist/.";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
     let task = args.first().map(String::as_str);
     let result = match task {
         Some("check") => xtask::check(&repository_root()),
+        Some("package") => xtask::package(&repository_root()).map(|zip| {
+            println!("{}", zip.display());
+        }),
         _ => Err(USAGE.to_string()),
     };
     match result {
