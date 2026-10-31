@@ -50,15 +50,13 @@ Run these commands from the repository root.
 
 | Purpose | Command |
 |---|---|
+| All checks | `cargo xtask check` |
 | Build | `cargo build --workspace` |
 | Test | `cargo test --workspace` |
 | Format | `cargo fmt --all` |
-| Format check | `cargo fmt --all --check` |
-| Lint | `cargo clippy --workspace --all-targets -- -D warnings` |
-| Dependency check | `cargo deny check` |
 
-All five checks (format check, lint, build, test, dependency check) must pass
-before each commit. `cargo xtask check` replaces this list in plan point P3.
+`cargo xtask check` runs the format check, lint, tests and dependency check.
+It stops at the first failure. It must pass before each commit.
 
 ## 4. Naming
 
