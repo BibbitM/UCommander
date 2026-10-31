@@ -1,2 +1,6 @@
 [alias]
 xtask = "run --quiet --package xtask --"
+
+# Static C runtime: a user does not need the VC++ runtime to load a plugin.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
