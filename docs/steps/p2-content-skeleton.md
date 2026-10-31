@@ -1,7 +1,5 @@
 # P2 – Content plugin skeleton
 
-Status: **Done** (PR #3)
-
 Branch: `pt/p2-content-skeleton` (from `main`)
 
 ## Goal

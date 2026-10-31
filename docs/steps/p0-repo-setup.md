@@ -1,7 +1,5 @@
 # P0 – Repository setup
 
-Status: **Done** (PR #1)
-
 Branch: `pt/p0-repo-setup` (from `main`)
 
 ## Goal

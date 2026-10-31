@@ -4,7 +4,9 @@ Each plan point has one branch, one step brief (`docs/steps/`), and one PR.
 Feature IDs are in [FEATURES.md](FEATURES.md). The workflow is in
 [AGENTS.md](../AGENTS.md).
 
-Status values: `Planned`, `In progress`, `In review`, `Done`.
+Status values: `Planned` and `Done`. This file is the only place with the status
+of a plan point. The last commit of a plan point sets `Done`, so the merge
+brings the correct status to `main`. CI checks this on each PR.
 
 ## Phase 0 – foundation and walking skeleton
 

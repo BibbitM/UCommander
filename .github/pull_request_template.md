@@ -26,6 +26,6 @@ Feature IDs: <!-- Example: D1, D2 -->
 ## Checklist
 
 - [ ] `CHANGELOG.md` updated (`## [Unreleased]`).
-- [ ] `docs/PLAN.md` status updated.
+- [ ] `docs/PLAN.md`: the status of this plan point is `Done`.
 - [ ] `README.md` updated, if necessary.
 - [ ] No engine code, keys, company data or Oodle files.

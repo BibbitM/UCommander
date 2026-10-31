@@ -118,7 +118,9 @@ Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
 3. Wait for owner approval of the brief (gate).
 4. Do the increments. Commit after each increment.
 5. Update `CHANGELOG.md` (`## [Unreleased]`) and `README.md` if necessary.
-6. Update `docs/PLAN.md`: set the status of the plan point.
+6. As the last commit, set the status of the plan point to `Done` in
+   `docs/PLAN.md`. CI fails the PR without it. Do not write a status in other
+   files.
 7. Run all checks. Push and open a PR (gates).
 8. Fix CI failures and review findings with new commits.
 

@@ -1,7 +1,5 @@
 # P3 – Package and install
 
-Status: **Approved – in progress**
-
 Branch: `pt/p3-package-install` (from `main`)
 
 ## Goal
