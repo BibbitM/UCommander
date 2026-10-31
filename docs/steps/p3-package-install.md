@@ -16,7 +16,7 @@ from a ZIP file. Colleagues do not need Visual Studio or the VC++ runtime.
 2. `cargo xtask package` makes `target/dist/UCommanderContent-<version>.zip`.
 3. The ZIP contains exactly these files: `UCommanderContent.wdx64`,
    `pluginst.inf`, `README.md`, `CHANGELOG.md`, `LICENSE-MIT`,
-   `LICENSE-APACHE`. No `.pdb`, no `.dll`.
+   `LICENSE-APACHE`, `docs/FEATURES.md`, `docs/PLAN.md`. No `.pdb`, no `.dll`.
 4. `pluginst.inf` has the version from the workspace `Cargo.toml`.
 5. `uc_content.dll` does not import `VCRUNTIME140.dll` (static C runtime).
 6. `cargo xtask install` replaces the plugin file that TC has registered, also
@@ -26,8 +26,9 @@ from a ZIP file. Colleagues do not need Visual Studio or the VC++ runtime.
    it stops with an instruction.
 8. CI uploads the ZIP as a run artifact for each PR.
 9. Manual test: TC installs the ZIP when the owner opens it with Enter.
-10. `README.md` works outside the repository: it has the source link at the
-    top, and its links are absolute GitHub URLs.
+10. The documents work in the ZIP: `README.md` has the source link at the top,
+    and each relative link points to a file in the ZIP. The ZIP has the plan
+    and the features of its own version.
 11. `docs/PLAN.md` is the only place with the status of a plan point. Its
     values are `Planned` and `Done`.
 12. A PR from a `pt/<id>-…` branch fails CI until the status of that plan point
@@ -64,7 +65,7 @@ and 11.
 | Task | Steps |
 |---|---|
 | `check` | Run the four `cargo` commands. Stop at the first failure. |
-| `package` | Build release. Select `uc_content.dll` by exact name. Copy it to a staging folder as `UCommanderContent.wdx64`. Write `pluginst.inf` from `packaging/content/pluginst.inf` with the version. Add the README, the CHANGELOG and the licenses. Make the ZIP. |
+| `package` | Build release. Select `uc_content.dll` by exact name. Copy it to a staging folder as `UCommanderContent.wdx64`. Write `pluginst.inf` from `packaging/content/pluginst.inf` with the version. Add the documents: README, CHANGELOG, licenses, `docs/FEATURES.md` and `docs/PLAN.md`. Make the ZIP. |
 | `plan-status` | Get the plan point ID from the branch name. Find its row in `docs/PLAN.md`. Fail if the status is not `Done`. A branch that does not start with `pt/` passes, for example a Dependabot branch. |
 | `install` | Build release. Rename the installed file to `*.old`. Windows allows a rename of a loaded DLL, but not an overwrite. Copy the new file. Delete old `*.old` files, and skip those that are locked. Tell the user to restart TC. |
 
@@ -115,8 +116,8 @@ write access, and an exception to the branch protection on `main`.
 | 2 | Add cargo xtask check | One commit with increment 1, because the alias alone adds nothing that a test can check. Task and test: an unknown task fails with usage. `AGENTS.md` §3: `cargo xtask check` replaces the list. |
 | 3 | Link the C runtime statically | `.cargo/config.toml`. Test: the release DLL does not contain the text `VCRUNTIME140.dll`. |
 | 4 | Add pluginst.inf template | `packaging/content/pluginst.inf`. Test: the version is filled in, and the file has CRLF line endings. |
-| 5 | Make README work outside the repository | Source link at the top. Absolute GitHub URLs for all links. |
-| 6 | Add xtask package | Task. Tests: the ZIP has exactly the 6 files, and the plugin file is the DLL (starts with `MZ`, not a `.pdb`). |
+| 5 | Make README work outside the repository | Source link at the top. This commit made all links absolute. The owner then proposed `docs/` in the ZIP, so commit `Add plan and feature docs to the ZIP` makes them relative again. |
+| 6 | Add xtask package | Task. Tests: the ZIP has exactly the 8 files, and the plugin file is the DLL (starts with `MZ`, not a `.pdb`). |
 | 7 | Add xtask install | Task. Remove `xtask.toml` from `.gitignore`. Tests with a temporary `wincmd.ini`: the path is found, `%COMMANDER_PATH%` is expanded, a missing line gives the instruction. Tests with files: a loaded DLL is replaced, an old `*.old` file is removed. |
 | 8 | Upload plugin ZIP in CI | `ci.yml`: `cargo xtask package` replaces "Build release". `actions/upload-artifact`, pinned by SHA, 14 days. |
 | 9 | Use one status for each plan point | `docs/PLAN.md`: values `Planned` and `Done`. Remove `Status:` from the briefs. `AGENTS.md` §7.1 and the PR template: the last commit sets `Done`. |

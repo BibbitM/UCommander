@@ -19,8 +19,8 @@ UCommander shows the contents of Unreal Engine files in
 | `UCommanderLister` | Lister (`.wlx64`) | Package summary, tables and thumbnail in F3 and in Quick View. Thumbnails in the TC thumbnail view. |
 | `UCommanderPacker` | Packer (`.wcx64`) | Open `.uasset`, `.umap`, `.pak` and `.utoc`/`.ucas` files like archives. |
 
-See [docs/FEATURES.md](https://github.com/BibbitM/UCommander/blob/main/docs/FEATURES.md) for the full feature scope, and
-[docs/PLAN.md](https://github.com/BibbitM/UCommander/blob/main/docs/PLAN.md) for the development plan.
+See [docs/FEATURES.md](docs/FEATURES.md) for the full feature scope, and
+[docs/PLAN.md](docs/PLAN.md) for the development plan.
 
 ## Requirements
 
@@ -75,8 +75,8 @@ Copyright BIBBIT Michal Nowak.
 
 UCommander is licensed under either of:
 
-- Apache License, Version 2.0 ([LICENSE-APACHE](https://github.com/BibbitM/UCommander/blob/main/LICENSE-APACHE))
-- MIT License ([LICENSE-MIT](https://github.com/BibbitM/UCommander/blob/main/LICENSE-MIT))
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE))
+- MIT License ([LICENSE-MIT](LICENSE-MIT))
 
 at your option.
 

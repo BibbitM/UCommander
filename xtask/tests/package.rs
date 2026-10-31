@@ -46,17 +46,42 @@ fn repository_file(name: &str) -> String {
     std::fs::read_to_string(root.join(name)).unwrap()
 }
 
-/// The README goes in the ZIP, where a relative link does not work.
+/// In the ZIP, a relative link works only if its target is also in the ZIP.
 #[test]
-fn the_readme_has_only_absolute_links() {
+fn relative_links_in_the_documents_point_to_files_in_the_zip() {
+    for document in xtask::DOCUMENTS.iter().filter(|d| d.ends_with(".md")) {
+        let folder = document.rsplit_once('/').map_or("", |(folder, _)| folder);
+        let text = repository_file(document);
+        for (start, _) in text.match_indices("](") {
+            let rest = &text[start + 2..];
+            let target = &rest[..rest.find(')').unwrap()];
+            if target.starts_with("https://") {
+                continue;
+            }
+            let path = if folder.is_empty() {
+                target.to_string()
+            } else {
+                format!("{folder}/{target}")
+            };
+            assert!(
+                xtask::DOCUMENTS.contains(&path.as_str()),
+                "{document}: {target}"
+            );
+        }
+    }
+}
+
+#[test]
+fn the_readme_links_to_the_documents_in_the_zip() {
     let readme = repository_file("README.md");
 
-    for (start, _) in readme.match_indices("](") {
-        let target = &readme[start + 2..];
-        assert!(
-            target.starts_with("https://"),
-            "relative link: {target:.40}"
-        );
+    for link in [
+        "(docs/PLAN.md)",
+        "(docs/FEATURES.md)",
+        "(LICENSE-MIT)",
+        "(LICENSE-APACHE)",
+    ] {
+        assert!(readme.contains(link), "{link}");
     }
 }
 
@@ -118,6 +143,8 @@ fn the_zip_has_exactly_the_plugin_files() {
             "LICENSE-MIT",
             "README.md",
             "UCommanderContent.wdx64",
+            "docs/FEATURES.md",
+            "docs/PLAN.md",
             "pluginst.inf",
         ]
     );
@@ -147,7 +174,7 @@ fn a_new_zip_replaces_the_old_zip() {
     xtask::make_content_zip(&dll, &root(), &dist, "1.2.3").unwrap();
     let zip = xtask::make_content_zip(&dll, &root(), &dist, "1.2.3").unwrap();
 
-    assert_eq!(tar(&["-tf", zip.to_str().unwrap()]).lines().count(), 6);
+    assert_eq!(tar(&["-tf", zip.to_str().unwrap()]).lines().count(), 8);
 }
 
 /// A `.pdb` file with a wrong name must not go in a ZIP.

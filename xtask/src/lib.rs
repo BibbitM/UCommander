@@ -13,7 +13,14 @@ const CONTENT_PLUGIN: &str = "UCommanderContent";
 pub const CONTENT_PLUGIN_FILE: &str = "UCommanderContent.wdx64";
 
 /// Repository files that go in each plugin ZIP.
-const DOCUMENTS: [&str; 4] = ["README.md", "CHANGELOG.md", "LICENSE-MIT", "LICENSE-APACHE"];
+pub const DOCUMENTS: [&str; 6] = [
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "docs/FEATURES.md",
+    "docs/PLAN.md",
+];
 
 /// Runs one command in `root`. Returns an error if it fails.
 fn run(root: &Path, program: &str, args: &[&str]) -> Result<(), String> {
@@ -108,7 +115,7 @@ pub fn make_content_zip(
     if staging.exists() {
         std::fs::remove_dir_all(&staging).map_err(describe)?;
     }
-    std::fs::create_dir_all(&staging).map_err(describe)?;
+    std::fs::create_dir_all(staging.join("docs")).map_err(describe)?;
     std::fs::write(staging.join(CONTENT_PLUGIN_FILE), bytes).map_err(describe)?;
     let pluginst = render_pluginst(CONTENT_PLUGINST, version);
     std::fs::write(staging.join("pluginst.inf"), pluginst).map_err(describe)?;
