@@ -9,7 +9,8 @@ Usage: cargo xtask <task>
 Tasks:
   check    Run the format check, lint, tests and dependency check.
   package  Build the release plugin and make its ZIP in target/dist/.
-  install  Replace the plugin file that Total Commander has registered.";
+  install  Replace the plugin file that Total Commander has registered.
+  plan-status <branch>  Check that the plan point of the branch is Done.";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -22,6 +23,7 @@ fn main() -> ExitCode {
         Some("install") => xtask::install::install(&repository_root()).map(|path| {
             println!("Installed {}. Restart Total Commander.", path.display());
         }),
+        Some("plan-status") if args.len() == 2 => check_plan_status(&args[1]),
         Some("replace-plugin") if args.len() == 3 => {
             xtask::install::replace_plugin(Path::new(&args[1]), Path::new(&args[2]))
                 .map_err(|e| e.to_string())
@@ -43,4 +45,10 @@ fn repository_root() -> PathBuf {
         .parent()
         .expect("xtask is in the repository root")
         .to_path_buf()
+}
+
+fn check_plan_status(branch: &str) -> Result<(), String> {
+    let path = repository_root().join("docs").join("PLAN.md");
+    let plan = std::fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
+    xtask::plan::check_plan_status(branch, &plan)
 }

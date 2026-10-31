@@ -43,6 +43,14 @@ jobs:
           # Saving takes about 48 s. PR runs use the cache from main.
           save-if: ${{ github.ref == 'refs/heads/main' }}
 
+      # The PR must set its plan point to Done, so that main is correct after
+      # the merge.
+      - name: Check plan status
+        if: github.event_name == 'pull_request'
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: cargo xtask plan-status "$env:BRANCH"
+
       - name: Format check
         run: cargo fmt --all --check
 
