@@ -27,32 +27,47 @@ See [docs/FEATURES.md](https://github.com/BibbitM/UCommander/blob/main/docs/FEAT
 - Total Commander 11.0 or later, 64-bit.
 - Unreal Engine 5.8 packages. Earlier 5.x versions are best effort.
 
-## Build
+## Installation
+
+1. Get the file `UCommanderContent-<version>.zip`. There is no release yet, so
+   build it with `cargo xtask package`. It goes to `target\dist\`.
+2. Open the ZIP in Total Commander with Enter.
+3. Accept the installation.
+4. Make a custom column with the field `UCommanderContent.Is package`.
+
+The plugin needs no extra runtime.
+
+## Development
 
 Install [Rust](https://rustup.rs/). The repository pins the toolchain
-version in `rust-toolchain.toml`, so rustup installs it automatically.
+version in `rust-toolchain.toml`, so rustup installs it automatically. Also
+install cargo-deny:
 
 ```bash
-cargo build --workspace
+cargo install cargo-deny --locked
 ```
+
+Run all checks:
 
 ```bash
-cargo test --workspace
+cargo xtask check
 ```
 
-## Manual installation (development)
+Make the plugin ZIP in `target\dist\`:
 
-There is no release and no installer yet. To try the content plugin:
+```bash
+cargo xtask package
+```
 
-1. Run `cargo build --workspace --release`.
-2. Copy `target\release\uc_content.dll` to a folder for TC plugins, with the
-   name `UCommanderContent.wdx64`.
-3. In TC, open **Configuration → Options → Plugins → Content plugins
-   (.WDX) → Configure → Add**.
-4. Select `UCommanderContent.wdx64`.
-5. Make a custom column with the field `UCommanderContent.Is package`.
+Replace the installed plugin with a new build:
 
-TC keeps the DLL loaded. Close TC before you copy a new version.
+```bash
+cargo xtask install
+```
+
+`install` finds the plugin in `wincmd.ini`, so install the ZIP once first. TC
+can stay open. If the plugin is under `Program Files`, Windows shows a UAC
+prompt. Restart TC to load the new version.
 
 ## License
 

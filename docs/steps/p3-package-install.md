@@ -112,7 +112,7 @@ write access, and an exception to the branch protection on `main`.
 |---|---|---|
 | 0 | Add P3 step brief | This file, after approval. |
 | 1 | Add cargo xtask alias | `.cargo/config.toml`: `[alias] xtask = "run --package xtask --"`. Split `xtask` into library and `main.rs`. |
-| 2 | Add xtask check | Task and test: an unknown task fails with usage. `AGENTS.md` §3: `cargo xtask check` replaces the list. |
+| 2 | Add cargo xtask check | One commit with increment 1, because the alias alone adds nothing that a test can check. Task and test: an unknown task fails with usage. `AGENTS.md` §3: `cargo xtask check` replaces the list. |
 | 3 | Link the C runtime statically | `.cargo/config.toml`. Test: the release DLL does not contain the text `VCRUNTIME140.dll`. |
 | 4 | Add pluginst.inf template | `packaging/content/pluginst.inf`. Test: the version is filled in, and the file has CRLF line endings. |
 | 5 | Make README work outside the repository | Source link at the top. Absolute GitHub URLs for all links. |
