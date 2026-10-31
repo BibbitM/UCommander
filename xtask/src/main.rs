@@ -8,7 +8,8 @@ Usage: cargo xtask <task>
 
 Tasks:
   check    Run the format check, lint, tests and dependency check.
-  package  Build the release plugin and make its ZIP in target/dist/.";
+  package  Build the release plugin and make its ZIP in target/dist/.
+  install  Replace the plugin file that Total Commander has registered.";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -18,6 +19,13 @@ fn main() -> ExitCode {
         Some("package") => xtask::package(&repository_root()).map(|zip| {
             println!("{}", zip.display());
         }),
+        Some("install") => xtask::install::install(&repository_root()).map(|path| {
+            println!("Installed {}. Restart Total Commander.", path.display());
+        }),
+        Some("replace-plugin") if args.len() == 3 => {
+            xtask::install::replace_plugin(Path::new(&args[1]), Path::new(&args[2]))
+                .map_err(|e| e.to_string())
+        }
         _ => Err(USAGE.to_string()),
     };
     match result {

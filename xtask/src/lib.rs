@@ -1,5 +1,7 @@
 //! Tasks of `cargo xtask`.
 
+pub mod install;
+
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
