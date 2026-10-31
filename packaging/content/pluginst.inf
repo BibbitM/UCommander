@@ -1,0 +1,6 @@
+[plugininstall]
+description=UCommander content fields for Unreal Engine packages
+type=wdx
+file=UCommanderContent.wdx64
+defaultdir=UCommanderContent
+version={version}

@@ -37,3 +37,14 @@ pub fn check(root: &Path) -> Result<(), String> {
     }
     Ok(())
 }
+
+/// Template of the TC plugin installer file for the content plugin.
+pub const CONTENT_PLUGINST: &str = include_str!("../../packaging/content/pluginst.inf");
+
+/// Fills in the version, and gives the text CRLF line endings for TC.
+pub fn render_pluginst(template: &str, version: &str) -> String {
+    template
+        .replace("{version}", version)
+        .replace("\r\n", "\n")
+        .replace('\n', "\r\n")
+}
