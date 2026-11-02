@@ -99,13 +99,9 @@ fn root() -> std::path::PathBuf {
         .to_path_buf()
 }
 
-/// A new, empty folder for one test.
-fn test_dir(name: &str) -> std::path::PathBuf {
-    let dir = std::env::temp_dir().join(format!("uc-xtask-{}-{name}", std::process::id()));
-    let _ = std::fs::remove_dir_all(&dir);
-    std::fs::create_dir_all(&dir).unwrap();
-    dir
-}
+mod common;
+
+use common::test_dir;
 
 fn tar(args: &[&str]) -> String {
     let output = std::process::Command::new(xtask::tar_path())

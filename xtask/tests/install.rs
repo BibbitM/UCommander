@@ -7,13 +7,9 @@ use xtask::install::{
 
 const FILE: &str = "UCommanderContent.wdx64";
 
-/// A new, empty folder for one test.
-fn test_dir(name: &str) -> PathBuf {
-    let dir = std::env::temp_dir().join(format!("uc-xtask-{}-{name}", std::process::id()));
-    let _ = std::fs::remove_dir_all(&dir);
-    std::fs::create_dir_all(&dir).unwrap();
-    dir
-}
+mod common;
+
+use common::test_dir;
 
 #[test]
 fn the_plugin_path_comes_from_the_content_plugins_section() {
