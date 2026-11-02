@@ -1,7 +1,5 @@
 # P1 – CI
 
-Status: **In review**
-
 Branch: `pt/p1-ci` (from `main`)
 
 ## Goal

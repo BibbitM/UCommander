@@ -5,7 +5,6 @@
 /.idea/
 
 # Local configuration (paths, keys). Never commit these files.
-/xtask.toml
 /ucommander.local.ini
 /.claude/settings.local.json
 

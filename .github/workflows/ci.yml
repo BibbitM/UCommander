@@ -43,6 +43,14 @@ jobs:
           # Saving takes about 48 s. PR runs use the cache from main.
           save-if: ${{ github.ref == 'refs/heads/main' }}
 
+      # The PR must set its plan point to Done, so that main is correct after
+      # the merge.
+      - name: Check plan status
+        if: github.event_name == 'pull_request'
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: cargo xtask plan-status "$env:BRANCH"
+
       - name: Format check
         run: cargo fmt --all --check
 
@@ -53,8 +61,17 @@ jobs:
         run: cargo test --workspace
 
       # The plugins ship in the release profile.
-      - name: Build release
-        run: cargo build --workspace --release
+      - name: Package plugins
+        run: cargo xtask package
+
+      # A colleague can test the plugin of a branch from this ZIP.
+      - name: Upload plugin ZIP
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: plugins
+          path: target/dist/*.zip
+          if-no-files-found: error
+          retention-days: 14
 
   deny:
     name: deny

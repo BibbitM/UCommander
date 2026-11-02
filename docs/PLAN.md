@@ -2,18 +2,20 @@
 
 Each plan point has one branch, one step brief (`docs/steps/`), and one PR.
 Feature IDs are in [FEATURES.md](FEATURES.md). The workflow is in
-[AGENTS.md](../AGENTS.md).
+[AGENTS.md](https://github.com/BibbitM/UCommander/blob/main/AGENTS.md).
 
-Status values: `Planned`, `In progress`, `In review`, `Done`.
+Status values: `Planned` and `Done`. This file is the only place with the status
+of a plan point. The last commit of a plan point sets `Done`, so the merge
+brings the correct status to `main`. CI checks this on each PR.
 
 ## Phase 0 – foundation and walking skeleton
 
 | Pt | Name | Content | Release | Status |
 |---|---|---|---|---|
 | P0 | Repository setup | Workspace, licenses, README, AGENTS.md, docs, lints, cargo-deny, PR template, RustRover run configurations. | — | Done |
-| P1 | CI | `ci.yml`: format check, lint, test, cargo-deny, release build. Branch protection on `main`. | — | In review |
-| P2 | Content plugin skeleton | `uc-tc` content API. `uc-content` with one field: "Is package" (package file tag check). FFI test harness. | — | In review |
-| P3 | Package and install | `cargo xtask check`, `cargo xtask package` (ZIPs with `pluginst.inf`), `cargo xtask install`. | — | Planned |
+| P1 | CI | `ci.yml`: format check, lint, test, cargo-deny, release build. Branch protection on `main`. | — | Done |
+| P2 | Content plugin skeleton | `uc-tc` content API. `uc-content` with one field: "Is package" (package file tag check). FFI test harness. | — | Done |
+| P3 | Package and install | `cargo xtask check`, `cargo xtask package` (ZIPs with `pluginst.inf`), `cargo xtask install`. | — | Done |
 | P4 | Release workflow | `release.yml`: tag `v*` → build, test, ZIPs, GitHub Release. | v0.1.0 | Planned |
 
 ## Phase 1 – MVP
@@ -34,7 +36,8 @@ Status values: `Planned`, `In progress`, `In review`, `Done`.
 | 12 | Packer: actors in a legacy map | B6 | | Planned |
 | 13 | Packer: external actors of an OFPA map | B7 | v0.6.0 | Planned |
 | 14 | `.pak` read and extract | A1, A3–A5 | v0.7.0 | Planned |
-| 15 | IoStore read and extract | A2–A5 | v0.8.0 (MVP) | Planned |
+| 15 | IoStore read and extract | A2–A5 | v0.8.0 | Planned |
+| 16 | Polish localization | X11 | v0.9.0 (MVP) | Planned |
 
 ## After the MVP
 

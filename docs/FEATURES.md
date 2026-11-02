@@ -7,7 +7,7 @@ Status values:
 
 | Status | Meaning |
 |---|---|
-| MVP | Part of the MVP (plan points 1–15). |
+| MVP | Part of the MVP (plan points 1–16). |
 | Next | First item after the MVP. |
 | Later | Agreed, but after the MVP. The order is in `PLAN.md`. |
 | Dropped | Not in scope now. We can reconsider it later. |
@@ -101,6 +101,7 @@ Status values:
 | X8 | Read-only until a write feature (A12, D14). | MVP |
 | X9 | Win64 only. TC plugin installer ZIPs (`pluginst.inf`). | MVP |
 | X10 | Check the license of each reference before we use it. No engine code. | MVP |
+| X11 | Polish localization of all plugins. No other languages: the owner cannot verify them. | MVP |
 
 ## Bridge (UE editor plugin)
 

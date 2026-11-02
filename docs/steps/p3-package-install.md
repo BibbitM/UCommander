@@ -1,0 +1,214 @@
+# P3 – Package and install
+
+Branch: `pt/p3-package-install` (from `main`)
+
+## Goal
+
+Make one command for each repeated task: run all checks, make the plugin ZIP,
+and install the new plugin on the developer's computer. After P3, the owner
+gets a new plugin in TC with `cargo xtask install`, and a colleague installs it
+from a ZIP file. Colleagues do not need Visual Studio or the VC++ runtime.
+
+## Acceptance criteria
+
+1. `cargo xtask check` runs format check, lint, test and dependency check, in
+   this order. It stops at the first failure, with a non-zero exit code.
+2. `cargo xtask package` makes `target/dist/UCommanderContent-<version>.zip`.
+3. The ZIP contains exactly these files: `UCommanderContent.wdx64`,
+   `pluginst.inf`, `README.md`, `CHANGELOG.md`, `LICENSE-MIT`,
+   `LICENSE-APACHE`, `docs/FEATURES.md`, `docs/PLAN.md`. No `.pdb`, no `.dll`.
+4. `pluginst.inf` has the version from the workspace `Cargo.toml`.
+5. `uc_content.dll` does not import `VCRUNTIME140.dll` (static C runtime).
+6. `cargo xtask install` replaces the plugin file that TC has registered, also
+   when TC has it loaded. A test proves this with a loaded DLL.
+7. `install` needs no configuration, and it works for each TC installation
+   folder. It tells the user to restart TC. If TC has not registered the plugin,
+   it stops with an instruction.
+8. CI uploads the ZIP as a run artifact for each PR.
+9. Manual test: TC installs the ZIP when the owner opens it with Enter.
+10. The documents work in the ZIP: `README.md` has the source link at the top,
+    and each relative link points to a file in the ZIP. The ZIP has the plan
+    and the features of its own version.
+11. `docs/PLAN.md` is the only place with the status of a plan point. Its
+    values are `Planned` and `Done`.
+12. A PR from a `pt/<id>-…` branch fails CI until the status of that plan point
+    is `Done` in `docs/PLAN.md`.
+
+## Installer format
+
+Sources: the HOWTO in the TC forum, and `HISTORY.TXT` of TC 11 (`version=`
+from 2013). The TC guides do not describe this file.
+
+```ini
+[plugininstall]
+description=UCommander content fields for Unreal Engine packages
+type=wdx
+file=UCommanderContent.wdx64
+defaultdir=UCommanderContent
+version=0.0.0
+```
+
+**Confirmed by the manual test:** no source that I could read gives the `file=`
+value for a 64-bit-only plugin. The manual test on TC 11.x showed that
+`file=UCommanderContent.wdx64` works: TC installed the ZIP, the column works,
+and `cargo xtask install` replaced the installed plugin.
+
+Other results of the manual test:
+
+- TC installed the plugin in
+  `C:\Program Files\Total Commander\plugins\wdx\UCommanderContent\`.
+- TC unpacked all files, also the `docs` folder, but not `pluginst.inf`.
+  Other plugins show the same behavior.
+- The relative links in the installed `README.md` work.
+- `cargo xtask install` showed the UAC prompt, because the folder is under
+  `Program Files`.
+- A second `install` before a TC restart makes `.old1`, because TC still has
+  `.old` loaded. A file that TC has loaded cannot be deleted until TC
+  restarts. This is the expected behavior.
+
+Each `pluginst.inf` has one `type` and one `file`, so one ZIP installs one
+plugin. Each plugin gets its own ZIP. P3 packages only the content plugin. The
+lister and the packer have no exports yet, so their ZIPs come with points 7
+and 11.
+
+## Design
+
+`xtask` has a library and a thin `main.rs`, so that tests can call each task.
+
+| Task | Steps |
+|---|---|
+| `check` | Run the four `cargo` commands. Stop at the first failure. |
+| `package` | Build release. Select `uc_content.dll` by exact name. Copy it to a staging folder as `UCommanderContent.wdx64`. Write `pluginst.inf` from `packaging/content/pluginst.inf` with the version. Add the documents: README, CHANGELOG, licenses, `docs/FEATURES.md` and `docs/PLAN.md`. Make the ZIP. |
+| `plan-status` | Get the plan point ID from the branch name. Find its row in `docs/PLAN.md`. Fail if the status is not `Done`. A branch that does not start with `pt/` passes, for example a Dependabot branch. |
+| `install` | Build release. Rename the installed file to `*.old`. Windows allows a rename of a loaded DLL, but not an overwrite. Copy the new file. Delete old `*.old` files, and skip those that are locked. Tell the user to restart TC. |
+
+- The ZIP comes from `tar.exe -a`, which is in Windows 10 and later. **No new
+  crates.io dependency.**
+- The version comes from `CARGO_PKG_VERSION` of `xtask`, which uses the
+  workspace version.
+- The install path comes from TC, on each computer:
+  1. Find `wincmd.ini` from the registry value `IniFileName`, in
+     `HKCU\Software\Ghisler\Total Commander`, then in `HKLM`.
+  2. Find the line in `[ContentPlugins]` that ends with
+     `UCommanderContent.wdx64`. Its path is the file to replace.
+  3. Expand `%COMMANDER_PATH%` with the registry value `InstallDir`.
+- `reg.exe` reads the registry, so there is no new dependency. `install` never
+  changes `wincmd.ini`, because TC writes that file when it closes.
+- The first installation uses the ZIP, so that TC registers the plugin in
+  `plugins\wdx\UCommanderContent\`. If TC has no such line, `install` stops and
+  tells the user to install the ZIP.
+- A plugin under `Program Files` needs administrator rights. When a write
+  gives "access denied", `install` starts `xtask replace-plugin` with
+  `Start-Process -Verb RunAs`, which shows one UAC prompt. Only this small step
+  has administrator rights.
+- A static C runtime comes from `.cargo/config.toml`:
+  `target-feature=+crt-static` for `x86_64-pc-windows-msvc`. The 64-bit page of
+  the guide also recommends a static runtime (`/MT`).
+
+### Status at the merge
+
+The status documents went stale because the status changed in two steps: a
+branch wrote `In review`, and nothing wrote `Done` after the merge. P3 removes
+the second step:
+
+- The last commit of a plan point sets `Done` in `docs/PLAN.md`. The merge
+  brings it to `main`, so `main` is correct at the moment of the merge.
+- `In progress` and `In review` go away. GitHub already shows these states.
+- The briefs lose their `Status:` line, so that only one place has the status.
+- `plan-status` runs in CI on each PR, so a forgotten status blocks the merge.
+
+A bot commit after the merge is not necessary. It would also need a token with
+write access, and an exception to the branch protection on `main`.
+
+## Increments (one commit each)
+
+| # | Commit title | Content |
+|---|---|---|
+| 0 | Add P3 step brief | This file, after approval. |
+| 1 | Add cargo xtask alias | `.cargo/config.toml`: `[alias] xtask = "run --quiet --package xtask --"`. `--quiet` hides the Cargo build lines of xtask itself. Split `xtask` into library and `main.rs`. |
+| 2 | Add cargo xtask check | One commit with increment 1, because the alias alone adds nothing that a test can check. Task and test: an unknown task fails with usage. `AGENTS.md` §3: `cargo xtask check` replaces the list. The order and the stop at the first failure (criterion 1) have no automatic test, because the test would run Cargo inside Cargo. A manual test with a format error showed the stop and exit code 1. |
+| 3 | Link the C runtime statically | `.cargo/config.toml`. Test: the release DLL does not contain the text `VCRUNTIME140.dll`. |
+| 4 | Add pluginst.inf template | `packaging/content/pluginst.inf`. Test: the version is filled in, and the file has CRLF line endings. |
+| 5 | Make README work outside the repository | Source link at the top. This commit made all links absolute. The owner then proposed `docs/` in the ZIP, so commit `Add plan and feature docs to the ZIP` makes them relative again. |
+| 6 | Add xtask package | Task. Tests: the ZIP has exactly the 8 files, and the plugin file is the DLL (starts with `MZ`, not a `.pdb`). |
+| 7 | Add xtask install | Task. Remove `xtask.toml` from `.gitignore`. Tests with INI text and files: the path is found, `%COMMANDER_PATH%` is expanded, a loaded DLL is replaced, an old `*.old` file is removed. The tests with a temporary `wincmd.ini` file came later, in the review fix `Read UTF-16 and BOM wincmd.ini files`. |
+| 8 | Upload plugin ZIP in CI | `ci.yml`: `cargo xtask package` replaces "Build release". `actions/upload-artifact`, pinned by SHA, 14 days. |
+| 9 | Use one status for each plan point | `docs/PLAN.md`: values `Planned` and `Done`. Remove `Status:` from the briefs. `AGENTS.md` §7.1 and the PR template: the last commit sets `Done`. |
+| 10 | Check plan status in CI | `xtask plan-status`. Tests: `Done` passes, `Planned` fails, a `pt/03-…` branch finds row 3, a `pt/p3-…` branch finds row P3, other branches pass. `ci.yml`: step for `pull_request` events. The branch name comes from `github.head_ref` through the variable `BRANCH`, so that a branch name cannot inject commands. |
+| 11 | Update docs for P3 | README (installation, `cargo xtask`), CHANGELOG, RustRover run configurations. |
+| 12 | Set P3 status to done | `docs/PLAN.md`. A separate last commit, as `AGENTS.md` §7.1 says. |
+
+Each increment follows the TDD sequence in `AGENTS.md` §6.
+
+### Other commits on this branch
+
+| Commit | Reason |
+|---|---|
+| `Set P1 and P2 status to done` | The status of P1 and P2 was stale. This problem started the status model of increments 9 and 10. |
+| `Add Polish localization to the plan` | The owner asked for it during P3. It is plan point 16, and it is outside the P3 scope. |
+| `Add plan and feature docs to the ZIP` | The owner proposed it after increment 6. |
+| `Record the P3 manual test result`, `Record the P3 manual test details` | Manual test results. |
+
+### Review fixes (after the second review of PR #4)
+
+| Commit | Content |
+|---|---|
+| `Refuse plugin DLLs that need the VC runtime` | A `RUSTFLAGS` variable replaces the static runtime setting without a warning. The package task now refuses such a DLL. |
+| `Resolve a relative CARGO_TARGET_DIR` | Resolve it against the repository root, so that all paths are absolute, also for the elevated copy. |
+| `Read UTF-16 and BOM wincmd.ini files` | Decode UTF-16 with a BOM and UTF-8 with a BOM. The error has the ini path. Tests with a temporary `wincmd.ini`. An empty key is not a plugin line. |
+| `Show errors of the elevated plugin copy` | The hidden elevated process writes its error to a temporary file. PowerShell strings double the typographic quotes too. A failed rollback keeps the copy error. |
+| `Remove test folders after xtask tests` | Each test deletes its temporary folder. |
+
+These commits come after `Set P3 status to done`, because that commit was already pushed, and history stays. They do not change the status, so `main` is still correct at the merge.
+
+### Known limits of `install`
+
+- A non-ASCII path in an ANSI `wincmd.ini`, or in the output of `reg.exe`, does not match. An example is `D:\Narzędzia`. `install` then reports that TC has not registered the plugin.
+- `install` does not follow `AlternateUserIni` or `RedirectSection` in `wincmd.ini`.
+
+## Manual test
+
+1. Run `cargo xtask package`.
+2. In TC, remove the current plugin from the content plugin list.
+3. Open `target\dist\UCommanderContent-0.0.0.zip` with Enter.
+4. Accept the installation.
+5. Make sure that the column `UCommanderContent.Is package` works.
+6. Run `cargo xtask install` while TC is open.
+7. Accept the UAC prompt, if it shows.
+8. Restart TC. Make sure that the column still works.
+
+Optional: repeat steps 3–5 on a computer without Visual Studio.
+
+## Owner actions
+
+1. Do the manual test.
+
+## Review findings for later plan points
+
+| Point | Item |
+|---|---|
+| P4 | The release job must check that the tag matches the workspace version (`xtask::VERSION`). |
+| P4 | Do not set `RUSTFLAGS` in the release workflow without `-C target-feature=+crt-static`. The package task refuses a wrong DLL, so the job fails. |
+| P4 | Change the README lines that say "There is no release yet". |
+| P4 | `plan-status` runs only on PRs, so a tag push skips it. This is correct. |
+
+## Out of scope
+
+- Release workflow and GitHub Releases (P4).
+- Version change (P4 sets 0.1.0).
+- ZIPs for the lister and the packer (points 7 and 11).
+- Automatic update for colleagues.
+
+## Decisions
+
+Confirmed by the owner:
+
+- **ZIP tool.** `tar.exe`, not the `zip` crate, so that there is no new
+  crates.io dependency.
+- **License files in the ZIP.** Both licenses go in the ZIP, because the MIT
+  and Apache licenses require a copy with each distribution.
+- **Status model.** `Planned` and `Done` only, set in the last commit of the
+  branch, and checked by CI. No bot commit after the merge.
+- **New action.** `actions/upload-artifact` (MIT) for CI.
+- **Administrator rights.** When the plugin folder is under `Program Files`,
+  `install` shows one UAC prompt.

@@ -50,15 +50,13 @@ Run these commands from the repository root.
 
 | Purpose | Command |
 |---|---|
+| All checks | `cargo xtask check` |
 | Build | `cargo build --workspace` |
 | Test | `cargo test --workspace` |
 | Format | `cargo fmt --all` |
-| Format check | `cargo fmt --all --check` |
-| Lint | `cargo clippy --workspace --all-targets -- -D warnings` |
-| Dependency check | `cargo deny check` |
 
-All five checks (format check, lint, build, test, dependency check) must pass
-before each commit. `cargo xtask check` replaces this list in plan point P3.
+`cargo xtask check` runs the format check, lint, tests and dependency check.
+It stops at the first failure. It must pass before each commit.
 
 ## 4. Naming
 
@@ -120,7 +118,9 @@ Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
 3. Wait for owner approval of the brief (gate).
 4. Do the increments. Commit after each increment.
 5. Update `CHANGELOG.md` (`## [Unreleased]`) and `README.md` if necessary.
-6. Update `docs/PLAN.md`: set the status of the plan point.
+6. As the last commit, set the status of the plan point to `Done` in
+   `docs/PLAN.md`. CI fails the PR without it. Do not write a status in other
+   files.
 7. Run all checks. Push and open a PR (gates).
 8. Fix CI failures and review findings with new commits.
 
