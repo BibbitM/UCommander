@@ -48,10 +48,10 @@ defaultdir=UCommanderContent
 version=0.0.0
 ```
 
-**Not confirmed:** no source that I could read gives the `file=` value for a
-64-bit-only plugin. `file=UCommanderContent.wdx64` is my reading. The manual
-test (criterion 9) proves it. If TC refuses the file, try
-`file=UCommanderContent.wdx`.
+**Confirmed by the manual test:** no source that I could read gives the `file=`
+value for a 64-bit-only plugin. The manual test on TC 11.x showed that
+`file=UCommanderContent.wdx64` works: TC installed the ZIP, the column works,
+and `cargo xtask install` replaced the installed plugin.
 
 Each `pluginst.inf` has one `type` and one `file`, so one ZIP installs one
 plugin. Each plugin gets its own ZIP. P3 packages only the content plugin. The
