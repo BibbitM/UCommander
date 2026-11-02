@@ -182,3 +182,30 @@ Stop and wait for owner approval before each of these actions:
 - GitHub Desktop can stash uncommitted changes when the branch changes.
   If files are missing, run `git stash list` before you write them again.
 - Shared RustRover run configurations are in `.run/`.
+- The owner reviews the whole branch at the PR, not each commit. Tell the
+  owner in one short line what you are doing during long work.
+- `dumpbin.exe` is in the Visual Studio 2022 installation. Find it with
+  `vswhere.exe -find "VC/Tools/MSVC/*/bin/Hostx64/x64/dumpbin.exe"`.
+
+## 12. Working lessons
+
+These lessons come from mistakes in earlier plan points.
+
+- Chain each check and the commit with `&&`. With `;`, a failed check does not
+  stop the commit.
+- Chain git commands with `&&` too. A failed `git switch` must stop the
+  commands after it.
+- Change text with exact-text edits, not with `sed`. In `sed`, `\|` means
+  "or", and backslashes in Rust strings and Windows paths get lost.
+- Do not use `Get-Content` or `Set-Content` of Windows PowerShell 5.1 for text
+  files. They use the ANSI code page and can damage UTF-8 text.
+- Before you conclude how Cargo builds something, check it in a new, empty
+  target folder. A warm `target/` can hide the real behavior.
+- Check each commit of a branch in a clean worktree, with all checks, before
+  you push. Put the worktree in `target/`, because long paths fail.
+- `cargo test` builds a plugin DLL in `target/<profile>/deps/`. Only
+  `cargo build` copies it to `target/<profile>/`.
+- Do not state a cause as fact before a test proves it. Say what you checked,
+  and what you did not check.
+- A test of an `extern` export must start with its value at a number that the
+  code does not write, and assert the exact expected value.
