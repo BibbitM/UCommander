@@ -201,3 +201,21 @@ fn a_dll_that_needs_the_vc_runtime_is_refused() {
 
     assert!(result.unwrap_err().contains("VC++ runtime"));
 }
+
+#[test]
+fn a_relative_target_folder_is_relative_to_the_repository() {
+    let root = std::path::Path::new(r"E:\Repo");
+
+    assert_eq!(
+        xtask::resolve_target_dir(root, Some("out".into())),
+        std::path::Path::new(r"E:\Repo\out")
+    );
+    assert_eq!(
+        xtask::resolve_target_dir(root, Some(r"D:\Build".into())),
+        std::path::Path::new(r"D:\Build")
+    );
+    assert_eq!(
+        xtask::resolve_target_dir(root, None),
+        std::path::Path::new(r"E:\Repo\target")
+    );
+}

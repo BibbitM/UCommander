@@ -80,9 +80,17 @@ pub fn tar_path() -> PathBuf {
 
 /// The target folder of Cargo.
 fn target_dir(root: &Path) -> PathBuf {
-    std::env::var_os("CARGO_TARGET_DIR")
-        .map(PathBuf::from)
-        .unwrap_or_else(|| root.join("target"))
+    resolve_target_dir(root, std::env::var_os("CARGO_TARGET_DIR"))
+}
+
+/// The target folder for a `CARGO_TARGET_DIR` value. Cargo runs in `root`, so
+/// a relative value is relative to `root`. The result is absolute when `root`
+/// is absolute.
+pub fn resolve_target_dir(root: &Path, value: Option<std::ffi::OsString>) -> PathBuf {
+    match value {
+        Some(value) => root.join(value),
+        None => root.join("target"),
+    }
 }
 
 /// Builds the release DLL of the content plugin, and returns its path.
