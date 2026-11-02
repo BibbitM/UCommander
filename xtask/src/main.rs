@@ -24,9 +24,14 @@ fn main() -> ExitCode {
             println!("Installed {}. Restart Total Commander.", path.display());
         }),
         Some("plan-status") if args.len() == 2 => check_plan_status(&args[1]),
-        Some("replace-plugin") if args.len() == 3 => {
-            xtask::install::replace_plugin(Path::new(&args[1]), Path::new(&args[2]))
-                .map_err(|e| e.to_string())
+        // Internal task: `install` starts it with administrator rights. Its
+        // window is hidden, so it also writes the error to the file in
+        // `args[3]`.
+        Some("replace-plugin") if args.len() == 4 => {
+            xtask::install::replace_plugin(Path::new(&args[1]), Path::new(&args[2])).map_err(|e| {
+                let _ = std::fs::write(&args[3], e.to_string());
+                e.to_string()
+            })
         }
         _ => Err(USAGE.to_string()),
     };

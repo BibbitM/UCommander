@@ -233,3 +233,28 @@ fn a_line_with_an_empty_key_is_not_a_plugin_path() {
         None
     );
 }
+
+#[test]
+fn a_powershell_string_doubles_each_single_quote_character() {
+    use xtask::install::powershell_single_quoted;
+
+    assert_eq!(powershell_single_quoted(r"C:\A B\x.dll"), r"'C:\A B\x.dll'");
+    assert_eq!(powershell_single_quoted("O'Neil"), "'O''Neil'");
+    assert_eq!(
+        powershell_single_quoted("a\u{2018}b\u{2019}c"),
+        "'a\u{2018}\u{2018}b\u{2019}\u{2019}c'"
+    );
+    assert_eq!(powershell_single_quoted("$env:X"), "'$env:X'");
+}
+
+#[test]
+fn a_failed_copy_puts_the_old_file_back() {
+    let dir = test_dir("rollback");
+    let installed = dir.join("plugin.dll");
+    std::fs::write(&installed, b"current").unwrap();
+
+    let error = replace_plugin(&dir.join("missing.dll"), &installed).unwrap_err();
+
+    assert_eq!(error.kind(), std::io::ErrorKind::NotFound);
+    assert_eq!(std::fs::read(&installed).unwrap(), b"current");
+}

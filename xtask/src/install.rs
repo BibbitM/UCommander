@@ -79,12 +79,37 @@ pub fn replace_plugin(new: &Path, installed: &Path) -> io::Result<()> {
         old_file = Some(old);
     }
     if let Err(error) = std::fs::copy(new, installed) {
-        if let Some(old) = old_file {
-            std::fs::rename(old, installed)?;
+        if let Some(old) = old_file
+            && let Err(rollback) = std::fs::rename(&old, installed)
+        {
+            return Err(io::Error::new(
+                error.kind(),
+                format!(
+                    "{error}. The old plugin could not go back ({rollback}), so {} is \
+                     missing. The old plugin is {}.",
+                    installed.display(),
+                    old.display()
+                ),
+            ));
         }
         return Err(error);
     }
     Ok(())
+}
+
+/// Puts `text` in a PowerShell single-quoted string. PowerShell ends such a
+/// string at `'` and also at the quotes U+2018, U+2019, U+201A and U+201B, so
+/// each of them is doubled.
+pub fn powershell_single_quoted(text: &str) -> String {
+    let mut quoted = String::from("'");
+    for c in text.chars() {
+        if matches!(c, '\'' | '\u{2018}' | '\u{2019}' | '\u{201A}' | '\u{201B}') {
+            quoted.push(c);
+        }
+        quoted.push(c);
+    }
+    quoted.push('\'');
+    quoted
 }
 
 /// Deletes the earlier `.old` files that are not loaded, and returns the first
@@ -173,27 +198,42 @@ fn find_installed_plugin() -> Result<PathBuf, String> {
 
 /// Runs `xtask replace-plugin` with administrator rights. This shows a UAC
 /// prompt.
+///
+/// The window of the elevated process is hidden, so it writes its error to a
+/// temporary file, and this function shows that error.
 fn replace_plugin_elevated(new: &Path, installed: &Path) -> Result<(), String> {
     let exe = std::env::current_exe().map_err(|e| e.to_string())?;
-    let quote = |path: &Path| path.display().to_string().replace('\'', "''");
+    let error_file =
+        std::env::temp_dir().join(format!("uc-xtask-replace-{}.txt", std::process::id()));
+    let _ = std::fs::remove_file(&error_file);
+    // Each argument is in double quotes for the process, because a path can
+    // contain spaces.
+    let argument = |path: &Path| powershell_single_quoted(&format!("\"{}\"", path.display()));
     let script = format!(
-        "$p = Start-Process -FilePath '{}' \
-         -ArgumentList 'replace-plugin','\"{}\"','\"{}\"' \
+        "$p = Start-Process -FilePath {} \
+         -ArgumentList 'replace-plugin',{},{},{} \
          -Verb RunAs -Wait -PassThru -WindowStyle Hidden -ErrorAction Stop; \
          exit $p.ExitCode",
-        quote(&exe),
-        quote(new),
-        quote(installed),
+        powershell_single_quoted(&exe.display().to_string()),
+        argument(new),
+        argument(installed),
+        argument(&error_file),
     );
     let status = Command::new("powershell.exe")
         .args(["-NoProfile", "-Command", &script])
         .status()
         .map_err(|e| format!("cannot start powershell.exe: {e}"))?;
+    let child_error = std::fs::read_to_string(&error_file).ok();
+    let _ = std::fs::remove_file(&error_file);
     if status.success() {
-        Ok(())
-    } else {
-        Err("the plugin was not replaced with administrator rights".to_string())
+        return Ok(());
     }
+    Err(match child_error {
+        Some(error) => format!("cannot replace {}: {error}", installed.display()),
+        None => "the plugin was not replaced with administrator rights. \
+                 Accept the UAC prompt, or run the command in an administrator terminal."
+            .to_string(),
+    })
 }
 
 /// Builds the content plugin, and replaces the file that TC has registered.
