@@ -1,7 +1,9 @@
 use std::path::PathBuf;
 
 use uc_test_host::Plugin;
-use xtask::install::{expand_variables, plugin_path_in_ini, reg_value, replace_plugin};
+use xtask::install::{
+    expand_variables, installed_plugin_from_ini, plugin_path_in_ini, reg_value, replace_plugin,
+};
 
 const FILE: &str = "UCommanderContent.wdx64";
 
@@ -152,4 +154,82 @@ fn a_second_install_works_while_the_old_file_is_still_loaded() {
 
     assert_eq!(std::fs::read(&installed).unwrap(), b"new plugin");
     drop(loaded);
+}
+
+const INI: &str = "[ContentPlugins]\r\n\
+                   0=%COMMANDER_PATH%\\plugins\\wdx\\UCommanderContent\\UCommanderContent.wdx64\r\n";
+
+fn expand(path: &str) -> String {
+    path.replace("%COMMANDER_PATH%", r"C:\totalcmd")
+}
+
+const EXPECTED: &str = r"C:\totalcmd\plugins\wdx\UCommanderContent\UCommanderContent.wdx64";
+
+#[test]
+fn the_installed_plugin_comes_from_a_wincmd_ini_file() {
+    let dir = test_dir("ini-file");
+    let ini = dir.join("wincmd.ini");
+    std::fs::write(&ini, INI).unwrap();
+
+    assert_eq!(
+        installed_plugin_from_ini(&ini, expand),
+        Ok(PathBuf::from(EXPECTED))
+    );
+}
+
+#[test]
+fn a_utf8_ini_with_a_bom_is_read() {
+    let dir = test_dir("ini-utf8-bom");
+    let ini = dir.join("wincmd.ini");
+    std::fs::write(&ini, [b"\xEF\xBB\xBF".as_slice(), INI.as_bytes()].concat()).unwrap();
+
+    assert_eq!(
+        installed_plugin_from_ini(&ini, expand),
+        Ok(PathBuf::from(EXPECTED))
+    );
+}
+
+#[test]
+fn a_utf16_ini_is_read() {
+    let dir = test_dir("ini-utf16");
+    let ini = dir.join("wincmd.ini");
+    let mut bytes = vec![0xFF, 0xFE];
+    bytes.extend(INI.encode_utf16().flat_map(u16::to_le_bytes));
+    std::fs::write(&ini, bytes).unwrap();
+
+    assert_eq!(
+        installed_plugin_from_ini(&ini, expand),
+        Ok(PathBuf::from(EXPECTED))
+    );
+}
+
+#[test]
+fn a_plugin_that_tc_has_not_registered_gives_the_install_instruction() {
+    let dir = test_dir("ini-missing-line");
+    let ini = dir.join("wincmd.ini");
+    std::fs::write(&ini, "[ContentPlugins]\r\n0=C:\\Other\\other.wdx64\r\n").unwrap();
+
+    let error = installed_plugin_from_ini(&ini, expand).unwrap_err();
+
+    assert!(error.contains("has not registered"), "{error}");
+    assert!(error.contains("cargo xtask package"), "{error}");
+    assert!(error.contains(&ini.display().to_string()), "{error}");
+}
+
+#[test]
+fn a_missing_ini_gives_its_path() {
+    let dir = test_dir("ini-no-file");
+    let ini = dir.join("wincmd.ini");
+
+    let error = installed_plugin_from_ini(&ini, expand).unwrap_err();
+
+    assert!(error.contains(&ini.display().to_string()), "{error}");
+}
+
+#[test]
+fn a_line_with_an_empty_key_is_not_a_plugin_path() {
+    assert_eq!(
+        plugin_path_in_ini("[ContentPlugins]\n=UCommanderContent.wdx64\n", FILE),
+        None
+    );
 }

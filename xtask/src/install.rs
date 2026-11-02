@@ -24,7 +24,7 @@ pub fn plugin_path_in_ini(ini: &str, file_name: &str) -> Option<String> {
             continue;
         };
         // The "0_detect" lines have the detect string, not a path.
-        let is_plugin_line = key.chars().all(|c| c.is_ascii_digit());
+        let is_plugin_line = !key.is_empty() && key.chars().all(|c| c.is_ascii_digit());
         let file = value.rsplit('\\').next().unwrap_or(value);
         if in_section && is_plugin_line && file.eq_ignore_ascii_case(file_name) {
             return Some(value.to_string());
@@ -130,18 +130,45 @@ fn expand_tc_path(path: &str) -> String {
     })
 }
 
+/// Decodes a `wincmd.ini` file: UTF-16 with a BOM, or UTF-8 with or without a
+/// BOM. Other bytes become U+FFFD, so a non-ASCII ANSI path does not match.
+fn decode_ini(bytes: &[u8]) -> String {
+    if let Some(utf16) = bytes.strip_prefix(&[0xFF, 0xFE]) {
+        let units: Vec<u16> = utf16
+            .as_chunks::<2>()
+            .0
+            .iter()
+            .map(|pair| u16::from_le_bytes(*pair))
+            .collect();
+        return String::from_utf16_lossy(&units);
+    }
+    let utf8 = bytes.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(bytes);
+    String::from_utf8_lossy(utf8).into_owned()
+}
+
+/// Finds the plugin file that TC has registered in the `wincmd.ini` file at
+/// `ini_path`. `expand` expands the variables in the path from the file.
+pub fn installed_plugin_from_ini(
+    ini_path: &Path,
+    expand: impl Fn(&str) -> String,
+) -> Result<PathBuf, String> {
+    let bytes =
+        std::fs::read(ini_path).map_err(|e| format!("cannot read {}: {e}", ini_path.display()))?;
+    let ini = decode_ini(&bytes);
+    let path = plugin_path_in_ini(&ini, CONTENT_PLUGIN_FILE).ok_or(format!(
+        "Total Commander has not registered {CONTENT_PLUGIN_FILE} in {}. \
+         Run `cargo xtask package`, and open the ZIP in Total Commander to install it.",
+        ini_path.display()
+    ))?;
+    Ok(PathBuf::from(expand(&path)))
+}
+
 /// Finds the plugin file that TC has registered in its `wincmd.ini`.
 fn find_installed_plugin() -> Result<PathBuf, String> {
     let ini_path =
         tc_registry_value("IniFileName").ok_or("cannot find Total Commander in the registry")?;
-    let ini_path = expand_tc_path(&ini_path);
-    let bytes = std::fs::read(&ini_path).map_err(|e| format!("cannot read {ini_path}: {e}"))?;
-    let ini = String::from_utf8_lossy(&bytes);
-    let path = plugin_path_in_ini(&ini, CONTENT_PLUGIN_FILE).ok_or(format!(
-        "Total Commander has not registered {CONTENT_PLUGIN_FILE}. \
-         Run `cargo xtask package`, and open the ZIP in Total Commander to install it."
-    ))?;
-    Ok(PathBuf::from(expand_tc_path(&path)))
+    let ini_path = PathBuf::from(expand_tc_path(&ini_path));
+    installed_plugin_from_ini(&ini_path, expand_tc_path)
 }
 
 /// Runs `xtask replace-plugin` with administrator rights. This shows a UAC
