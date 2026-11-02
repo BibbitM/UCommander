@@ -110,6 +110,19 @@ pub fn make_content_zip(
     if !bytes.starts_with(b"MZ") {
         return Err(format!("{} is not a DLL", dll.display()));
     }
+    // A `RUSTFLAGS` variable replaces the static runtime setting in
+    // `.cargo/config.toml`. The import table stores DLL names as ASCII.
+    let vc_runtime = b"vcruntime140.dll";
+    if bytes
+        .windows(vc_runtime.len())
+        .any(|window| window.eq_ignore_ascii_case(vc_runtime))
+    {
+        return Err(format!(
+            "{} needs the VC++ runtime. Do not set RUSTFLAGS, or add \
+             `-C target-feature=+crt-static` to it.",
+            dll.display()
+        ));
+    }
 
     let staging = dist.join(format!("{CONTENT_PLUGIN}-{version}"));
     if staging.exists() {

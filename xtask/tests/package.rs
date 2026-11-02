@@ -188,3 +188,16 @@ fn a_file_that_is_not_a_dll_is_refused() {
 
     assert!(result.unwrap_err().contains("not a DLL"));
 }
+
+/// A `RUSTFLAGS` variable replaces the static runtime setting without a
+/// warning. Then the DLL needs the VC++ runtime, which users do not have.
+#[test]
+fn a_dll_that_needs_the_vc_runtime_is_refused() {
+    let dir = test_dir("vcruntime");
+    let dll = dir.join("uc_content.dll");
+    std::fs::write(&dll, b"MZ import table: VCRUNTIME140.dll").unwrap();
+
+    let result = xtask::make_content_zip(&dll, &root(), &dir.join("dist"), "1.2.3");
+
+    assert!(result.unwrap_err().contains("VC++ runtime"));
+}
