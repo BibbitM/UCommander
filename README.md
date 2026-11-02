@@ -69,6 +69,13 @@ cargo xtask install
 can stay open. If the plugin is under `Program Files`, Windows shows a UAC
 prompt. Restart TC to load the new version.
 
+Limits of `install`:
+
+- A path with non-ASCII characters in an ANSI `wincmd.ini` does not match,
+  for example `D:\Narzędzia`. `install` then reports that TC has not
+  registered the plugin. A UTF-8 or UTF-16 `wincmd.ini` works.
+- `install` does not follow `AlternateUserIni` or `RedirectSection`.
+
 ## License
 
 Copyright BIBBIT Michal Nowak.

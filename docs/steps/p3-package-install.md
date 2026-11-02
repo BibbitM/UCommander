@@ -125,19 +125,46 @@ write access, and an exception to the branch protection on `main`.
 | # | Commit title | Content |
 |---|---|---|
 | 0 | Add P3 step brief | This file, after approval. |
-| 1 | Add cargo xtask alias | `.cargo/config.toml`: `[alias] xtask = "run --package xtask --"`. Split `xtask` into library and `main.rs`. |
-| 2 | Add cargo xtask check | One commit with increment 1, because the alias alone adds nothing that a test can check. Task and test: an unknown task fails with usage. `AGENTS.md` §3: `cargo xtask check` replaces the list. |
+| 1 | Add cargo xtask alias | `.cargo/config.toml`: `[alias] xtask = "run --quiet --package xtask --"`. `--quiet` hides the Cargo build lines of xtask itself. Split `xtask` into library and `main.rs`. |
+| 2 | Add cargo xtask check | One commit with increment 1, because the alias alone adds nothing that a test can check. Task and test: an unknown task fails with usage. `AGENTS.md` §3: `cargo xtask check` replaces the list. The order and the stop at the first failure (criterion 1) have no automatic test, because the test would run Cargo inside Cargo. A manual test with a format error showed the stop and exit code 1. |
 | 3 | Link the C runtime statically | `.cargo/config.toml`. Test: the release DLL does not contain the text `VCRUNTIME140.dll`. |
 | 4 | Add pluginst.inf template | `packaging/content/pluginst.inf`. Test: the version is filled in, and the file has CRLF line endings. |
 | 5 | Make README work outside the repository | Source link at the top. This commit made all links absolute. The owner then proposed `docs/` in the ZIP, so commit `Add plan and feature docs to the ZIP` makes them relative again. |
 | 6 | Add xtask package | Task. Tests: the ZIP has exactly the 8 files, and the plugin file is the DLL (starts with `MZ`, not a `.pdb`). |
-| 7 | Add xtask install | Task. Remove `xtask.toml` from `.gitignore`. Tests with a temporary `wincmd.ini`: the path is found, `%COMMANDER_PATH%` is expanded, a missing line gives the instruction. Tests with files: a loaded DLL is replaced, an old `*.old` file is removed. |
+| 7 | Add xtask install | Task. Remove `xtask.toml` from `.gitignore`. Tests with INI text and files: the path is found, `%COMMANDER_PATH%` is expanded, a loaded DLL is replaced, an old `*.old` file is removed. The tests with a temporary `wincmd.ini` file came later, in the review fix `Read UTF-16 and BOM wincmd.ini files`. |
 | 8 | Upload plugin ZIP in CI | `ci.yml`: `cargo xtask package` replaces "Build release". `actions/upload-artifact`, pinned by SHA, 14 days. |
 | 9 | Use one status for each plan point | `docs/PLAN.md`: values `Planned` and `Done`. Remove `Status:` from the briefs. `AGENTS.md` §7.1 and the PR template: the last commit sets `Done`. |
-| 10 | Check plan status in CI | `xtask plan-status`. Tests: `Done` passes, `Planned` fails, a `pt/03-…` branch finds row 3, a `pt/p3-…` branch finds row P3, other branches pass. `ci.yml`: step for `pull_request` events, with `GITHUB_HEAD_REF`. |
-| 11 | Update docs for P3 | README (installation, `cargo xtask`), CHANGELOG, `docs/PLAN.md` (`Done`), RustRover run configurations. |
+| 10 | Check plan status in CI | `xtask plan-status`. Tests: `Done` passes, `Planned` fails, a `pt/03-…` branch finds row 3, a `pt/p3-…` branch finds row P3, other branches pass. `ci.yml`: step for `pull_request` events. The branch name comes from `github.head_ref` through the variable `BRANCH`, so that a branch name cannot inject commands. |
+| 11 | Update docs for P3 | README (installation, `cargo xtask`), CHANGELOG, RustRover run configurations. |
+| 12 | Set P3 status to done | `docs/PLAN.md`. A separate last commit, as `AGENTS.md` §7.1 says. |
 
 Each increment follows the TDD sequence in `AGENTS.md` §6.
+
+### Other commits on this branch
+
+| Commit | Reason |
+|---|---|
+| `Set P1 and P2 status to done` | The status of P1 and P2 was stale. This problem started the status model of increments 9 and 10. |
+| `Add Polish localization to the plan` | The owner asked for it during P3. It is plan point 16, and it is outside the P3 scope. |
+| `Add plan and feature docs to the ZIP` | The owner proposed it after increment 6. |
+| `Record the P3 manual test result`, `Record the P3 manual test details` | Manual test results. |
+
+### Review fixes (after the second review of PR #4)
+
+| Commit | Content |
+|---|---|
+| `Refuse plugin DLLs that need the VC runtime` | A `RUSTFLAGS` variable replaces the static runtime setting without a warning. The package task now refuses such a DLL. |
+| `Resolve a relative CARGO_TARGET_DIR` | Resolve it against the repository root, so that all paths are absolute, also for the elevated copy. |
+| `Read UTF-16 and BOM wincmd.ini files` | Decode UTF-16 with a BOM and UTF-8 with a BOM. The error has the ini path. Tests with a temporary `wincmd.ini`. An empty key is not a plugin line. |
+| `Show errors of the elevated plugin copy` | The hidden elevated process writes its error to a temporary file. PowerShell strings double the typographic quotes too. A failed rollback keeps the copy error. |
+| `Remove test folders after xtask tests` | Each test deletes its temporary folder. |
+
+These commits come after `Set P3 status to done`, because that commit was already pushed, and history stays. They do not change the status, so `main` is still correct at the merge.
+
+### Known limits of `install`
+
+- A non-ASCII path in an ANSI `wincmd.ini`, or in the output of `reg.exe`, does not match. An example is `D:\Narzędzia`. `install` then reports that TC has not registered the plugin.
+- `install` does not follow `AlternateUserIni` or `RedirectSection` in `wincmd.ini`.
 
 ## Manual test
 
@@ -155,6 +182,15 @@ Optional: repeat steps 3–5 on a computer without Visual Studio.
 ## Owner actions
 
 1. Do the manual test.
+
+## Review findings for later plan points
+
+| Point | Item |
+|---|---|
+| P4 | The release job must check that the tag matches the workspace version (`xtask::VERSION`). |
+| P4 | Do not set `RUSTFLAGS` in the release workflow without `-C target-feature=+crt-static`. The package task refuses a wrong DLL, so the job fails. |
+| P4 | Change the README lines that say "There is no release yet". |
+| P4 | `plan-status` runs only on PRs, so a tag push skips it. This is correct. |
 
 ## Out of scope
 
