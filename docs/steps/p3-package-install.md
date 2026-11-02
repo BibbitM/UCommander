@@ -53,6 +53,19 @@ value for a 64-bit-only plugin. The manual test on TC 11.x showed that
 `file=UCommanderContent.wdx64` works: TC installed the ZIP, the column works,
 and `cargo xtask install` replaced the installed plugin.
 
+Other results of the manual test:
+
+- TC installed the plugin in
+  `C:\Program Files\Total Commander\plugins\wdx\UCommanderContent\`.
+- TC unpacked all files, also the `docs` folder, but not `pluginst.inf`.
+  Other plugins show the same behavior.
+- The relative links in the installed `README.md` work.
+- `cargo xtask install` showed the UAC prompt, because the folder is under
+  `Program Files`.
+- A second `install` before a TC restart makes `.old1`, because TC still has
+  `.old` loaded. A file that TC has loaded cannot be deleted until TC
+  restarts. This is the expected behavior.
+
 Each `pluginst.inf` has one `type` and one `file`, so one ZIP installs one
 plugin. Each plugin gets its own ZIP. P3 packages only the content plugin. The
 lister and the packer have no exports yet, so their ZIPs come with points 7
