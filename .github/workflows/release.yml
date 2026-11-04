@@ -1,0 +1,113 @@
+name: Release
+
+# A tag push publishes a GitHub Release. A manual run does all steps except
+# the publish step, and keeps the files as a run artifact.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Not "ci-": the CI workflow uses that prefix. A release always finishes.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Not "check" or "deny": the required checks match by job name.
+  release:
+    name: release
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      # Only for "gh release create".
+      contents: write
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          lfs: true
+          # The full history, for the main check.
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Installs the toolchain and components from rust-toolchain.toml.
+      # No build cache: a tag run could restore a cache from another ref.
+      - name: Install Rust toolchain
+        run: rustup toolchain install
+
+      - name: Read workspace version
+        run: |
+          $metadata = cargo metadata --no-deps --format-version 1 | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $version = ($metadata.packages | Where-Object name -eq 'xtask').version
+          "VERSION=$version" >> $env:GITHUB_ENV
+
+      # The tag name goes through a variable, so that it cannot inject
+      # commands.
+      - name: Check tag version
+        if: github.event_name == 'push'
+        env:
+          TAG: ${{ github.ref_name }}
+        run: cargo xtask tag-version "$env:TAG"
+
+      - name: Check that the tag is on main
+        if: github.event_name == 'push'
+        run: git merge-base --is-ancestor "$env:GITHUB_SHA" origin/main
+
+      - name: Write release notes
+        run: cargo xtask release-notes "$env:VERSION" target/dist/release-notes.md
+
+      - name: Format check
+        run: cargo fmt --all --check
+
+      - name: Lint
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Test
+        run: cargo test --workspace
+
+      # Prebuilt binary, the same version as in CI.
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@86f7a0ffb25f40114606501a311ebcfaf882ea32 # v2.88.0
+        with:
+          tool: cargo-deny@0.20.2
+
+      - name: Dependency check
+        run: cargo deny check
+
+      # The same task as in CI. It refuses a DLL that needs the VC runtime.
+      - name: Package plugins
+        run: cargo xtask package
+
+      # LF line endings, so that "sha256sum -c" also works on Linux.
+      - name: Write checksums
+        run: |
+          $lines = Get-ChildItem target/dist/*.zip | ForEach-Object {
+            "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), $_.Name
+          }
+          [IO.File]::WriteAllText("$PWD/target/dist/SHA256SUMS.txt", ($lines -join "`n") + "`n")
+
+      - name: Upload release files
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release
+          path: target/dist/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          $assets = @((Get-ChildItem target/dist/*.zip).FullName) + "target/dist/SHA256SUMS.txt"
+          gh release create "$env:TAG" --verify-tag --title "UCommander $env:VERSION" --notes-file target/dist/release-notes.md @assets
