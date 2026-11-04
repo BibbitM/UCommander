@@ -10,7 +10,8 @@ Tasks:
   check    Run the format check, lint, tests and dependency check.
   package  Build the release plugin and make its ZIP in target/dist/.
   install  Replace the plugin file that Total Commander has registered.
-  plan-status <branch>  Check that the plan point of the branch is Done.";
+  plan-status <branch>  Check that the plan point of the branch is Done.
+  tag-version <tag>     Check that the tag is v + the workspace version.";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -24,6 +25,9 @@ fn main() -> ExitCode {
             println!("Installed {}. Restart Total Commander.", path.display());
         }),
         Some("plan-status") if args.len() == 2 => check_plan_status(&args[1]),
+        Some("tag-version") if args.len() == 2 => {
+            xtask::release::check_tag_version(&args[1], xtask::VERSION)
+        }
         // Internal task: `install` starts it with administrator rights. Its
         // window is hidden, so it also writes the error to the file in
         // `args[3]`.
