@@ -6,7 +6,7 @@ Total Commander plugins for Unreal Engine files.
 
 Source code: https://github.com/BibbitM/UCommander
 
-> **Status:** In development. There is no release yet.
+> **Status:** In development. Releases: https://github.com/BibbitM/UCommander/releases
 
 ## Purpose
 
@@ -29,8 +29,9 @@ See [docs/FEATURES.md](docs/FEATURES.md) for the full feature scope, and
 
 ## Installation
 
-1. Get the file `UCommanderContent-<version>.zip`. There is no release yet, so
-   build it with `cargo xtask package`. It goes to `target\dist\`.
+1. Download the file `UCommanderContent-<version>.zip` from the
+   [latest release](https://github.com/BibbitM/UCommander/releases/latest).
+   To check the download, compare its SHA-256 hash with `SHA256SUMS.txt`.
 2. Open the ZIP in Total Commander with Enter.
 3. Accept the installation.
 4. Make a custom column with the field `UCommanderContent.Is package`.
@@ -75,6 +76,26 @@ Limits of `install`:
   for example `D:\Narzędzia`. `install` then reports that TC has not
   registered the plugin. A UTF-8 or UTF-16 `wincmd.ini` works.
 - `install` does not follow `AlternateUserIni` or `RedirectSection`.
+
+### Release
+
+1. In a PR, set the new version in `Cargo.toml`, and move the
+   `[Unreleased]` entries of `CHANGELOG.md` to a section for the version.
+2. Merge the PR.
+3. Tag the merge commit on `main`, and push the tag:
+
+   ```bash
+   git tag -a v0.1.0 -m "UCommander 0.1.0"
+   ```
+
+   ```bash
+   git push origin v0.1.0
+   ```
+
+The workflow `release.yml` checks the tag, runs all checks, and publishes
+the GitHub Release with the plugin ZIP and `SHA256SUMS.txt`. To test the
+workflow without a release, start it manually on a branch. The run artifact
+then has the files.
 
 ## License
 

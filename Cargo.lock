@@ -4,11 +4,11 @@ version = 4
 
 [[package]]
 name = "uc-cli"
-version = "0.0.0"
+version = "0.1.0"
 
 [[package]]
 name = "uc-content"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "uc-format",
  "uc-tc",
@@ -17,27 +17,27 @@ dependencies = [
 
 [[package]]
 name = "uc-format"
-version = "0.0.0"
+version = "0.1.0"
 
 [[package]]
 name = "uc-lister"
-version = "0.0.0"
+version = "0.1.0"
 
 [[package]]
 name = "uc-packer"
-version = "0.0.0"
+version = "0.1.0"
 
 [[package]]
 name = "uc-tc"
-version = "0.0.0"
+version = "0.1.0"
 
 [[package]]
 name = "uc-test-host"
-version = "0.0.0"
+version = "0.1.0"
 
 [[package]]
 name = "xtask"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "uc-test-host",
 ]

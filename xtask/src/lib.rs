@@ -2,6 +2,7 @@
 
 pub mod install;
 pub mod plan;
+pub mod release;
 
 use std::path::{Path, PathBuf};
 use std::process::Command;

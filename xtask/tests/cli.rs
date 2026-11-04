@@ -19,3 +19,33 @@ fn an_unknown_task_fails_with_usage() {
     assert!(!output.status.success());
     assert!(String::from_utf8_lossy(&output.stderr).contains("Usage:"));
 }
+
+#[test]
+fn tag_version_passes_for_the_workspace_version() {
+    let tag = format!("v{}", env!("CARGO_PKG_VERSION"));
+    let output = xtask().args(["tag-version", &tag]).output().unwrap();
+
+    assert!(output.status.success());
+}
+
+#[test]
+fn tag_version_fails_for_another_version() {
+    let output = xtask().args(["tag-version", "v999.0.0"]).output().unwrap();
+
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("v999.0.0"));
+}
+
+#[test]
+fn release_notes_fail_for_a_version_without_a_section() {
+    let file = std::env::temp_dir().join("uc-xtask-release-notes-missing.md");
+    let output = xtask()
+        .args(["release-notes", "999.0.0"])
+        .arg(&file)
+        .output()
+        .unwrap();
+
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("999.0.0"));
+    assert!(!file.exists());
+}
