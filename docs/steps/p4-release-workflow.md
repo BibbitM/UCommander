@@ -95,9 +95,24 @@ no automatic test. The manual run (criterion 7) tests it.
 
 ## Verification
 
-1. Before the PR: push the branch, and start `release.yml` on it with
-   `workflow_dispatch`. All steps pass. The run artifact has the ZIP,
-   `SHA256SUMS.txt` and the release text of 0.1.0.
+1. Before the PR: run `release.yml` on a branch. All steps pass. The run
+   artifact has the ZIP, `SHA256SUMS.txt` and the release text of 0.1.0.
+
+   GitHub starts a manual run (`workflow_dispatch`) only for a workflow
+   that is on `main`, so the manual run was not possible before the merge.
+   The owner chose a temporary branch, as in P1:
+   - Commit `Run tag steps only for a tag ref`: the tag steps check
+     `startsWith(github.ref, 'refs/tags/')`, not the event. A branch run
+     then never publishes.
+   - The branch `ci-test/p4-release` had one extra commit with a `push`
+     trigger for that branch. After the run, I deleted the branch. The
+     commit never went to `main`.
+
+   **Result** (run 41923063896): all steps passed. The tag steps and the
+   publish step were skipped. The artifact had
+   `UCommanderContent-0.1.0.zip` with the 8 files and `version=0.1.0` in
+   `pluginst.inf`, `SHA256SUMS.txt` with LF line endings
+   (`sha256sum -c` passed), and the release text of 0.1.0.
 2. After the merge: the owner tags the merge commit `v0.1.0` and pushes the
    tag. The release shows on GitHub with the ZIP.
 3. The owner installs the ZIP from the release in TC (as in the P3 manual
