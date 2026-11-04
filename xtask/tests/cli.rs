@@ -35,3 +35,17 @@ fn tag_version_fails_for_another_version() {
     assert!(!output.status.success());
     assert!(String::from_utf8_lossy(&output.stderr).contains("v999.0.0"));
 }
+
+#[test]
+fn release_notes_fail_for_a_version_without_a_section() {
+    let file = std::env::temp_dir().join("uc-xtask-release-notes-missing.md");
+    let output = xtask()
+        .args(["release-notes", "999.0.0"])
+        .arg(&file)
+        .output()
+        .unwrap();
+
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("999.0.0"));
+    assert!(!file.exists());
+}

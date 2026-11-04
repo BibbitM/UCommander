@@ -11,7 +11,9 @@ Tasks:
   package  Build the release plugin and make its ZIP in target/dist/.
   install  Replace the plugin file that Total Commander has registered.
   plan-status <branch>  Check that the plan point of the branch is Done.
-  tag-version <tag>     Check that the tag is v + the workspace version.";
+  tag-version <tag>     Check that the tag is v + the workspace version.
+  release-notes <version> <file>
+                        Write the CHANGELOG.md section of the version to the file.";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -27,6 +29,9 @@ fn main() -> ExitCode {
         Some("plan-status") if args.len() == 2 => check_plan_status(&args[1]),
         Some("tag-version") if args.len() == 2 => {
             xtask::release::check_tag_version(&args[1], xtask::VERSION)
+        }
+        Some("release-notes") if args.len() == 3 => {
+            write_release_notes(&args[1], Path::new(&args[2]))
         }
         // Internal task: `install` starts it with administrator rights. Its
         // window is hidden, so it also writes the error to the file in
@@ -60,4 +65,15 @@ fn check_plan_status(branch: &str) -> Result<(), String> {
     let path = repository_root().join("docs").join("PLAN.md");
     let plan = std::fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
     xtask::plan::check_plan_status(branch, &plan)
+}
+
+fn write_release_notes(version: &str, file: &Path) -> Result<(), String> {
+    let path = repository_root().join("CHANGELOG.md");
+    let changelog =
+        std::fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
+    let notes = xtask::release::release_notes(&changelog, version)?;
+    if let Some(folder) = file.parent() {
+        std::fs::create_dir_all(folder).map_err(|e| format!("{}: {e}", folder.display()))?;
+    }
+    std::fs::write(file, notes).map_err(|e| format!("{}: {e}", file.display()))
 }
