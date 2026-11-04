@@ -1,7 +1,8 @@
 name: Release
 
-# A tag push publishes a GitHub Release. A manual run does all steps except
-# the publish step, and keeps the files as a run artifact.
+# A tag push publishes a GitHub Release. A run on a branch does all steps
+# except the publish step, and keeps the files as a run artifact. The tag
+# steps check the ref, not the event, so that a branch run never publishes.
 on:
   push:
     tags: ["v*"]
@@ -51,13 +52,13 @@ jobs:
       # The tag name goes through a variable, so that it cannot inject
       # commands.
       - name: Check tag version
-        if: github.event_name == 'push'
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           TAG: ${{ github.ref_name }}
         run: cargo xtask tag-version "$env:TAG"
 
       - name: Check that the tag is on main
-        if: github.event_name == 'push'
+        if: startsWith(github.ref, 'refs/tags/')
         run: git merge-base --is-ancestor "$env:GITHUB_SHA" origin/main
 
       - name: Write release notes
@@ -94,7 +95,7 @@ jobs:
           [IO.File]::WriteAllText("$PWD/target/dist/SHA256SUMS.txt", ($lines -join "`n") + "`n")
 
       - name: Upload release files
-        if: github.event_name == 'workflow_dispatch'
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release
@@ -103,7 +104,7 @@ jobs:
           retention-days: 14
 
       - name: Publish release
-        if: github.event_name == 'push'
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
