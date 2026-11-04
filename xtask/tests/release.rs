@@ -96,3 +96,11 @@ fn release_notes_accept_crlf_line_endings() {
         Ok(NOTES_0_1_0.to_string())
     );
 }
+
+#[test]
+fn the_real_changelog_has_notes_for_the_workspace_version() {
+    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../CHANGELOG.md");
+    let changelog = std::fs::read_to_string(path).unwrap();
+
+    assert!(release_notes(&changelog, xtask::VERSION).is_ok());
+}

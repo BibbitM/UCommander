@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-04
+
 ### Added
 
 - Repository setup: Cargo workspace, licenses, agent instructions, feature
@@ -24,3 +26,6 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 ### Changed
 
 - The plugins link the C runtime statically, so they need no VC++ runtime.
+
+[Unreleased]: https://github.com/BibbitM/UCommander/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/BibbitM/UCommander/releases/tag/v0.1.0
