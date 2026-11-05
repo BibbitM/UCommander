@@ -1,6 +1,10 @@
 //! Parser for Unreal Engine package and container files.
 
+mod error;
 pub mod package;
+mod reader;
+
+pub use error::Error;
 
 #[cfg(test)]
 mod tests {
