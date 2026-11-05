@@ -1,0 +1,59 @@
+Summary size: 432
+Legacy file version: -9
+Legacy UE3 version: 864
+File version UE4: 522
+File version UE5: 1018
+File version licensee: 0
+Saved hash: 0102030405060708090a0b0c0d0e0f1011121314
+Total header size: 4660
+Custom version count: 2
+Custom version 9C54D522-A8264FBE-94210746-61B482D0: 52
+Custom version 11111111-22222222-33333333-44444444: 7
+Package name: /Game/Fixtures/BP_Test
+Package flags: 0x00000400
+Name count: 101
+Name offset: 102
+Soft object paths count: 103
+Soft object paths offset: 104
+Localization ID: 0123456789ABCDEF
+Gatherable text data count: 105
+Gatherable text data offset: 106
+Export count: 107
+Export offset: 108
+Import count: 109
+Import offset: 110
+Cell export count: 111
+Cell export offset: 112
+Cell import count: 113
+Cell import offset: 114
+Metadata offset: 115
+Depends offset: 116
+Soft package references count: 117
+Soft package references offset: 118
+Searchable names offset: 119
+Thumbnail table offset: 120
+Import type hierarchies count: 121
+Import type hierarchies offset: 122
+Package GUID: (not in file)
+Persistent GUID: 000000B1-000000B2-000000B3-000000B4
+Owner persistent GUID: (not in file)
+Generation count: 2
+Generation 0: 201 exports, 202 names
+Generation 1: 203 exports, 204 names
+Saved by engine version: 5.8.1-4660+++UE5+Release-5.8 (licensee)
+Engine changelist: (not in file)
+Compatible with engine version: 5.8.0-22136+++UE5+Release-5.8
+Compression flags: 0x00000000
+Package source: 0xDEADBEEF
+Additional packages to cook count: 2
+Additional package to cook: /Game/A
+Additional package to cook: /Game/B
+Asset registry data offset: 206
+Bulk data start offset: 4294967815
+World tile info data offset: 208
+Chunk IDs: 3, 4
+Preload dependency count: 209
+Preload dependency offset: 210
+Names referenced from export data count: 211
+Payload TOC offset: 8589935122
+Data resource offset: 213
