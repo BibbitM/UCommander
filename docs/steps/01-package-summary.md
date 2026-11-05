@@ -134,7 +134,7 @@ Please also tell me:
 | 4 | Read engine versions and generations | The rest of the summary: GUIDs or saved hash, generations, engine versions, compression data, asset registry and bulk data offsets, chunk IDs, preload dependencies, payload and data resource offsets. Synthetic tests and truncation tests. |
 | 5 | Add summary fixtures | F1 and F2 (Git LFS), their `.pkginfo.txt` and `.expected.json`. Fixture tests. `serde_json` dev-dependency. Confirm the tag byte order in `docs/formats/package.md`. |
 | 6 | Test each truncation of the fixtures | For each length from 0 to the summary size: the result is an error, not a panic. One test changes each count in the summary to a very large value: the result is an error. |
-| 7 | Add uc dump | CLI command, snapshot test with F1, test for a file that is not a package. |
+| 7 | Add uc dump | CLI command, snapshot test with a synthetic package (F1 in increment 5), test for a file that is not a package. Done before increment 5 (see "Owner decisions"). |
 | 8 | Update changelog and README for point 1 | `CHANGELOG.md` `[Unreleased]`, README: `uc dump`. |
 | 9 | Set point 1 status to done | `docs/PLAN.md`. The last commit. |
 
@@ -189,3 +189,7 @@ The owner approved this brief and the `serde_json` dev-dependency (with
    first string field (asset class).
 6. **`PkgInfo` as the source.** Use the `PkgInfo` commandlet output as the
    source of expected values.
+7. **Order of increments.** After increment 4, the fixtures are not ready.
+   The owner decided: do increment 7 (`uc dump`) before increment 5. The
+   snapshot test of increment 7 uses a synthetic package. Increment 5 adds
+   a second snapshot test with F1.
