@@ -34,6 +34,47 @@ impl<'a> Reader<'a> {
         Ok(value)
     }
 
+    /// Takes the next `len` bytes, without a copy.
+    fn slice(&mut self, len: usize) -> Result<&'a [u8], Error> {
+        let truncated = Error::Truncated {
+            offset: self.offset,
+        };
+        if len > self.remaining() {
+            return Err(truncated);
+        }
+        let value = &self.bytes[self.offset..self.offset + len];
+        self.offset += len;
+        Ok(value)
+    }
+
+    /// Reads a string (`FString`). A positive length gives 8-bit
+    /// characters, read as Latin-1. A negative length gives UTF-16
+    /// characters. The last character is the null terminator, and is
+    /// not part of the result. A UTF-16 error gives U+FFFD.
+    pub(crate) fn string(&mut self, field: &'static str) -> Result<String, Error> {
+        let offset = self.offset;
+        let length = self.i32()?;
+        if length >= 0 {
+            let bytes = self.slice(length.unsigned_abs() as usize)?;
+            let text = bytes.split_last().map_or(&[][..], |(_, text)| text);
+            return Ok(text.iter().map(|&byte| char::from(byte)).collect());
+        }
+        if length == i32::MIN {
+            return Err(Error::BadValue { offset, field });
+        }
+        // At least one character: the length is -1 or less.
+        let bytes = self.slice(length.unsigned_abs() as usize * 2)?;
+        let text = &bytes[..bytes.len() - 2];
+        let units = text
+            .as_chunks::<2>()
+            .0
+            .iter()
+            .map(|&pair| u16::from_le_bytes(pair));
+        Ok(char::decode_utf16(units)
+            .map(|c| c.unwrap_or(char::REPLACEMENT_CHARACTER))
+            .collect())
+    }
+
     pub(crate) fn u32(&mut self) -> Result<u32, Error> {
         self.take().map(u32::from_le_bytes)
     }

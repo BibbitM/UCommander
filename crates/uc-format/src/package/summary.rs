@@ -19,15 +19,26 @@ const LEGACY_FILE_VERSION_UE5: i32 = -8;
 /// UE4 file versions.
 mod ue4 {
     pub(super) const OLDEST_LOADABLE_PACKAGE: i32 = 214;
+    pub(super) const ADD_STRING_ASSET_REFERENCES_MAP: i32 = 384;
+    pub(super) const SERIALIZE_TEXT_IN_PACKAGES: i32 = 459;
+    pub(super) const ADDED_SEARCHABLE_NAMES: i32 = 510;
+    pub(super) const ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID: i32 = 516;
     pub(super) const NEWEST: i32 = 522;
 }
 
 /// UE5 file versions.
 mod ue5 {
     pub(super) const INITIAL_VERSION: i32 = 1000;
+    pub(super) const ADD_SOFTOBJECTPATH_LIST: i32 = 1008;
+    pub(super) const METADATA_SERIALIZATION_OFFSET: i32 = 1014;
+    pub(super) const VERSE_CELLS: i32 = 1015;
     pub(super) const PACKAGE_SAVED_HASH: i32 = 1016;
+    pub(super) const IMPORT_TYPE_HIERARCHIES: i32 = 1018;
     pub(super) const NEWEST: i32 = 1018;
 }
+
+/// Package flag `FilterEditorOnly`: the package has no editor-only data.
+const PKG_FILTER_EDITOR_ONLY: u32 = 0x8000_0000;
 
 /// Size of one custom version entry: GUID and `i32`.
 const CUSTOM_VERSION_SIZE: usize = 20;
@@ -48,6 +59,36 @@ pub struct PackageSummary {
     pub saved_hash: Option<IoHash>,
     pub total_header_size: i32,
     pub custom_versions: Vec<CustomVersion>,
+    pub package_name: String,
+    /// The raw flags, as in the file.
+    pub package_flags: u32,
+    pub names: Table,
+    /// UE5 `ADD_SOFTOBJECTPATH_LIST` and later.
+    pub soft_object_paths: Option<Table>,
+    /// Not in packages with the `FilterEditorOnly` flag.
+    pub localization_id: Option<String>,
+    pub gatherable_text_data: Option<Table>,
+    pub exports: Table,
+    pub imports: Table,
+    /// UE5 `VERSE_CELLS` and later.
+    pub cell_exports: Option<Table>,
+    /// UE5 `VERSE_CELLS` and later.
+    pub cell_imports: Option<Table>,
+    /// UE5 `METADATA_SERIALIZATION_OFFSET` and later.
+    pub metadata_offset: Option<i32>,
+    pub depends_offset: i32,
+    pub soft_package_references: Option<Table>,
+    pub searchable_names_offset: Option<i32>,
+    pub thumbnail_table_offset: i32,
+    /// UE5 `IMPORT_TYPE_HIERARCHIES` and later.
+    pub import_type_hierarchies: Option<Table>,
+}
+
+/// The entry count and the file offset of a table.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Table {
+    pub count: i32,
+    pub offset: i32,
 }
 
 /// The version of one custom version key.
@@ -162,11 +203,53 @@ pub fn read_summary(bytes: &[u8]) -> Result<SummaryRead, Error> {
         s.total_header_size = r.i32()?;
     }
 
+    read_tables(&mut r, &mut s)?;
+
     Ok(SummaryRead {
         summary: s,
         size: r.offset(),
         warnings,
     })
+}
+
+/// Reads the fields from the package name to the import type hierarchies.
+fn read_tables(r: &mut Reader, s: &mut PackageSummary) -> Result<(), Error> {
+    let (v4, v5) = (s.file_version_ue4, s.file_version_ue5);
+    s.package_name = r.string("package name")?;
+    s.package_flags = r.u32()?;
+    s.names = table(r)?;
+    s.soft_object_paths = table_if(r, v5 >= ue5::ADD_SOFTOBJECTPATH_LIST)?;
+    let editor_only_data = s.package_flags & PKG_FILTER_EDITOR_ONLY == 0;
+    if editor_only_data && v4 >= ue4::ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID {
+        s.localization_id = Some(r.string("localization ID")?);
+    }
+    s.gatherable_text_data = table_if(r, v4 >= ue4::SERIALIZE_TEXT_IN_PACKAGES)?;
+    s.exports = table(r)?;
+    s.imports = table(r)?;
+    s.cell_exports = table_if(r, v5 >= ue5::VERSE_CELLS)?;
+    s.cell_imports = table_if(r, v5 >= ue5::VERSE_CELLS)?;
+    s.metadata_offset = i32_if(r, v5 >= ue5::METADATA_SERIALIZATION_OFFSET)?;
+    s.depends_offset = r.i32()?;
+    s.soft_package_references = table_if(r, v4 >= ue4::ADD_STRING_ASSET_REFERENCES_MAP)?;
+    s.searchable_names_offset = i32_if(r, v4 >= ue4::ADDED_SEARCHABLE_NAMES)?;
+    s.thumbnail_table_offset = r.i32()?;
+    s.import_type_hierarchies = table_if(r, v5 >= ue5::IMPORT_TYPE_HIERARCHIES)?;
+    Ok(())
+}
+
+fn table(r: &mut Reader) -> Result<Table, Error> {
+    Ok(Table {
+        count: r.i32()?,
+        offset: r.i32()?,
+    })
+}
+
+fn table_if(r: &mut Reader, present: bool) -> Result<Option<Table>, Error> {
+    present.then(|| table(r)).transpose()
+}
+
+fn i32_if(r: &mut Reader, present: bool) -> Result<Option<i32>, Error> {
+    present.then(|| r.i32()).transpose()
 }
 
 fn unsupported(field: &'static str, value: i32) -> Error {

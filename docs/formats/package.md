@@ -283,3 +283,6 @@ the point 1 brief.
 | UE5 version less than `INITIAL_VERSION` (1000). | Error: unsupported version (UE4 package). |
 | UE4 version greater than 522, or UE5 version greater than 1018. | Warning. Read with the newest known layout. |
 | Non-empty compressed chunk list. | Error: compressed package. |
+| String with 8-bit characters. | Read each byte as one Latin-1 character. We did not examine how UE converts bytes 128 to 255. |
+| String with UTF-16 characters that are not valid UTF-16. | Use U+FFFD for each bad character. |
+| A count or a length that is larger than the remaining input. | Error: truncated. No allocation. |
