@@ -158,6 +158,22 @@ impl EngineVersion {
     }
 }
 
+impl fmt::Display for EngineVersion {
+    /// Writes `major.minor.patch-changelist+branch`, as UE does. The
+    /// changelist has no licensee flag.
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let Self {
+            major,
+            minor,
+            patch,
+            branch,
+            ..
+        } = self;
+        let changelist = self.changelist_number();
+        write!(f, "{major}.{minor}.{patch}-{changelist}+{branch}")
+    }
+}
+
 /// The entry count and the file offset of a table.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct Table {
