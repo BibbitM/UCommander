@@ -79,6 +79,14 @@ impl<'a> Reader<'a> {
         self.take().map(u32::from_le_bytes)
     }
 
+    pub(crate) fn u16(&mut self) -> Result<u16, Error> {
+        self.take().map(u16::from_le_bytes)
+    }
+
+    pub(crate) fn i64(&mut self) -> Result<i64, Error> {
+        self.take().map(i64::from_le_bytes)
+    }
+
     pub(crate) fn i32(&mut self) -> Result<i32, Error> {
         self.take().map(i32::from_le_bytes)
     }

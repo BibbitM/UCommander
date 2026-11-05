@@ -2,7 +2,10 @@
 
 mod summary;
 
-pub use summary::{CustomVersion, PackageSummary, SummaryRead, Table, Warning, read_summary};
+pub use summary::{
+    CustomVersion, EngineVersion, Generation, PackageSummary, SummaryRead, Table, Warning,
+    read_summary,
+};
 
 /// The first 4 bytes of a package file: `0x9E2A83C1`, stored little-endian.
 pub const PACKAGE_FILE_TAG: u32 = 0x9E2A83C1;

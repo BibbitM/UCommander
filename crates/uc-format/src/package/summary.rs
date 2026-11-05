@@ -19,17 +19,28 @@ const LEGACY_FILE_VERSION_UE5: i32 = -8;
 /// UE4 file versions.
 mod ue4 {
     pub(super) const OLDEST_LOADABLE_PACKAGE: i32 = 214;
+    pub(super) const WORLD_LEVEL_INFO: i32 = 224;
+    pub(super) const ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE: i32 = 278;
+    pub(super) const CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS: i32 = 326;
+    pub(super) const ENGINE_VERSION_OBJECT: i32 = 336;
     pub(super) const ADD_STRING_ASSET_REFERENCES_MAP: i32 = 384;
+    pub(super) const PACKAGE_SUMMARY_HAS_COMPATIBLE_ENGINE_VERSION: i32 = 444;
     pub(super) const SERIALIZE_TEXT_IN_PACKAGES: i32 = 459;
+    pub(super) const PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS: i32 = 507;
     pub(super) const ADDED_SEARCHABLE_NAMES: i32 = 510;
     pub(super) const ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID: i32 = 516;
+    pub(super) const ADDED_PACKAGE_OWNER: i32 = 518;
+    pub(super) const NON_OUTER_PACKAGE_IMPORT: i32 = 520;
     pub(super) const NEWEST: i32 = 522;
 }
 
 /// UE5 file versions.
 mod ue5 {
     pub(super) const INITIAL_VERSION: i32 = 1000;
+    pub(super) const NAMES_REFERENCED_FROM_EXPORT_DATA: i32 = 1001;
+    pub(super) const PAYLOAD_TOC: i32 = 1002;
     pub(super) const ADD_SOFTOBJECTPATH_LIST: i32 = 1008;
+    pub(super) const DATA_RESOURCES: i32 = 1009;
     pub(super) const METADATA_SERIALIZATION_OFFSET: i32 = 1014;
     pub(super) const VERSE_CELLS: i32 = 1015;
     pub(super) const PACKAGE_SAVED_HASH: i32 = 1016;
@@ -42,6 +53,10 @@ const PKG_FILTER_EDITOR_ONLY: u32 = 0x8000_0000;
 
 /// Size of one custom version entry: GUID and `i32`.
 const CUSTOM_VERSION_SIZE: usize = 20;
+/// Size of one generation: two `i32`.
+const GENERATION_SIZE: usize = 8;
+/// Smallest size of one string: the `i32` length.
+const MIN_STRING_SIZE: usize = 4;
 
 /// The fields of a package summary, in file order.
 ///
@@ -82,6 +97,65 @@ pub struct PackageSummary {
     pub thumbnail_table_offset: i32,
     /// UE5 `IMPORT_TYPE_HIERARCHIES` and later.
     pub import_type_hierarchies: Option<Table>,
+    /// UE5 before `PACKAGE_SAVED_HASH`. UE copies it into the saved hash.
+    pub package_guid: Option<Guid>,
+    /// Not in packages with the `FilterEditorOnly` flag.
+    pub persistent_guid: Option<Guid>,
+    /// Only UE4 versions 518 and 519. UE ignores the value.
+    pub owner_persistent_guid: Option<Guid>,
+    pub generations: Vec<Generation>,
+    pub saved_by_engine_version: Option<EngineVersion>,
+    /// Only UE4 versions before `ENGINE_VERSION_OBJECT`.
+    pub engine_changelist: Option<i32>,
+    pub compatible_with_engine_version: Option<EngineVersion>,
+    /// The raw flags, as in the file.
+    pub compression_flags: u32,
+    pub package_source: u32,
+    /// UE does not use this list now.
+    pub additional_packages_to_cook: Vec<String>,
+    pub asset_registry_data_offset: i32,
+    pub bulk_data_start_offset: i64,
+    pub world_tile_info_data_offset: Option<i32>,
+    pub chunk_ids: Vec<i32>,
+    pub preload_dependencies: Option<Table>,
+    /// UE5 `NAMES_REFERENCED_FROM_EXPORT_DATA` and later.
+    pub names_referenced_from_export_data_count: Option<i32>,
+    /// UE5 `PAYLOAD_TOC` and later.
+    pub payload_toc_offset: Option<i64>,
+    /// UE5 `DATA_RESOURCES` and later.
+    pub data_resource_offset: Option<i32>,
+}
+
+/// The export count and the name count of one package generation.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Generation {
+    pub export_count: i32,
+    pub name_count: i32,
+}
+
+/// An engine version, as the summary stores it.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct EngineVersion {
+    pub major: u16,
+    pub minor: u16,
+    pub patch: u16,
+    /// The raw value. Bit 31 is the licensee flag.
+    pub changelist: u32,
+    pub branch: String,
+}
+
+impl EngineVersion {
+    const LICENSEE_BIT: u32 = 0x8000_0000;
+
+    /// `true` when a licensee build saved the package.
+    pub fn is_licensee(&self) -> bool {
+        self.changelist & Self::LICENSEE_BIT != 0
+    }
+
+    /// The changelist without the licensee flag.
+    pub fn changelist_number(&self) -> u32 {
+        self.changelist & !Self::LICENSEE_BIT
+    }
 }
 
 /// The entry count and the file offset of a table.
@@ -204,6 +278,8 @@ pub fn read_summary(bytes: &[u8]) -> Result<SummaryRead, Error> {
     }
 
     read_tables(&mut r, &mut s)?;
+    read_engine_data(&mut r, &mut s)?;
+    read_end(&mut r, &mut s)?;
 
     Ok(SummaryRead {
         summary: s,
@@ -235,6 +311,103 @@ fn read_tables(r: &mut Reader, s: &mut PackageSummary) -> Result<(), Error> {
     s.thumbnail_table_offset = r.i32()?;
     s.import_type_hierarchies = table_if(r, v5 >= ue5::IMPORT_TYPE_HIERARCHIES)?;
     Ok(())
+}
+
+/// Reads the fields from the package GUID to the compatible engine version.
+fn read_engine_data(r: &mut Reader, s: &mut PackageSummary) -> Result<(), Error> {
+    let v4 = s.file_version_ue4;
+    if s.file_version_ue5 < ue5::PACKAGE_SAVED_HASH {
+        s.package_guid = Some(r.guid()?);
+    }
+    let editor_only_data = s.package_flags & PKG_FILTER_EDITOR_ONLY == 0;
+    if editor_only_data && v4 >= ue4::ADDED_PACKAGE_OWNER {
+        s.persistent_guid = Some(r.guid()?);
+        if v4 < ue4::NON_OUTER_PACKAGE_IMPORT {
+            s.owner_persistent_guid = Some(r.guid()?);
+        }
+    }
+
+    let count = r.array_count(GENERATION_SIZE, "generation count")?;
+    s.generations = Vec::with_capacity(count);
+    for _ in 0..count {
+        s.generations.push(Generation {
+            export_count: r.i32()?,
+            name_count: r.i32()?,
+        });
+    }
+
+    if v4 >= ue4::ENGINE_VERSION_OBJECT {
+        s.saved_by_engine_version = Some(engine_version(r)?);
+    } else {
+        s.engine_changelist = Some(r.i32()?);
+    }
+    if v4 >= ue4::PACKAGE_SUMMARY_HAS_COMPATIBLE_ENGINE_VERSION {
+        s.compatible_with_engine_version = Some(engine_version(r)?);
+    }
+    Ok(())
+}
+
+/// Reads the fields from the compression flags to the end of the summary.
+fn read_end(r: &mut Reader, s: &mut PackageSummary) -> Result<(), Error> {
+    let (v4, v5) = (s.file_version_ue4, s.file_version_ue5);
+    s.compression_flags = r.u32()?;
+    let offset = r.offset();
+    match r.i32()? {
+        0 => {}
+        1.. => return Err(Error::Compressed),
+        _ => {
+            return Err(Error::BadValue {
+                offset,
+                field: "compressed chunk count",
+            });
+        }
+    }
+    s.package_source = r.u32()?;
+
+    let count = r.array_count(MIN_STRING_SIZE, "additional packages to cook count")?;
+    s.additional_packages_to_cook = Vec::with_capacity(count);
+    for _ in 0..count {
+        let package = r.string("additional package to cook")?;
+        s.additional_packages_to_cook.push(package);
+    }
+
+    // UE 5 packages have no texture allocations count: the legacy file
+    // version is -8 or lower.
+    s.asset_registry_data_offset = r.i32()?;
+    s.bulk_data_start_offset = r.i64()?;
+    s.world_tile_info_data_offset = i32_if(r, v4 >= ue4::WORLD_LEVEL_INFO)?;
+
+    if v4 >= ue4::CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS {
+        let count = r.array_count(4, "chunk ID count")?;
+        s.chunk_ids = Vec::with_capacity(count);
+        for _ in 0..count {
+            s.chunk_ids.push(r.i32()?);
+        }
+    } else if v4 >= ue4::ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE {
+        let chunk_id = r.i32()?;
+        if chunk_id >= 0 {
+            s.chunk_ids.push(chunk_id);
+        }
+    }
+
+    s.preload_dependencies = table_if(r, v4 >= ue4::PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS)?;
+    s.names_referenced_from_export_data_count =
+        i32_if(r, v5 >= ue5::NAMES_REFERENCED_FROM_EXPORT_DATA)?;
+    if v5 >= ue5::PAYLOAD_TOC {
+        s.payload_toc_offset = Some(r.i64()?);
+    }
+    s.data_resource_offset = i32_if(r, v5 >= ue5::DATA_RESOURCES)?;
+    Ok(())
+}
+
+fn engine_version(r: &mut Reader) -> Result<EngineVersion, Error> {
+    Ok(EngineVersion {
+        major: r.u16()?,
+        minor: r.u16()?,
+        patch: r.u16()?,
+        changelist: r.u32()?,
+        branch: r.string("engine version branch")?,
+    })
 }
 
 fn table(r: &mut Reader) -> Result<Table, Error> {

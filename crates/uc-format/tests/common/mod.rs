@@ -19,16 +19,32 @@ pub mod ue4 {
     pub const SERIALIZE_TEXT_IN_PACKAGES: i32 = 459;
     pub const ADDED_SEARCHABLE_NAMES: i32 = 510;
     pub const ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID: i32 = 516;
+    pub const WORLD_LEVEL_INFO: i32 = 224;
+    pub const ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE: i32 = 278;
+    pub const CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS: i32 = 326;
+    pub const ENGINE_VERSION_OBJECT: i32 = 336;
+    pub const PACKAGE_SUMMARY_HAS_COMPATIBLE_ENGINE_VERSION: i32 = 444;
+    pub const PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS: i32 = 507;
+    pub const ADDED_PACKAGE_OWNER: i32 = 518;
+    pub const NON_OUTER_PACKAGE_IMPORT: i32 = 520;
 }
 
 /// UE5 file versions.
 pub mod ue5 {
+    pub const INITIAL_VERSION: i32 = 1000;
+    pub const NAMES_REFERENCED_FROM_EXPORT_DATA: i32 = 1001;
+    pub const PAYLOAD_TOC: i32 = 1002;
+    pub const DATA_RESOURCES: i32 = 1009;
     pub const ADD_SOFTOBJECTPATH_LIST: i32 = 1008;
     pub const METADATA_SERIALIZATION_OFFSET: i32 = 1014;
     pub const VERSE_CELLS: i32 = 1015;
     pub const PACKAGE_SAVED_HASH: i32 = 1016;
     pub const IMPORT_TYPE_HIERARCHIES: i32 = 1018;
 }
+
+/// An engine version: major, minor, patch, changelist, branch.
+#[derive(Debug, Clone)]
+pub struct EngineVersion(pub u16, pub u16, pub u16, pub u32, pub Str);
 
 /// A string value as it is stored in the file.
 #[derive(Debug, Clone)]
@@ -81,6 +97,29 @@ pub struct Summary {
     pub thumbnail_table_offset: i32,
     pub import_type_hierarchies_count: i32,
     pub import_type_hierarchies_offset: i32,
+    pub package_guid: [u32; 4],
+    pub persistent_guid: [u32; 4],
+    pub owner_persistent_guid: [u32; 4],
+    /// Export count and name count.
+    pub generations: Vec<(i32, i32)>,
+    pub saved_by_engine_version: EngineVersion,
+    pub engine_changelist: i32,
+    pub compatible_with_engine_version: EngineVersion,
+    pub compression_flags: u32,
+    /// The number of compressed chunks. Each chunk is 16 bytes of zeros.
+    pub compressed_chunk_count: i32,
+    pub package_source: u32,
+    pub additional_packages_to_cook: Vec<Str>,
+    pub asset_registry_data_offset: i32,
+    pub bulk_data_start_offset: i64,
+    pub world_tile_info_data_offset: i32,
+    /// The chunk IDs. Old versions store only the first one, or -1.
+    pub chunk_ids: Vec<i32>,
+    pub preload_dependency_count: i32,
+    pub preload_dependency_offset: i32,
+    pub names_referenced_from_export_data_count: i32,
+    pub payload_toc_offset: i64,
+    pub data_resource_offset: i32,
 }
 
 impl Default for Summary {
@@ -126,6 +165,38 @@ impl Default for Summary {
             thumbnail_table_offset: 120,
             import_type_hierarchies_count: 121,
             import_type_hierarchies_offset: 122,
+            package_guid: [0xA1, 0xA2, 0xA3, 0xA4],
+            persistent_guid: [0xB1, 0xB2, 0xB3, 0xB4],
+            owner_persistent_guid: [0xC1, 0xC2, 0xC3, 0xC4],
+            generations: vec![(201, 202), (203, 204)],
+            saved_by_engine_version: EngineVersion(
+                5,
+                8,
+                1,
+                0x8000_1234,
+                Str::Ansi("++UE5+Release-5.8"),
+            ),
+            engine_changelist: 205,
+            compatible_with_engine_version: EngineVersion(
+                5,
+                8,
+                0,
+                0x0000_5678,
+                Str::Ansi("++UE5+Release-5.8"),
+            ),
+            compression_flags: 0,
+            compressed_chunk_count: 0,
+            package_source: 0xDEAD_BEEF,
+            additional_packages_to_cook: vec![Str::Ansi("/Game/A"), Str::Utf16("/Game/B")],
+            asset_registry_data_offset: 206,
+            bulk_data_start_offset: 0x1_0000_0207,
+            world_tile_info_data_offset: 208,
+            chunk_ids: vec![3, 4],
+            preload_dependency_count: 209,
+            preload_dependency_offset: 210,
+            names_referenced_from_export_data_count: 211,
+            payload_toc_offset: 0x2_0000_0212,
+            data_resource_offset: 213,
         }
     }
 }
@@ -205,6 +276,64 @@ impl Summary {
             w.i32(self.import_type_hierarchies_count);
             w.i32(self.import_type_hierarchies_offset);
         }
+        if v5 < ue5::PACKAGE_SAVED_HASH {
+            w.guid(self.package_guid);
+        }
+        if self.package_flags & PKG_FILTER_EDITOR_ONLY == 0 && v4 >= ue4::ADDED_PACKAGE_OWNER {
+            w.guid(self.persistent_guid);
+            if v4 < ue4::NON_OUTER_PACKAGE_IMPORT {
+                w.guid(self.owner_persistent_guid);
+            }
+        }
+        w.i32(self.generations.len() as i32);
+        for (export_count, name_count) in &self.generations {
+            w.i32(*export_count);
+            w.i32(*name_count);
+        }
+        if v4 >= ue4::ENGINE_VERSION_OBJECT {
+            w.engine_version(&self.saved_by_engine_version);
+        } else {
+            w.i32(self.engine_changelist);
+        }
+        if v4 >= ue4::PACKAGE_SUMMARY_HAS_COMPATIBLE_ENGINE_VERSION {
+            w.engine_version(&self.compatible_with_engine_version);
+        }
+        w.u32(self.compression_flags);
+        w.i32(self.compressed_chunk_count);
+        for _ in 0..self.compressed_chunk_count.max(0) {
+            w.bytes(&[0; 16]);
+        }
+        w.u32(self.package_source);
+        w.i32(self.additional_packages_to_cook.len() as i32);
+        for package in &self.additional_packages_to_cook {
+            w.string(package);
+        }
+        w.i32(self.asset_registry_data_offset);
+        w.0.extend_from_slice(&self.bulk_data_start_offset.to_le_bytes());
+        if v4 >= ue4::WORLD_LEVEL_INFO {
+            w.i32(self.world_tile_info_data_offset);
+        }
+        if v4 >= ue4::CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS {
+            w.i32(self.chunk_ids.len() as i32);
+            for id in &self.chunk_ids {
+                w.i32(*id);
+            }
+        } else if v4 >= ue4::ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE {
+            w.i32(self.chunk_ids.first().copied().unwrap_or(-1));
+        }
+        if v4 >= ue4::PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS {
+            w.i32(self.preload_dependency_count);
+            w.i32(self.preload_dependency_offset);
+        }
+        if v5 >= ue5::NAMES_REFERENCED_FROM_EXPORT_DATA {
+            w.i32(self.names_referenced_from_export_data_count);
+        }
+        if v5 >= ue5::PAYLOAD_TOC {
+            w.0.extend_from_slice(&self.payload_toc_offset.to_le_bytes());
+        }
+        if v5 >= ue5::DATA_RESOURCES {
+            w.i32(self.data_resource_offset);
+        }
         w.0
     }
 }
@@ -224,6 +353,20 @@ impl Writer {
 
     pub fn bytes(&mut self, value: &[u8]) {
         self.0.extend_from_slice(value);
+    }
+
+    pub fn guid(&mut self, value: [u32; 4]) {
+        for part in value {
+            self.u32(part);
+        }
+    }
+
+    pub fn engine_version(&mut self, value: &EngineVersion) {
+        for part in [value.0, value.1, value.2] {
+            self.bytes(&part.to_le_bytes());
+        }
+        self.u32(value.3);
+        self.string(&value.4);
     }
 
     pub fn string(&mut self, value: &Str) {
