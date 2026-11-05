@@ -1,0 +1,566 @@
+﻿********************************************
+Package '/Temp/Summary/BP_SummaryActor' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/Summary/BP_SummaryActor.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 40000
+	        NameCount: 109
+	       NameOffset: 607
+	      ImportCount: 16
+	     ImportOffset: 5309
+	      ExportCount: 14
+	     ExportOffset: 5949
+	Compression Flags: 0
+	       Total Size: 24370
+	  Custom Versions:
+		Key=12f88b9f-8875-4afc-a67c-d90c383abd29 Version = 49 Friendly Name = Dev-Rendering
+		Key=375ec13c-06e4-48fb-b500-84f0262a717e Version = 4 Friendly Name = Dev-Core
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=5b4c06b7-2463-4af8-805b-bf70cdf5d0dd Version = 15 Friendly Name = FortniteSeason
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=9c54d522-a826-4fbe-9421-074661b482d0 Version = 44 Friendly Name = Release
+		Key=b0d832e4-1f89-4f0d-accf-7eb736fd4aa2 Version = 10 Friendly Name = Dev-Blueprints
+		Key=cffc743f-43b0-4480-9391-14df171d2073 Version = 37 Friendly Name = Dev-Framework
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+		Key=e7086368-6b23-4c58-8439-1b7016265e91 Version = 20 Friendly Name = FortniteRelease
+
+	        SavedHash: 487538f2f231c92bde75fd84a989494892769574
+	   PersistentGuid: A94AED45410E907A85CDF38054394A1B
+	      Generations:
+			0) ExportCount=14, NameCount=109 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Game/Summary/BP_SummaryActor' Comparison Index 1043955 Display Index 1043955 [Internal: /Game/Summary/BP_SummaryActor, 0]
+	1: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	2: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	3: Name '/Script/SlateCore' Comparison Index 11510 Display Index 11510 [Internal: /Script/SlateCore, 0]
+	4: Name 'AllNodes' Comparison Index 502684 Display Index 502684 [Internal: AllNodes, 0]
+	5: Name 'ArrayProperty' Comparison Index 26 Display Index 26 [Internal: ArrayProperty, 0]
+	6: Name 'bAllowDeletion' Comparison Index 467351 Display Index 467351 [Internal: bAllowDeletion, 0]
+	7: Name 'bCommentBubblePinned' Comparison Index 467375 Display Index 467375 [Internal: bCommentBubblePinned, 0]
+	8: Name 'bCommentBubbleVisible' Comparison Index 467371 Display Index 467371 [Internal: bCommentBubbleVisible, 0]
+	9: Name 'bLegacyNeedToPurgeSkelRefs' Comparison Index 474054 Display Index 474054 [Internal: bLegacyNeedToPurgeSkelRefs, 0]
+	10: Name 'BlueprintGuid' Comparison Index 474051 Display Index 474051 [Internal: BlueprintGuid, 0]
+	11: Name 'BlueprintInternalUseOnly' Comparison Index 68215 Display Index 68215 [Internal: BlueprintInternalUseOnly, 0]
+	12: Name 'BlueprintSystemVersion' Comparison Index 474163 Display Index 474163 [Internal: BlueprintSystemVersion, 0]
+	13: Name 'BlueprintType' Comparison Index 7143 Display Index 7143 [Internal: BlueprintType, 0]
+	14: Name 'BoolProperty' Comparison Index 8 Display Index 8 [Internal: BoolProperty, 0]
+	15: Name 'bOverrideFunction' Comparison Index 476142 Display Index 476142 [Internal: bOverrideFunction, 0]
+	16: Name 'BP_SummaryActor' Comparison Index 1043963 Display Index 1043963 [Internal: BP_SummaryActor, 0]
+	17: Name 'BP_SummaryActor_C' Comparison Index 1043966 Display Index 1043966 [Internal: BP_SummaryActor_C, 0]
+	18: Name 'bVisualizeComponent' Comparison Index 344599 Display Index 344599 [Internal: bVisualizeComponent, 0]
+	19: Name 'ByteProperty' Comparison Index 2 Display Index 2 [Internal: ByteProperty, 0]
+	20: Name 'Category' Comparison Index 39094 Display Index 39094 [Internal: Category, 0]
+	21: Name 'CategoryName' Comparison Index 301121 Display Index 301121 [Internal: CategoryName, 0]
+	22: Name 'CategorySorting' Comparison Index 474115 Display Index 474115 [Internal: CategorySorting, 0]
+	23: Name 'Comment' Comparison Index 294201 Display Index 294201 [Internal: Comment, 0]
+	24: Name 'ComponentClass' Comparison Index 61500 Display Index 61500 [Internal: ComponentClass, 0]
+	25: Name 'ComponentTemplate' Comparison Index 457240 Display Index 457240 [Internal: ComponentTemplate, 0]
+	26: Name 'Default' Comparison Index 326 Display Index 326 [Internal: Default, 0]
+	27: Name 'DefaultGraphNode' Comparison Index 123240 Display Index 123240 [Internal: DefaultGraphNode, 0]
+	28: Name 'DefaultSceneRoot' Comparison Index 121221 Display Index 121221 [Internal: DefaultSceneRoot, 0]
+	29: Name 'DefaultSceneRootNode' Comparison Index 502680 Display Index 502680 [Internal: DefaultSceneRootNode, 0]
+	30: Name 'delegate' Comparison Index 68351 Display Index 68351 [Internal: delegate, 0]
+	31: Name 'DeltaSeconds' Comparison Index 296151 Display Index 296151 [Internal: DeltaSeconds, 0]
+	32: Name 'DeprecateSlateVector2D' Comparison Index 13521 Display Index 13521 [Internal: DeprecateSlateVector2D, 0]
+	33: Name 'DisplayName' Comparison Index 8364 Display Index 8364 [Internal: DisplayName, 0]
+	34: Name 'EditedDocumentInfo' Comparison Index 118058 Display Index 118058 [Internal: EditedDocumentInfo, 0]
+	35: Name 'EditedObjectPath' Comparison Index 455671 Display Index 455671 [Internal: EditedObjectPath, 0]
+	36: Name 'EnabledState' Comparison Index 13160 Display Index 13160 [Internal: EnabledState, 0]
+	37: Name 'Engine' Comparison Index 86 Display Index 86 [Internal: Engine, 0]
+	38: Name 'ENodeEnabledState' Comparison Index 123237 Display Index 123237 [Internal: ENodeEnabledState, 0]
+	39: Name 'ENodeEnabledState::Disabled' Comparison Index 399449 Display Index 399449 [Internal: ENodeEnabledState::Disabled, 0]
+	40: Name 'EnumProperty' Comparison Index 93 Display Index 93 [Internal: EnumProperty, 0]
+	41: Name 'Event Graph' Comparison Index 1357623 Display Index 1357623 [Internal: Event Graph, 0]
+	42: Name 'EventReference' Comparison Index 476145 Display Index 476145 [Internal: EventReference, 0]
+	43: Name 'exec' Comparison Index 68339 Display Index 68339 [Internal: exec, 0]
+	44: Name 'float' Comparison Index 40238 Display Index 40238 [Internal: float, 0]
+	45: Name 'FloatProperty' Comparison Index 11 Display Index 11 [Internal: FloatProperty, 0]
+	46: Name 'FunctionGraphs' Comparison Index 474157 Display Index 474157 [Internal: FunctionGraphs, 0]
+	47: Name 'FunctionReference' Comparison Index 478600 Display Index 478600 [Internal: FunctionReference, 0]
+	48: Name 'GeneratedClass' Comparison Index 7132 Display Index 7132 [Internal: GeneratedClass, 0]
+	49: Name 'GraphGuid' Comparison Index 449769 Display Index 449769 [Internal: GraphGuid, 0]
+	50: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	51: Name 'InternalVariableName' Comparison Index 267375 Display Index 267375 [Internal: InternalVariableName, 0]
+	52: Name 'IntProperty' Comparison Index 5 Display Index 5 [Internal: IntProperty, 0]
+	53: Name 'LastEditedDocuments' Comparison Index 469702 Display Index 469702 [Internal: LastEditedDocuments, 0]
+	54: Name 'MemberName' Comparison Index 298084 Display Index 298084 [Internal: MemberName, 0]
+	55: Name 'MemberParent' Comparison Index 255814 Display Index 255814 [Internal: MemberParent, 0]
+	56: Name 'MemberReference' Comparison Index 129646 Display Index 129646 [Internal: MemberReference, 0]
+	57: Name 'ModuleRelativePath' Comparison Index 8209 Display Index 8209 [Internal: ModuleRelativePath, 0]
+	58: Name 'NameProperty' Comparison Index 17 Display Index 17 [Internal: NameProperty, 0]
+	59: Name 'NodeComment' Comparison Index 467358 Display Index 467358 [Internal: NodeComment, 0]
+	60: Name 'NodeGuid' Comparison Index 449767 Display Index 449767 [Internal: NodeGuid, 0]
+	61: Name 'NodePosY' Comparison Index 467407 Display Index 467407 [Internal: NodePosY, 0]
+	62: Name 'Nodes' Comparison Index 260921 Display Index 260921 [Internal: Nodes, 0]
+	63: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	64: Name 'object' Comparison Index 227 Display Index 68355 [Internal: object, 0]
+	65: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+	66: Name 'OtherActor' Comparison Index 254163 Display Index 254163 [Internal: OtherActor, 0]
+	67: Name 'OutputDelegate' Comparison Index 69001 Display Index 69001 [Internal: OutputDelegate, 0]
+	68: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	69: Name 'ParentClass' Comparison Index 7135 Display Index 7135 [Internal: ParentClass, 0]
+	70: Name 'real' Comparison Index 68347 Display Index 68347 [Internal: real, 0]
+	71: Name 'ReceiveActorBeginOverlap' Comparison Index 112973 Display Index 112973 [Internal: ReceiveActorBeginOverlap, 0]
+	72: Name 'ReceiveBeginPlay' Comparison Index 113020 Display Index 113020 [Internal: ReceiveBeginPlay, 0]
+	73: Name 'ReceiveTick' Comparison Index 46109 Display Index 46109 [Internal: ReceiveTick, 0]
+	74: Name 'RootNodes' Comparison Index 445060 Display Index 445060 [Internal: RootNodes, 0]
+	75: Name 'SavedViewOffset' Comparison Index 455668 Display Index 455668 [Internal: SavedViewOffset, 0]
+	76: Name 'SavedZoomAmount' Comparison Index 455665 Display Index 455665 [Internal: SavedZoomAmount, 0]
+	77: Name 'Schema' Comparison Index 467354 Display Index 467354 [Internal: Schema, 0]
+	78: Name 'SimpleConstructionScript' Comparison Index 142402 Display Index 142402 [Internal: SimpleConstructionScript, 0]
+	79: Name 'SKEL_BP_SummaryActor_C' Comparison Index 1357626 Display Index 1357626 [Internal: SKEL_BP_SummaryActor_C, 0]
+	80: Name 'SoftObjectPath' Comparison Index 9261 Display Index 9261 [Internal: SoftObjectPath, 0]
+	81: Name 'StaticMesh' Comparison Index 777 Display Index 777 [Internal: StaticMesh, 0]
+	82: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	83: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	84: Name 'TextProperty' Comparison Index 41 Display Index 41 [Internal: TextProperty, 0]
+	85: Name 'then' Comparison Index 68381 Display Index 68381 [Internal: then, 0]
+	86: Name 'ToolTip' Comparison Index 49674 Display Index 49674 [Internal: ToolTip, 0]
+	87: Name 'UbergraphPages' Comparison Index 474160 Display Index 474160 [Internal: UbergraphPages, 0]
+	88: Name 'UserConstructionScript' Comparison Index 68402 Display Index 68402 [Internal: UserConstructionScript, 0]
+	89: Name 'VariableGuid' Comparison Index 255787 Display Index 255787 [Internal: VariableGuid, 0]
+	90: Name '/Script/BlueprintGraph' Comparison Index 7222 Display Index 7222 [Internal: /Script/BlueprintGraph, 0]
+	91: Name 'Actor' Comparison Index 231 Display Index 231 [Internal: Actor, 0]
+	92: Name 'Blueprint' Comparison Index 7232 Display Index 7232 [Internal: Blueprint, 0]
+	93: Name 'BlueprintGeneratedClass' Comparison Index 7234 Display Index 7234 [Internal: BlueprintGeneratedClass, 0]
+	94: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	95: Name 'Default__Actor' Comparison Index 113040 Display Index 113040 [Internal: Default__Actor, 0]
+	96: Name 'Default__BP_SummaryActor_C' Comparison Index 1357630 Display Index 1357630 [Internal: Default__BP_SummaryActor_C, 0]
+	97: Name 'DefaultSceneRoot_GEN_VARIABLE' Comparison Index 511301 Display Index 511301 [Internal: DefaultSceneRoot_GEN_VARIABLE, 0]
+	98: Name 'EdGraph' Comparison Index 123184 Display Index 123184 [Internal: EdGraph, 0]
+	99: Name 'EdGraphSchema_K2' Comparison Index 68082 Display Index 68082 [Internal: EdGraphSchema_K2, 0]
+	100: Name 'EventGraph' Comparison Index 68406 Display Index 68406 [Internal: EventGraph, 0]
+	101: Name 'K2Node_Event' Comparison Index 69198 Display Index 69198 [Internal: K2Node_Event, 0]
+	102: Name 'K2Node_FunctionEntry' Comparison Index 69256 Display Index 69256 [Internal: K2Node_FunctionEntry, 0]
+	103: Name 'Object' Comparison Index 227 Display Index 227 [Internal: Object, 0]
+	104: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	105: Name 'SceneComponent' Comparison Index 121203 Display Index 121203 [Internal: SceneComponent, 0]
+	106: Name 'SCS_Node' Comparison Index 141680 Display Index 141680 [Internal: SCS_Node, 0]
+	107: Name 'StaticMesh_GEN_VARIABLE' Comparison Index 1357634 Display Index 1357634 [Internal: StaticMesh_GEN_VARIABLE, 0]
+	108: Name 'StaticMeshComponent' Comparison Index 121633 Display Index 121633 [Internal: StaticMeshComponent, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'Default__Actor'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Actor'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'EdGraphSchema_K2'
+		       Outer: '/Script/BlueprintGraph' (-14)
+		     Package: '/Script/BlueprintGraph'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 2: 'K2Node_Event'
+		       Outer: '/Script/BlueprintGraph' (-14)
+		     Package: '/Script/BlueprintGraph'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 3: 'K2Node_FunctionEntry'
+		       Outer: '/Script/BlueprintGraph' (-14)
+		     Package: '/Script/BlueprintGraph'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 4: 'Object'
+		       Outer: '/Script/CoreUObject' (-15)
+		     Package: '/Script/CoreUObject'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 5: 'Actor'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 6: 'Blueprint'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 7: 'BlueprintGeneratedClass'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 8: 'EdGraph'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 9: 'SceneComponent'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 10: 'SCS_Node'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 11: 'SimpleConstructionScript'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 12: 'StaticMeshComponent'
+		       Outer: '/Script/Engine' (-16)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 13: '/Script/BlueprintGraph'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 14: '/Script/CoreUObject'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 15: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+--------------------------------------------
+	Packages referenced by /Temp/Summary/BP_SummaryActor:
+		0) /Script/Engine
+		1) /Script/BlueprintGraph
+		2) /Script/CoreUObject
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'BP_SummaryActor'
+		         Class: 'Blueprint' (-7)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '' (0)
+		   ObjectFlags: 0x0000000B
+		    Total Size: 733
+		        Offset: 18857
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 1
+		 bNotForServer: 1
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 1: 'BP_SummaryActor_C'
+		         Class: 'BlueprintGeneratedClass' (-8)
+		        Parent: '/Script/Engine.Actor' (-6)
+		      Template: '' (0)
+		         Outer: '' (0)
+		   ObjectFlags: 0x00000009
+		    Total Size: 189
+		        Offset: 19590
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 2: 'Default__BP_SummaryActor_C'
+		         Class: 'BP_SummaryActor_C' (2)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '' (0)
+		   ObjectFlags: 0x00000031
+		    Total Size: 13
+		        Offset: 19779
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 3: 'EventGraph'
+		         Class: 'EdGraph' (-9)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor' (1)
+		   ObjectFlags: 0x00000008
+		    Total Size: 185
+		        Offset: 19792
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) K2Node_Event /Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_0 (6)
+			1) K2Node_Event /Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_1 (7)
+			2) K2Node_Event /Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_2 (8)
+		  All Depends:
+	*************************
+	Export 4: 'UserConstructionScript'
+		         Class: 'EdGraph' (-9)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor' (1)
+		   ObjectFlags: 0x00000008
+		    Total Size: 177
+		        Offset: 19977
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) K2Node_FunctionEntry /Temp/Summary/BP_SummaryActor.BP_SummaryActor:UserConstructionScript.K2Node_FunctionEntry_0 (9)
+		  All Depends:
+	*************************
+	Export 5: 'K2Node_Event_0'
+		         Class: 'K2Node_Event' (-3)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph' (4)
+		   ObjectFlags: 0x00000008
+		    Total Size: 854
+		        Offset: 20154
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) K2Node_Event /Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_0 (6)
+		  All Depends:
+	*************************
+	Export 6: 'K2Node_Event_1'
+		         Class: 'K2Node_Event' (-3)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph' (4)
+		   ObjectFlags: 0x00000008
+		    Total Size: 1114
+		        Offset: 21008
+		        Object: VALID
+		      HashNext: 5
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) K2Node_Event /Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_1 (7)
+		  All Depends:
+	*************************
+	Export 7: 'K2Node_Event_2'
+		         Class: 'K2Node_Event' (-3)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph' (4)
+		   ObjectFlags: 0x00000008
+		    Total Size: 1126
+		        Offset: 22122
+		        Object: VALID
+		      HashNext: 6
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) K2Node_Event /Temp/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_2 (8)
+		  All Depends:
+	*************************
+	Export 8: 'K2Node_FunctionEntry_0'
+		         Class: 'K2Node_FunctionEntry' (-4)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor:UserConstructionScript' (5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 401
+		        Offset: 23248
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) K2Node_FunctionEntry /Temp/Summary/BP_SummaryActor.BP_SummaryActor:UserConstructionScript.K2Node_FunctionEntry_0 (9)
+		  All Depends:
+	*************************
+	Export 9: 'DefaultSceneRoot_GEN_VARIABLE'
+		         Class: 'SceneComponent' (-10)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor_C' (2)
+		   ObjectFlags: 0x00000029
+		    Total Size: 42
+		        Offset: 23649
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 10: 'SCS_Node_0'
+		         Class: 'SCS_Node' (-11)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor_C:SimpleConstructionScript_0' (13)
+		   ObjectFlags: 0x00000008
+		    Total Size: 235
+		        Offset: 23691
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 11: 'SCS_Node_1'
+		         Class: 'SCS_Node' (-11)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor_C:SimpleConstructionScript_0' (13)
+		   ObjectFlags: 0x00000008
+		    Total Size: 235
+		        Offset: 23926
+		        Object: VALID
+		      HashNext: 10
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 12: 'SimpleConstructionScript_0'
+		         Class: 'SimpleConstructionScript' (-12)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor_C' (2)
+		   ObjectFlags: 0x00000008
+		    Total Size: 132
+		        Offset: 24161
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 13: 'StaticMesh_GEN_VARIABLE'
+		         Class: 'StaticMeshComponent' (-13)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Summary/BP_SummaryActor.BP_SummaryActor_C' (2)
+		   ObjectFlags: 0x00000029
+		    Total Size: 25
+		        Offset: 24293
+		        Object: VALID
+		      HashNext: 0
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:      11116
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 2
+		0) /Script/Engine.Blueprint'/Temp/Summary/BP_SummaryActor.BP_SummaryActor' (14 Tags)
+			"GeneratedClass": "/Script/Engine.BlueprintGeneratedClass'/Game/Summary/BP_SummaryActor.BP_SummaryActor_C'"
+			"ParentClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'"
+			"NativeParentClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'"
+			"ClassFlags": "12847108"
+			"BlueprintType": "BPTYPE_Normal"
+			"IsDataOnly": "False"
+			"FiBData": "#=	GjoeJoCmvfqsjouNbobhfsQspqfsujftQspqfsujft	GjoeJoCmvfqsjouNbobhfsVcfsVcfs	GjoeJoCmvfqsjouNbobhfsObnfObnf	LjtnfuTdifnbHsbqiEjtqmbzObnf`FwfouHsbqiFwfouHsbqi	GjoeJoCmvfqsjouNbobhfsEftdsjqujpoEftdsjqujpo	CmvfqsjouOpHsbqiUppmujq)Opof*	GjoeJoCmvfqsjouNbobhfsOpeftOpeft	L3OpefFwfou`ObnfFwfou!|GvodujpoObnf~GvodujpoObnfCfhjoQmbz		GjoeJoCmvfqsjouNbobhfsDmbttObnfDmbttObnf
+L3Opef`Fwfou	GjoeJoCmvfqsjouNbobhfs
+OpefHvje
+OpefHvje"E595GEEE58CGG3GE4D3816:34741G418	GjoeJoCmvfqsjouNbobhfsTdifnbObnfTdifnbObnfFeHsbqiTdifnb`L3	GjoeJoCmvfqsjouNbobhfsHmzqiHmzqiHsbqiFejups/Fwfou`27y	GjoeJoCmvfqsjouNbobhfsHmzqiTuzmfTfuHmzqiTuzmfTfuFejupsTuzmf	GjoeJoCmvfqsjouNbobhfsHmzqiDpmpsHmzqiDpmps/)S>2/111111-H>2/111111-C>2/111111-B>2/111111*	GjoeJoCmvfqsjouNbobhfs	Dpnnfou	DpnnfouUUijt!opef!jt!ejtbcmfe!boe!xjmm!opu!cf!dbmmfe/Esbh!pgg!qjot!up!cvjme!gvodujpobmjuz/	GjoeJoCmvfqsjouNbobhfsObujwfObnfObujwf!ObnfSfdfjwfCfhjoQmbz	GjoeJoCmvfqsjouNbobhfsGvodPsjhjoDmbttGvodPsjhjoDmbtt0Tdsjqu0Fohjof/Bdups	GjoeJoCmvfqsjouNbobhfsQjotQjotĀPvuqvu!Efmfhbuf	GjoeJoCmvfqsjouNbobhfsEfgbvmuWbmvfEfgbvmuWbmvfĀ	GjoeJoCmvfqsjouNbobhfsQjoDbufhpszQjoDbufhpsz 
+efmfhbuf!	GjoeJoCmvfqsjouNbobhfs	JtBssbz	JtBssbz"	GjoeJoCmvfqsjouNbobhfsJtSfgfsfodfJtSfgfsfodf#fyfd$	L3OpefFwfou`ObnfFwfou!|GvodujpoObnf~GvodujpoObnfBdupsCfhjoPwfsmbq%"E973493D5DDD6C92789718C:D:E7E81G&SfdfjwfBdupsCfhjoPwfsmbq'ĀPuifs!Bdups(pckfdu)	GjoeJoCmvfqsjouNbobhfsPckfduDmbttPckfduDmbtt*	L3OpefFwfou`ObnfFwfou!|GvodujpoObnf~GvodujpoObnfUjdl+"3G84GG355FFF6DG96DCB28:44GE77E52,SfdfjwfUjdl-ĀEfmub!Tfdpoet.Ā1/1/sfbm0	GjoeJoCmvfqsjouNbobhfsTvcDbufhpszTvcDbufhpsz1gmpbu2	GjoeJoCmvfqsjouNbobhfsGvodujpotGvodujpot3	LjtnfuTdifnb%HsbqiEjtqmbzObnf`DpotusvdujpoTdsjquDpotusvdujpoTdsjqu4Dpotusvdujpo!Tdsjqu5L3Opef`GvodujpoFousz6"B14F71695GCB:G893D1935C4B71GG4G37HsbqiFejups/Efgbvmu`27y8VtfsDpotusvdujpoTdsjqu9	GjoeJoCmvfqsjouNbobhfsDpnqpofoutDpnqpofout:TubujdNfti;	GjoeJoCmvfqsjouNbobhfsJtTDTDpnqpofouJtTDTDpnqpofou<$0Tdsjqu0Fohjof/TubujdNftiDpnqpofou{"0":[],"1":[{"2":"3","4":"5","6":[{"2":"7","8":"9","10":"11","12":"13","14":"15","16":"17","18":"19","20":"21","22":"23","24":"25","26":[{"2":"27","28":"29","30":"31","32":false,"33":0},{"2":"29","28":"29","30":"34","32":false,"33":0}]},{"2":"35","8":"9","10":"36","12":"13","14":"15","16":"17","18":"19","20":"21","22":"37","24":"25","26":[{"2":"27","28":"29","30":"31","32":false,"33":0},{"2":"29","28":"29","30":"34","32":false,"33":0},{"2":"38","28":"29","30":"39","40":"25","32":false,"33":0}]},{"2":"41","8":"9","10":"42","12":"13","14":"15","16":"17","18":"19","20":"21","22":"43","24":"25","26":[{"2":"27","28":"29","30":"31","32":false,"33":0},{"2":"29","28":"29","30":"34","32":false,"33":0},{"2":"44","28":"45","30":"46","47":"48","32":false,"33":0}]}],"0":[]}],"49":[{"2":"50","4":"5","6":[{"2":"51","8":"52","10":"53","12":"13","14":"54","16":"17","18":"19","20":"29","22":"55","24":"25","26":[{"2":"29","28":"29","30":"34","32":false,"33":0}]}],"0":[]}],"56":[{"2":"57","58":true,"30":"39","40":"59","32":false,"33":0}]}"
+			"NumReplicatedProperties": "0"
+			"NativeComponents": "0"
+			"BlueprintComponents": "1"
+			"BlueprintPath": "BP_SummaryActor"
+			"ActorMetaDataClass": "/Script/Engine.Actor"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAQAAAB4AAAAvR2FtZS9TdW1tYXJ5L0JQX1N1bW1hcnlBY3RvcgASAAAAQlBfU3VtbWFyeUFjdG9yX0MADwAAAC9TY3JpcHQvRW5naW5lAAYAAABBY3RvcgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+			"ImportedNamespaces": "()"
+		1) /Script/Engine.BlueprintGeneratedClass'/Temp/Summary/BP_SummaryActor.BP_SummaryActor_C' (8 Tags)
+			"ParentClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'"
+			"NativeParentClass": "/Script/CoreUObject.Class'/Script/Engine.Actor'"
+			"ClassFlags": "12847108"
+			"BlueprintType": "BPTYPE_Normal"
+			"NumReplicatedProperties": "0"
+			"ModuleName": "BP_SummaryActor"
+			"ActorMetaDataClass": "/Script/Engine.Actor"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAQAAAB4AAAAvR2FtZS9TdW1tYXJ5L0JQX1N1bW1hcnlBY3RvcgASAAAAQlBfU3VtbWFyeUFjdG9yX0MADwAAAC9TY3JpcHQvRW5naW5lAAYAAABBY3RvcgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

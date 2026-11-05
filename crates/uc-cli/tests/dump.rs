@@ -8,9 +8,17 @@ use std::process::{Command, Output};
 
 use common::{Str, Summary};
 
-/// The stored output for the default synthetic summary. Set the
-/// environment variable `UC_UPDATE_SNAPSHOTS=1` to write it again.
-const SNAPSHOT: &str = "tests/snapshots/dump_synthetic.txt";
+/// Compares `actual` with the stored file `tests/snapshots/<name>`. Set the
+/// environment variable `UC_UPDATE_SNAPSHOTS=1` to write the file again.
+fn assert_snapshot(actual: &str, name: &str) {
+    let snapshot = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/snapshots")
+        .join(name);
+    if std::env::var_os("UC_UPDATE_SNAPSHOTS").is_some() {
+        std::fs::write(&snapshot, actual).unwrap();
+    }
+    assert_eq!(actual, std::fs::read_to_string(&snapshot).unwrap());
+}
 
 fn dump(path: &Path) -> Output {
     Command::new(env!("CARGO_BIN_EXE_uc"))
@@ -38,12 +46,7 @@ fn dump_prints_the_summary_fields() {
     let output = dump(&path);
 
     assert!(output.status.success(), "{}", text(&output.stderr));
-    let actual = text(&output.stdout);
-    let snapshot = Path::new(env!("CARGO_MANIFEST_DIR")).join(SNAPSHOT);
-    if std::env::var_os("UC_UPDATE_SNAPSHOTS").is_some() {
-        std::fs::write(&snapshot, &actual).unwrap();
-    }
-    assert_eq!(actual, std::fs::read_to_string(&snapshot).unwrap());
+    assert_snapshot(&text(&output.stdout), "dump_synthetic.txt");
 }
 
 #[test]
@@ -143,4 +146,15 @@ fn a_utf16_package_name_is_printed() {
     let output = dump(&path);
 
     assert!(text(&output.stdout).contains("Package name: /Game/Żółw\n"));
+}
+
+#[test]
+fn dump_of_the_blueprint_fixture_matches_the_snapshot() {
+    let fixture = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../tests/fixtures/editor/BP_SummaryActor.uasset");
+
+    let output = dump(&fixture);
+
+    assert!(output.status.success(), "{}", text(&output.stderr));
+    assert_snapshot(&text(&output.stdout), "dump_bp_summary_actor.txt");
 }

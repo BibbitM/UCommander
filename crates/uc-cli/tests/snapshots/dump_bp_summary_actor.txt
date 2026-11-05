@@ -1,0 +1,66 @@
+Summary size: 607
+Legacy file version: -9
+Legacy UE3 version: 864
+File version UE4: 522
+File version UE5: 1018
+File version licensee: 0
+Saved hash: 487538f2f231c92bde75fd84a989494892769574
+Total header size: 18857
+Custom version count: 12
+Custom version 12F88B9F-88754AFC-A67CD90C-383ABD29: 49
+Custom version 375EC13C-06E448FB-B50084F0-262A717E: 4
+Custom version 59DA5D52-12324948-B8785978-70B8E98B: 9
+Custom version 5B4C06B7-24634AF8-805BBF70-CDF5D0DD: 15
+Custom version 601D1886-AC644F84-AA16D3DE-0DEAC7D6: 268
+Custom version 697DD581-E64F41AB-AA4A51EC-BEB7B628: 123
+Custom version 9C54D522-A8264FBE-94210746-61B482D0: 44
+Custom version B0D832E4-1F894F0D-ACCF7EB7-36FD4AA2: 10
+Custom version CFFC743F-43B04480-939114DF-171D2073: 37
+Custom version D89B5E42-24BD4D46-8412ACA8-DF641779: 68
+Custom version E4B068ED-F49442E9-A231DA0B-2E46BB41: 40
+Custom version E7086368-6B234C58-84391B70-16265E91: 20
+Package name: /Game/Summary/BP_SummaryActor
+Package flags: 0x00040000
+Name count: 109
+Name offset: 607
+Soft object paths count: 12
+Soft object paths offset: 3108
+Localization ID: 02953B9A523ED6DF9C406757296DA7A5
+Gatherable text data count: 0
+Gatherable text data offset: 0
+Export count: 14
+Export offset: 5949
+Import count: 16
+Import offset: 5309
+Cell export count: 0
+Cell export offset: 7517
+Cell import count: 0
+Cell import offset: 7517
+Metadata offset: 3573
+Depends offset: 7517
+Soft package references count: 1
+Soft package references offset: 7605
+Searchable names offset: 7613
+Thumbnail table offset: 7645
+Import type hierarchies count: 0
+Import type hierarchies offset: 7617
+Package GUID: (not in file)
+Persistent GUID: A94AED45-410E907A-85CDF380-54394A1B
+Owner persistent GUID: (not in file)
+Generation count: 1
+Generation 0: 14 exports, 109 names
+Saved by engine version: 5.8.3-58210709+++UE5+Release-5.8
+Engine changelist: (not in file)
+Compatible with engine version: 5.8.0-55116800+++UE5+Release-5.8
+Compression flags: 0x00000000
+Package source: 0xC2080B5D
+Additional packages to cook count: 0
+Asset registry data offset: 7741
+Bulk data start offset: 24318
+World tile info data offset: 0
+Chunk IDs: (none)
+Preload dependency count: -1
+Preload dependency offset: 18857
+Names referenced from export data count: 90
+Payload TOC offset: 24322
+Data resource offset: 0

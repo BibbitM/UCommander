@@ -1,0 +1,37 @@
+{
+  "source": "PkgInfo commandlet, stock UE 5.8.3-58210709+++UE5+Release-5.8. Values copied by hand from BP_SummaryActor.pkginfo.txt.",
+  "file_size": 24370,
+  "summary": {
+    "file_version_ue5": 1018,
+    "saved_by_engine_version": "5.8.3-58210709+++UE5+Release-5.8",
+    "compatible_with_engine_version": "5.8.0-55116800+++UE5+Release-5.8",
+    "package_flags": "40000",
+    "name_count": 109,
+    "name_offset": 607,
+    "import_count": 16,
+    "import_offset": 5309,
+    "export_count": 14,
+    "export_offset": 5949,
+    "compression_flags": 0,
+    "custom_versions": [
+      { "guid": "12f88b9f-8875-4afc-a67c-d90c383abd29", "version": 49 },
+      { "guid": "375ec13c-06e4-48fb-b500-84f0262a717e", "version": 4 },
+      { "guid": "59da5d52-1232-4948-b878-597870b8e98b", "version": 9 },
+      { "guid": "5b4c06b7-2463-4af8-805b-bf70cdf5d0dd", "version": 15 },
+      { "guid": "601d1886-ac64-4f84-aa16-d3de0deac7d6", "version": 268 },
+      { "guid": "697dd581-e64f-41ab-aa4a-51ecbeb7b628", "version": 123 },
+      { "guid": "9c54d522-a826-4fbe-9421-074661b482d0", "version": 44 },
+      { "guid": "b0d832e4-1f89-4f0d-accf-7eb736fd4aa2", "version": 10 },
+      { "guid": "cffc743f-43b0-4480-9391-14df171d2073", "version": 37 },
+      { "guid": "d89b5e42-24bd-4d46-8412-aca8df641779", "version": 68 },
+      { "guid": "e4b068ed-f494-42e9-a231-da0b2e46bb41", "version": 40 },
+      { "guid": "e7086368-6b23-4c58-8439-1b7016265e91", "version": 20 }
+    ],
+    "saved_hash": "487538f2f231c92bde75fd84a989494892769574",
+    "persistent_guid": "A94AED45410E907A85CDF38054394A1B",
+    "generations": [
+      { "export_count": 14, "name_count": 109 }
+    ],
+    "gatherable_text_data_count": 0
+  }
+}
