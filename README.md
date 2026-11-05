@@ -48,11 +48,26 @@ install cargo-deny:
 cargo install cargo-deny --locked
 ```
 
+The test fixtures in `tests/fixtures/` use Git LFS. Install it once, before
+you clone the repository, or run `git lfs pull` after the clone:
+
+```bash
+git lfs install
+```
+
 Run all checks:
 
 ```bash
 cargo xtask check
 ```
+
+Show the package summary of a `.uasset` or `.umap` file:
+
+```bash
+cargo run -p uc-cli -- dump <file>
+```
+
+The output is for people, not for scripts. The format can change.
 
 Make the plugin ZIP in `target\dist\`:
 
