@@ -1,6 +1,7 @@
 //! Bounds-checked reader of little-endian values.
 
 use crate::error::Error;
+use crate::types::{Guid, IoHash};
 
 /// Reads values from a byte slice. Each read checks the bounds first.
 #[derive(Debug)]
@@ -19,6 +20,10 @@ impl<'a> Reader<'a> {
         self.offset
     }
 
+    fn remaining(&self) -> usize {
+        self.bytes.len() - self.offset
+    }
+
     fn take<const N: usize>(&mut self) -> Result<[u8; N], Error> {
         let truncated = Error::Truncated {
             offset: self.offset,
@@ -35,5 +40,38 @@ impl<'a> Reader<'a> {
 
     pub(crate) fn i32(&mut self) -> Result<i32, Error> {
         self.take().map(i32::from_le_bytes)
+    }
+
+    pub(crate) fn guid(&mut self) -> Result<Guid, Error> {
+        Ok(Guid {
+            a: self.u32()?,
+            b: self.u32()?,
+            c: self.u32()?,
+            d: self.u32()?,
+        })
+    }
+
+    pub(crate) fn io_hash(&mut self) -> Result<IoHash, Error> {
+        self.take().map(IoHash)
+    }
+
+    /// Reads an `i32` element count of an array, for elements of
+    /// `element_size` bytes. A negative count is a bad value. If the
+    /// elements cannot fit in the remaining input, the result is
+    /// "truncated". So the caller can allocate `count` elements safely.
+    pub(crate) fn array_count(
+        &mut self,
+        element_size: usize,
+        field: &'static str,
+    ) -> Result<usize, Error> {
+        let offset = self.offset;
+        let count = self.i32()?;
+        let count = usize::try_from(count).map_err(|_| Error::BadValue { offset, field })?;
+        if count.saturating_mul(element_size) > self.remaining() {
+            return Err(Error::Truncated {
+                offset: self.offset,
+            });
+        }
+        Ok(count)
     }
 }

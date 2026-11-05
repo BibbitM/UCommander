@@ -6,6 +6,7 @@ use std::fmt;
 use super::PACKAGE_FILE_TAG;
 use crate::error::Error;
 use crate::reader::Reader;
+use crate::types::{Guid, IoHash};
 
 /// The byte-swapped package file tag.
 const PACKAGE_FILE_TAG_SWAPPED: u32 = PACKAGE_FILE_TAG.swap_bytes();
@@ -24,8 +25,12 @@ mod ue4 {
 /// UE5 file versions.
 mod ue5 {
     pub(super) const INITIAL_VERSION: i32 = 1000;
+    pub(super) const PACKAGE_SAVED_HASH: i32 = 1016;
     pub(super) const NEWEST: i32 = 1018;
 }
+
+/// Size of one custom version entry: GUID and `i32`.
+const CUSTOM_VERSION_SIZE: usize = 20;
 
 /// The fields of a package summary, in file order.
 ///
@@ -39,6 +44,17 @@ pub struct PackageSummary {
     pub file_version_ue4: i32,
     pub file_version_ue5: i32,
     pub file_version_licensee_ue: i32,
+    /// UE5 `PACKAGE_SAVED_HASH` and later.
+    pub saved_hash: Option<IoHash>,
+    pub total_header_size: i32,
+    pub custom_versions: Vec<CustomVersion>,
+}
+
+/// The version of one custom version key.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CustomVersion {
+    pub guid: Guid,
+    pub version: i32,
 }
 
 /// A problem that does not stop the parser.
@@ -126,6 +142,25 @@ pub fn read_summary(bytes: &[u8]) -> Result<SummaryRead, Error> {
         ue5::NEWEST,
         &mut warnings,
     );
+
+    let has_saved_hash = s.file_version_ue5 >= ue5::PACKAGE_SAVED_HASH;
+    if has_saved_hash {
+        s.saved_hash = Some(r.io_hash()?);
+        s.total_header_size = r.i32()?;
+    }
+
+    let count = r.array_count(CUSTOM_VERSION_SIZE, "custom version count")?;
+    s.custom_versions = Vec::with_capacity(count);
+    for _ in 0..count {
+        s.custom_versions.push(CustomVersion {
+            guid: r.guid()?,
+            version: r.i32()?,
+        });
+    }
+
+    if !has_saved_hash {
+        s.total_header_size = r.i32()?;
+    }
 
     Ok(SummaryRead {
         summary: s,

@@ -17,6 +17,8 @@ pub enum Error {
     UnsupportedVersion { field: &'static str, value: i32 },
     /// The package has no version numbers (cooked package).
     Unversioned,
+    /// A value that cannot be correct, at `offset`.
+    BadValue { offset: usize, field: &'static str },
 }
 
 impl fmt::Display for Error {
@@ -29,6 +31,9 @@ impl fmt::Display for Error {
                 write!(f, "unsupported version: {field} is {value}")
             }
             Self::Unversioned => f.write_str("unversioned package (not supported)"),
+            Self::BadValue { offset, field } => {
+                write!(f, "bad value of {field} at offset {offset}")
+            }
         }
     }
 }

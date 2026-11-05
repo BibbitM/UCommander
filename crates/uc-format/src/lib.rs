@@ -3,8 +3,10 @@
 mod error;
 pub mod package;
 mod reader;
+mod types;
 
 pub use error::Error;
+pub use types::{Guid, IoHash};
 
 #[cfg(test)]
 mod tests {

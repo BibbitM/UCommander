@@ -1,10 +1,10 @@
-//! Package summary: tag and file versions.
+//! Package summary: tag, file versions and custom versions.
 
 mod common;
 
 use common::{Summary, TAG_SWAPPED};
-use uc_format::Error;
 use uc_format::package::{Warning, read_summary};
+use uc_format::{Error, Guid, IoHash};
 
 #[test]
 fn reads_the_file_versions() {
@@ -31,6 +31,52 @@ fn reads_the_licensee_version() {
     let read = read_summary(&input.to_bytes()).unwrap();
 
     assert_eq!(read.summary.file_version_licensee_ue, 17);
+}
+
+#[test]
+fn reads_the_saved_hash_and_the_total_header_size() {
+    let bytes = Summary::default().to_bytes();
+
+    let summary = read_summary(&bytes).unwrap().summary;
+
+    let expected: [u8; 20] = std::array::from_fn(|i| i as u8 + 1);
+    assert_eq!(summary.saved_hash, Some(IoHash(expected)));
+    assert_eq!(summary.total_header_size, 0x1234);
+}
+
+#[test]
+fn an_older_ue5_version_has_no_saved_hash_and_the_old_total_header_size_position() {
+    let input = Summary {
+        file_version_ue5: 1015,
+        ..Summary::default()
+    };
+
+    let summary = read_summary(&input.to_bytes()).unwrap().summary;
+
+    assert_eq!(summary.saved_hash, None);
+    assert_eq!(summary.total_header_size, 0x1234);
+    assert_eq!(summary.custom_versions.len(), 2);
+}
+
+#[test]
+fn reads_the_custom_versions() {
+    let bytes = Summary::default().to_bytes();
+
+    let summary = read_summary(&bytes).unwrap().summary;
+
+    assert_eq!(summary.custom_versions.len(), 2);
+    let first = &summary.custom_versions[0];
+    assert_eq!(
+        first.guid,
+        Guid {
+            a: 0x9C54D522,
+            b: 0xA8264FBE,
+            c: 0x94210746,
+            d: 0x61B482D0
+        }
+    );
+    assert_eq!(first.version, 52);
+    assert_eq!(summary.custom_versions[1].version, 7);
 }
 
 #[test]
@@ -243,4 +289,33 @@ fn a_truncated_error_gives_the_offset_of_the_missing_value() {
         read_summary(&bytes[..9]).unwrap_err(),
         Error::Truncated { offset: 8 }
     );
+}
+
+#[test]
+fn a_very_large_custom_version_count_gives_an_error_without_allocation() {
+    let input = Summary {
+        custom_version_count: Some(i32::MAX),
+        ..Summary::default()
+    };
+
+    assert!(matches!(
+        read_summary(&input.to_bytes()).unwrap_err(),
+        Error::Truncated { .. }
+    ));
+}
+
+#[test]
+fn a_negative_custom_version_count_gives_an_error() {
+    let input = Summary {
+        custom_version_count: Some(-1),
+        ..Summary::default()
+    };
+
+    assert!(matches!(
+        read_summary(&input.to_bytes()).unwrap_err(),
+        Error::BadValue {
+            field: "custom version count",
+            ..
+        }
+    ));
 }
