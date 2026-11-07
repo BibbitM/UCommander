@@ -11,6 +11,9 @@ use uc_format::package::{EngineVersion, SummaryRead, Table, read_summary};
 
 /// The first read size. The parser asks for more if the summary is larger.
 const FIRST_READ_SIZE: usize = 64 * 1024;
+/// The largest read size. A real summary is much smaller, so a summary
+/// that needs more bytes has a damaged count or length.
+const MAX_READ_SIZE: usize = 16 * 1024 * 1024;
 
 /// Reads the summary of the package at `path`, and gives the output text.
 pub fn run(path: &Path) -> Result<String, String> {
@@ -19,7 +22,7 @@ pub fn run(path: &Path) -> Result<String, String> {
 }
 
 /// Reads the start of the file. If the parser says "truncated", reads two
-/// times more bytes, until the file ends.
+/// times more bytes, until the file ends or the read limit is reached.
 fn read_file(path: &Path) -> Result<SummaryRead, String> {
     let mut file = File::open(path).map_err(|error| error.to_string())?;
     let mut bytes = Vec::new();
@@ -31,7 +34,12 @@ fn read_file(path: &Path) -> Result<SummaryRead, String> {
             .read_to_end(&mut bytes)
             .map_err(|error| error.to_string())?;
         match read_summary(&bytes) {
-            Err(Error::Truncated { .. }) if bytes.len() == size => size *= 2,
+            Err(Error::Truncated { .. }) if bytes.len() == size => {
+                if size >= MAX_READ_SIZE {
+                    return Err("damaged package: the summary is larger than 16 MiB".to_string());
+                }
+                size = (size * 2).min(MAX_READ_SIZE);
+            }
             result => return result.map_err(|error| error.to_string()),
         }
     }

@@ -158,3 +158,24 @@ fn dump_of_the_blueprint_fixture_matches_the_snapshot() {
     assert!(output.status.success(), "{}", text(&output.stderr));
     assert_snapshot(&text(&output.stdout), "dump_bp_summary_actor.txt");
 }
+
+#[test]
+fn a_damaged_count_in_a_large_file_stops_at_the_read_limit() {
+    let mut bytes = Summary {
+        custom_version_count: Some(i32::MAX),
+        ..Summary::default()
+    }
+    .to_bytes();
+    // Larger than the read limit of 16 MiB.
+    bytes.resize(17 * 1024 * 1024, 0);
+    let path = temp_file("damaged-large.uasset", &bytes);
+
+    let output = dump(&path);
+
+    assert_eq!(output.status.code(), Some(1));
+    assert!(
+        text(&output.stderr).contains("summary is larger than 16 MiB"),
+        "{}",
+        text(&output.stderr)
+    );
+}
