@@ -34,9 +34,16 @@ See [docs/FEATURES.md](docs/FEATURES.md) for the full feature scope, and
    To check the download, compare its SHA-256 hash with `SHA256SUMS.txt`.
 2. Open the ZIP in Total Commander with Enter.
 3. Accept the installation.
-4. Make a custom column with the field `UCommanderContent.Is package`.
+4. Make a custom column with a field of `UCommanderContent`.
 
 The plugin needs no extra runtime.
+
+### Content fields
+
+| Field | Value |
+|---|---|
+| Is package | "Yes" when the file starts with the UE package file tag. |
+| Asset class | The class of the main asset of the package, for example `Blueprint`, `World` or `StaticMesh`. Empty when the file is not a package that UCommander can read. |
 
 ## Development
 
