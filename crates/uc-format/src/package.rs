@@ -2,6 +2,7 @@
 
 mod header;
 mod summary;
+mod version;
 
 pub use header::{HeaderRead, NameEntry, NameRef, PackageHeader, read_header};
 pub use summary::{

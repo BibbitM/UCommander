@@ -4,6 +4,7 @@
 use std::fmt;
 
 use super::PACKAGE_FILE_TAG;
+use super::version::{ue4, ue5};
 use crate::error::Error;
 use crate::reader::Reader;
 use crate::types::{Guid, IoHash};
@@ -15,38 +16,6 @@ const PACKAGE_FILE_TAG_SWAPPED: u32 = PACKAGE_FILE_TAG.swap_bytes();
 const LEGACY_FILE_VERSION_NEWEST: i32 = -9;
 /// First legacy file version with the UE5 file version.
 const LEGACY_FILE_VERSION_UE5: i32 = -8;
-
-/// UE4 file versions.
-mod ue4 {
-    pub(super) const OLDEST_LOADABLE_PACKAGE: i32 = 214;
-    pub(super) const WORLD_LEVEL_INFO: i32 = 224;
-    pub(super) const ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE: i32 = 278;
-    pub(super) const CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS: i32 = 326;
-    pub(super) const ENGINE_VERSION_OBJECT: i32 = 336;
-    pub(super) const ADD_STRING_ASSET_REFERENCES_MAP: i32 = 384;
-    pub(super) const PACKAGE_SUMMARY_HAS_COMPATIBLE_ENGINE_VERSION: i32 = 444;
-    pub(super) const SERIALIZE_TEXT_IN_PACKAGES: i32 = 459;
-    pub(super) const PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS: i32 = 507;
-    pub(super) const ADDED_SEARCHABLE_NAMES: i32 = 510;
-    pub(super) const ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID: i32 = 516;
-    pub(super) const ADDED_PACKAGE_OWNER: i32 = 518;
-    pub(super) const NON_OUTER_PACKAGE_IMPORT: i32 = 520;
-    pub(super) const NEWEST: i32 = 522;
-}
-
-/// UE5 file versions.
-mod ue5 {
-    pub(super) const INITIAL_VERSION: i32 = 1000;
-    pub(super) const NAMES_REFERENCED_FROM_EXPORT_DATA: i32 = 1001;
-    pub(super) const PAYLOAD_TOC: i32 = 1002;
-    pub(super) const ADD_SOFTOBJECTPATH_LIST: i32 = 1008;
-    pub(super) const DATA_RESOURCES: i32 = 1009;
-    pub(super) const METADATA_SERIALIZATION_OFFSET: i32 = 1014;
-    pub(super) const VERSE_CELLS: i32 = 1015;
-    pub(super) const PACKAGE_SAVED_HASH: i32 = 1016;
-    pub(super) const IMPORT_TYPE_HIERARCHIES: i32 = 1018;
-    pub(super) const NEWEST: i32 = 1018;
-}
 
 /// Package flag `FilterEditorOnly`: the package has no editor-only data.
 const PKG_FILTER_EDITOR_ONLY: u32 = 0x8000_0000;

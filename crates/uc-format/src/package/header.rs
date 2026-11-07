@@ -2,13 +2,9 @@
 //! layout is in `docs/formats/package.md`.
 
 use super::summary::{PackageSummary, Table, Warning, read_summary};
+use super::version::ue4;
 use crate::error::Error;
 use crate::reader::Reader;
-
-/// UE4 file versions.
-mod ue4 {
-    pub(super) const NAME_HASHES_SERIALIZED: i32 = 504;
-}
 
 /// The longest name map entry, in characters with the null terminator
 /// (`NAME_SIZE`).
