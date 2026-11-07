@@ -144,6 +144,7 @@ not a Blueprint or a World, to show one more class.
 | 4 | Move the header read loop to uc-format | Refactor only. `read_header_from` in `uc-format`, `uc dump` uses it. Tests for the loop: a header larger than 64 KiB, a damaged size above 16 MiB, an I/O error. The `uc dump` snapshots do not change. |
 | 5 | Write content values by field type | Refactor in `uc-content`: a value type for each field. FFI tests for **Is package** do not change. |
 | 6 | Add the Asset class content field | Field index 1. FFI tests: field list, F1, F2, not a package, damaged package, missing file, small `maxlen`. Update `docs/tc-api/content.md` if the guide check changes a fact. |
+| 6a | Add the material fixture | F3, its `.pkginfo.txt` and `.expected.json` (all keys, as F1 and F2). F3 in each fixture test and damaged-input test, and in the FFI tests. Added after increment 7 was done (owner decision 4). |
 | 7 | Update changelog and README for point 3 | `CHANGELOG.md` `[Unreleased]`, README: the field list. |
 | 8 | Set point 3 status to done | `docs/PLAN.md`. The last commit. |
 
@@ -196,7 +197,12 @@ each open question below:
    order. The rule is in `docs/formats/package.md`, "Main asset". So an
    OFPA external actor package shows its actor class.
 3. The cache comes in point 4.
-4. F3 is optional. Point 3 continues without it.
+4. F3 is optional. Point 3 continues without it. **Changed later:** the
+   owner made F3 (`M_Summary.uasset`) and its `PkgInfo` output, and asked
+   to add it before the push. Increment 6a adds it. The expected values
+   are copied by hand from the `PkgInfo` text. A one-time script extracted
+   the names from the same text (point 2 owner decision 2). The script is
+   not in the repository. The owner checks the values.
 5. The field shows the short class name.
 6. A damaged package gives `ft_fieldempty`.
 

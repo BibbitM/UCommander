@@ -6,7 +6,11 @@ use std::path::PathBuf;
 use uc_format::Error;
 use uc_format::package::{PackageHeader, PackageIndex, read_header};
 
-const FIXTURES: [&str; 2] = ["BP_SummaryActor.uasset", "L_SummaryLevel.umap"];
+const FIXTURES: [&str; 3] = [
+    "BP_SummaryActor.uasset",
+    "L_SummaryLevel.umap",
+    "M_Summary.uasset",
+];
 
 /// Entry sizes of a UE 5.8 editor package. Source: `docs/formats/package.md`,
 /// observed in fixture `BP_SummaryActor.uasset`.

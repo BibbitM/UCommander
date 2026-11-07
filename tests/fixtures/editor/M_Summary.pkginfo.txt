@@ -1,0 +1,231 @@
+﻿********************************************
+Package '/Temp/Summary/M_Summary' Summary
+--------------------------------------------
+                 Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/Summary/M_Summary.uasset
+             File Version: 1018
+           Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+           Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+             PackageFlags: 0
+                NameCount: 99
+               NameOffset: 541
+              ImportCount: 3
+             ImportOffset: 3171
+              ExportCount: 2
+             ExportOffset: 3291
+        Compression Flags: 0
+               Total Size: 11140
+          Custom Versions:
+                Key=12f88b9f-8875-4afc-a67c-d90c383abd29 Version = 49 Friendly Name = Dev-Rendering
+                Key=375ec13c-06e4-48fb-b500-84f0262a717e Version = 4 Friendly Name = Dev-Core
+                Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+                Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+                Key=9c54d522-a826-4fbe-9421-074661b482d0 Version = 44 Friendly Name = Release
+                Key=cffc743f-43b0-4480-9391-14df171d2073 Version = 37 Friendly Name = Dev-Framework
+                Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+                Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+                Key=e7086368-6b23-4c58-8439-1b7016265e91 Version = 20 Friendly Name = FortniteRelease
+
+                SavedHash: ffb6806994c737ddb837dd099af7eab6fb38b329
+           PersistentGuid: 6B6604834F0FDDEBAE09358693CB63B0
+              Generations:
+                        0) ExportCount=2, NameCount=99
+--------------------------------------------
+Name Map
+========
+        0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+        1: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+        2: Name 'AmbientOcclusion' Comparison Index 157451 Display Index 157451 [Internal: AmbientOcclusion, 0]
+        3: Name 'ArrayProperty' Comparison Index 26 Display Index 26 [Internal: ArrayProperty, 0]
+        4: Name 'BaseColor' Comparison Index 97013 Display Index 97013 [Internal: BaseColor, 0]
+        5: Name 'bHasCustomizedUVs' Comparison Index 458097 Display Index 458097 [Internal: bHasCustomizedUVs, 0]
+        6: Name 'bHasFirstPersonOutput' Comparison Index 458139 Display Index 458139 [Internal: bHasFirstPersonOutput, 0]
+        7: Name 'bHasMaterialCacheOutput' Comparison Index 458121 Display Index 458121 [Internal: bHasMaterialCacheOutput, 0]
+        8: Name 'bHasMaterialLayers' Comparison Index 454968 Display Index 454968 [Internal: bHasMaterialLayers, 0]
+        9: Name 'bHasMeshPaintTexture' Comparison Index 458093 Display Index 458093 [Internal: bHasMeshPaintTexture, 0]
+        10: Name 'bHasPerInstanceCustomData' Comparison Index 458108 Display Index 458108 [Internal: bHasPerInstanceCustomData, 0]
+        11: Name 'bHasPerInstanceRandom' Comparison Index 458104 Display Index 458104 [Internal: bHasPerInstanceRandom, 0]
+        12: Name 'bHasRuntimeVirtualTextureOutput' Comparison Index 458143 Display Index 458143 [Internal: bHasRuntimeVirtualTextureOutput, 0]
+        13: Name 'bHasSceneColor' Comparison Index 458112 Display Index 458112 [Internal: bHasSceneColor, 0]
+        14: Name 'bHasVertexInterpolator' Comparison Index 458100 Display Index 458100 [Internal: bHasVertexInterpolator, 0]
+        15: Name 'bHasWorldPosition' Comparison Index 458090 Display Index 458090 [Internal: bHasWorldPosition, 0]
+        16: Name 'Blends' Comparison Index 453963 Display Index 453963 [Internal: Blends, 0]
+        17: Name 'bMaterialCacheHasNonUVDerivedExpression' Comparison Index 458115 Display Index 458115 [Internal: bMaterialCacheHasNonUVDerivedExpression, 0]
+        18: Name 'BoolProperty' Comparison Index 8 Display Index 8 [Internal: BoolProperty, 0]
+        19: Name 'bSamplesMaterialCache' Comparison Index 458125 Display Index 458125 [Internal: bSamplesMaterialCache, 0]
+        20: Name 'bUsesMotionVectorWorldOffset' Comparison Index 458129 Display Index 458129 [Internal: bUsesMotionVectorWorldOffset, 0]
+        21: Name 'bUsesTemporalResponsiveness' Comparison Index 458134 Display Index 458134 [Internal: bUsesTemporalResponsiveness, 0]
+        22: Name 'ClearCoat' Comparison Index 252783 Display Index 252783 [Internal: ClearCoat, 0]
+        23: Name 'ClearCoatRoughness' Comparison Index 252785 Display Index 252785 [Internal: ClearCoatRoughness, 0]
+        24: Name 'ColorMaterialInput' Comparison Index 129627 Display Index 129627 [Internal: ColorMaterialInput, 0]
+        25: Name 'CustomizedUVs' Comparison Index 486501 Display Index 486501 [Internal: CustomizedUVs, 0]
+        26: Name 'DoubleVectorValues' Comparison Index 458219 Display Index 458219 [Internal: DoubleVectorValues, 0]
+        27: Name 'DynamicParameterNames' Comparison Index 458156 Display Index 458156 [Internal: DynamicParameterNames, 0]
+        28: Name 'DynamicSwitchValues' Comparison Index 458225 Display Index 458225 [Internal: DynamicSwitchValues, 0]
+        29: Name 'EditorOnlyData' Comparison Index 486480 Display Index 486480 [Internal: EditorOnlyData, 0]
+        30: Name 'EmissiveColor' Comparison Index 252606 Display Index 252606 [Internal: EmissiveColor, 0]
+        31: Name 'FloatProperty' Comparison Index 11 Display Index 11 [Internal: FloatProperty, 0]
+        32: Name 'FontPageValues' Comparison Index 458203 Display Index 458203 [Internal: FontPageValues, 0]
+        33: Name 'FontValues' Comparison Index 458206 Display Index 458206 [Internal: FontValues, 0]
+        34: Name 'FunctionInfos' Comparison Index 458180 Display Index 458180 [Internal: FunctionInfos, 0]
+        35: Name 'FunctionInfosStateCRC' Comparison Index 458176 Display Index 458176 [Internal: FunctionInfosStateCRC, 0]
+        36: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+        37: Name 'IntProperty' Comparison Index 5 Display Index 5 [Internal: IntProperty, 0]
+        38: Name 'Layers' Comparison Index 152518 Display Index 152518 [Internal: Layers, 0]
+        39: Name 'LightingGuid' Comparison Index 482849 Display Index 482849 [Internal: LightingGuid, 0]
+        40: Name 'LinearColor' Comparison Index 152 Display Index 152 [Internal: LinearColor, 0]
+        41: Name 'MapProperty' Comparison Index 78 Display Index 78 [Internal: MapProperty, 0]
+        42: Name 'MaterialCachedParameterEntry' Comparison Index 128705 Display Index 128705 [Internal: MaterialCachedParameterEntry, 0]
+        43: Name 'MaterialCacheTags' Comparison Index 458160 Display Index 458160 [Internal: MaterialCacheTags, 0]
+        44: Name 'MaterialCacheUVCoordinatesUsedMask' Comparison Index 458148 Display Index 458148 [Internal: MaterialCacheUVCoordinatesUsedMask, 0]
+        45: Name 'MaterialFunctionInfo' Comparison Index 128691 Display Index 128691 [Internal: MaterialFunctionInfo, 0]
+        46: Name 'MaterialLayers' Comparison Index 454971 Display Index 454971 [Internal: MaterialLayers, 0]
+        47: Name 'MaterialLayersFunctionsRuntimeData' Comparison Index 109323 Display Index 109323 [Internal: MaterialLayersFunctionsRuntimeData, 0]
+        48: Name 'MaterialParameterCollectionInfo' Comparison Index 128695 Display Index 128695 [Internal: MaterialParameterCollectionInfo, 0]
+        49: Name 'MaterialParameterInfo' Comparison Index 109355 Display Index 109355 [Internal: MaterialParameterInfo, 0]
+        50: Name 'Metallic' Comparison Index 97024 Display Index 97024 [Internal: Metallic, 0]
+        51: Name 'NamedGrassTypes' Comparison Index 458163 Display Index 458163 [Internal: NamedGrassTypes, 0]
+        52: Name 'NameProperty' Comparison Index 17 Display Index 17 [Internal: NameProperty, 0]
+        53: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+        54: Name 'Normal' Comparison Index 24074 Display Index 24074 [Internal: Normal, 0]
+        55: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+        56: Name 'Opacity' Comparison Index 157436 Display Index 157436 [Internal: Opacity, 0]
+        57: Name 'OpacityMask' Comparison Index 252620 Display Index 252620 [Internal: OpacityMask, 0]
+        58: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+        59: Name 'ParameterCollectionInfos' Comparison Index 458172 Display Index 458172 [Internal: ParameterCollectionInfos, 0]
+        60: Name 'ParameterCollectionValues' Comparison Index 458208 Display Index 458208 [Internal: ParameterCollectionValues, 0]
+        61: Name 'ParameterInfoSet' Comparison Index 458012 Display Index 458012 [Internal: ParameterInfoSet, 0]
+        62: Name 'PropertyConnectedMask' Comparison Index 296234 Display Index 296234 [Internal: PropertyConnectedMask, 0]
+        63: Name 'QualityLevelsUsed' Comparison Index 458153 Display Index 458153 [Internal: QualityLevelsUsed, 0]
+        64: Name 'ReferencedExternalCodeExpressionClasses' Comparison Index 458183 Display Index 458183 [Internal: ReferencedExternalCodeExpressionClasses, 0]
+        65: Name 'ReferencedTextureCollections' Comparison Index 458189 Display Index 458189 [Internal: ReferencedTextureCollections, 0]
+        66: Name 'Refraction' Comparison Index 252627 Display Index 252627 [Internal: Refraction, 0]
+        67: Name 'Roughness' Comparison Index 97028 Display Index 97028 [Internal: Roughness, 0]
+        68: Name 'RuntimeEntries' Comparison Index 458242 Display Index 458242 [Internal: RuntimeEntries, 0]
+        69: Name 'RuntimeVirtualTextureValues' Comparison Index 458198 Display Index 458198 [Internal: RuntimeVirtualTextureValues, 0]
+        70: Name 'ScalarMaterialInput' Comparison Index 129630 Display Index 129630 [Internal: ScalarMaterialInput, 0]
+        71: Name 'ScalarPrimitiveDataIndexValues' Comparison Index 458237 Display Index 458237 [Internal: ScalarPrimitiveDataIndexValues, 0]
+        72: Name 'ScalarValues' Comparison Index 458229 Display Index 458229 [Internal: ScalarValues, 0]
+        73: Name 'SetProperty' Comparison Index 81 Display Index 81 [Internal: SetProperty, 0]
+        74: Name 'SoftObjectProperty' Comparison Index 54 Display Index 54 [Internal: SoftObjectProperty, 0]
+        75: Name 'SparseVolumeTextureValues' Comparison Index 458194 Display Index 458194 [Internal: SparseVolumeTextureValues, 0]
+        76: Name 'Specular' Comparison Index 97026 Display Index 97026 [Internal: Specular, 0]
+        77: Name 'StateId' Comparison Index 458000 Display Index 458000 [Internal: StateId, 0]
+        78: Name 'StaticSwitchValues' Comparison Index 458077 Display Index 458077 [Internal: StaticSwitchValues, 0]
+        79: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+        80: Name 'SubsurfaceColor' Comparison Index 157448 Display Index 157448 [Internal: SubsurfaceColor, 0]
+        81: Name 'SurfaceThickness' Comparison Index 500945 Display Index 500945 [Internal: SurfaceThickness, 0]
+        82: Name 'Tangent' Comparison Index 24076 Display Index 24076 [Internal: Tangent, 0]
+        83: Name 'TextureCollectionValues' Comparison Index 458212 Display Index 458212 [Internal: TextureCollectionValues, 0]
+        84: Name 'TextureValues' Comparison Index 458216 Display Index 458216 [Internal: TextureValues, 0]
+        85: Name 'UInt32Property' Comparison Index 72 Display Index 72 [Internal: UInt32Property, 0]
+        86: Name 'UInt64Property' Comparison Index 69 Display Index 69 [Internal: UInt64Property, 0]
+        87: Name 'Vector2MaterialInput' Comparison Index 129638 Display Index 129638 [Internal: Vector2MaterialInput, 0]
+        88: Name 'Vector4d' Comparison Index 202 Display Index 202 [Internal: Vector4d, 0]
+        89: Name 'VectorMaterialInput' Comparison Index 129634 Display Index 129634 [Internal: VectorMaterialInput, 0]
+        90: Name 'VectorPrimitiveDataIndexValues' Comparison Index 458232 Display Index 458232 [Internal: VectorPrimitiveDataIndexValues, 0]
+        91: Name 'VectorValues' Comparison Index 458222 Display Index 458222 [Internal: VectorValues, 0]
+        92: Name '/Game/Summary/M_Summary' Comparison Index 1144751 Display Index 1144751 [Internal: /Game/Summary/M_Summary, 0]
+        93: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+        94: Name 'M_Summary' Comparison Index 1144755 Display Index 1144755 [Internal: M_Summary, 0]
+        95: Name 'M_SummaryEditorOnlyData' Comparison Index 1144757 Display Index 1144757 [Internal: M_SummaryEditorOnlyData, 0]
+        96: Name 'Material' Comparison Index 34508 Display Index 34508 [Internal: Material, 0]
+        97: Name 'MaterialEditorOnlyData' Comparison Index 128640 Display Index 128640 [Internal: MaterialEditorOnlyData, 0]
+        98: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+--------------------------------------------
+Import Map
+==========
+        *************************
+        Import 0: 'Material'
+                       Outer: '/Script/Engine' (-3)
+                     Package: '/Script/Engine'
+                       Class: 'Class'
+                ClassPackage: '/Script/CoreUObject'
+                     XObject: NULL
+                 SourceIndex: -1
+                  All Depends:
+        *************************
+        Import 1: 'MaterialEditorOnlyData'
+                       Outer: '/Script/Engine' (-3)
+                     Package: '/Script/Engine'
+                       Class: 'Class'
+                ClassPackage: '/Script/CoreUObject'
+                     XObject: NULL
+                 SourceIndex: -1
+                  All Depends:
+        *************************
+        Import 2: '/Script/Engine'
+                       Outer: 'None' (0)
+                     Package: 'None'
+                       Class: 'Package'
+                ClassPackage: '/Script/CoreUObject'
+                     XObject: NULL
+                 SourceIndex: -1
+                  All Depends:
+--------------------------------------------
+        Packages referenced by /Temp/Summary/M_Summary:
+                0) /Script/Engine
+                1) /Script/CoreUObject
+--------------------------------------------
+Export Map
+==========
+        *************************
+        Export 0: 'M_Summary'
+                         Class: 'Material' (-1)
+                        Parent: '' (0)
+                      Template: '' (0)
+                         Outer: '' (0)
+                   ObjectFlags: 0x0000000B
+                    Total Size: 184
+                        Offset: 8636
+                        Object: VALID
+                      HashNext: -1
+                 bNotForClient: 0
+                 bNotForServer: 0
+                  DependsMap:
+                  All Depends:
+        *************************
+        Export 1: 'M_SummaryEditorOnlyData'
+                         Class: 'MaterialEditorOnlyData' (-2)
+                        Parent: '' (0)
+                      Template: '' (0)
+                         Outer: '/Temp/Summary/M_Summary.M_Summary' (1)
+                   ObjectFlags: 0x00000009
+                    Total Size: 2268
+                        Offset: 8820
+                        Object: VALID
+                      HashNext: -1
+                 bNotForClient: 0
+                 bNotForServer: 0
+                  DependsMap:
+                  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+                0) Material /Temp/Summary/M_Summary.M_Summary: 256x256          Image Data:4584 bytes
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        474
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+                0) /Script/Engine.Material'/Temp/Summary/M_Summary.M_Summary' (10 Tags)
+                        "ShadingModel": "MSM_DefaultLit"
+                        "HasSceneColor": "False"
+                        "HasPerInstanceRandom": "False"
+                        "HasPerInstanceCustomData": "False"
+                        "HasVertexInterpolator": "False"
+                        "BlendMode": "BLEND_Opaque"
+                        "TranslucencyLightingMode": "TLM_VolumetricNonDirectional"
+                        "ShadingModels": "(ShadingModelField=2)"
+                        "MaterialDecalResponse": "MDR_ColorNormalRoughness"
+                        "MaterialDomain": "MD_Surface"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

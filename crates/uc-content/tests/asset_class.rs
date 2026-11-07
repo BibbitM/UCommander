@@ -97,6 +97,14 @@ fn the_level_fixture_gives_world() {
 }
 
 #[test]
+fn the_material_fixture_gives_material() {
+    let (result, text) = get_text(&fixture("M_Summary.uasset"), 256);
+
+    assert_eq!(result, FT_STRINGW);
+    assert_eq!(text, "Material");
+}
+
+#[test]
 fn a_package_without_an_asset_has_an_empty_field() {
     let mut bytes = fixture_bytes("BP_SummaryActor.uasset");
     // The package flags follow the package name in the summary.

@@ -41,3 +41,8 @@ fn bp_summary_actor_asset_class() {
 fn l_summary_level_asset_class() {
     check("L_SummaryLevel.umap", "L_SummaryLevel.expected.json");
 }
+
+#[test]
+fn m_summary_asset_class() {
+    check("M_Summary.uasset", "M_Summary.expected.json");
+}
