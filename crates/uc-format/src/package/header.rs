@@ -1,6 +1,7 @@
 //! Package header: the summary and the tables after it (name map, import
 //! table, export table). The layout is in `docs/formats/package.md`.
 
+use super::objects::check_outer_loops;
 use super::summary::{PackageSummary, Table, Warning, read_summary};
 use super::version::{ue4, ue5};
 use crate::error::Error;
@@ -151,15 +152,17 @@ pub fn read_header(bytes: &[u8]) -> Result<HeaderRead, Error> {
         imports: usize::try_from(summary.imports.count).unwrap_or(0),
         exports: usize::try_from(summary.exports.count).unwrap_or(0),
     };
-    let imports = read_imports(bytes, &summary, &limits)?;
-    let exports = read_exports(bytes, &summary, &limits)?;
+    let (imports, import_entry_size) = read_imports(bytes, &summary, &limits)?;
+    let (exports, export_entry_size) = read_exports(bytes, &summary, &limits)?;
+    let header = PackageHeader {
+        summary,
+        names,
+        imports,
+        exports,
+    };
+    check_outer_loops(&header, import_entry_size, export_entry_size)?;
     Ok(HeaderRead {
-        header: PackageHeader {
-            summary,
-            names,
-            imports,
-            exports,
-        },
+        header,
         warnings: read.warnings,
     })
 }
@@ -191,7 +194,7 @@ fn read_imports(
     bytes: &[u8],
     summary: &PackageSummary,
     limits: &Limits,
-) -> Result<Vec<ObjectImport>, Error> {
+) -> Result<(Vec<ObjectImport>, usize), Error> {
     let has_package_name = summary.file_version_ue4 >= ue4::NON_OUTER_PACKAGE_IMPORT;
     let has_optional = summary.file_version_ue5 >= ue5::OPTIONAL_RESOURCES;
     let entry_size = 28 + 8 * usize::from(has_package_name) + 4 * usize::from(has_optional);
@@ -217,14 +220,14 @@ fn read_imports(
             import_optional,
         });
     }
-    Ok(imports)
+    Ok((imports, entry_size))
 }
 
 fn read_exports(
     bytes: &[u8],
     summary: &PackageSummary,
     limits: &Limits,
-) -> Result<Vec<ObjectExport>, Error> {
+) -> Result<(Vec<ObjectExport>, usize), Error> {
     let (v4, v5) = (summary.file_version_ue4, summary.file_version_ue5);
     let has_template = v4 >= ue4::TEMPLATE_INDEX_IN_COOKED_EXPORTS;
     let has_64bit_sizes = v4 >= ue4::EXPORTMAP_SERIALSIZES_64BIT;
@@ -311,7 +314,7 @@ fn read_exports(
             script_serialization_end_offset,
         });
     }
-    Ok(exports)
+    Ok((exports, entry_size))
 }
 
 fn export_dependencies(r: &mut Reader) -> Result<ExportDependencies, Error> {
