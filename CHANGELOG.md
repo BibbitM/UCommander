@@ -7,6 +7,12 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Added
+
+- Package summary parser for UE 5.8 editor packages, with errors for
+  unsupported packages (UE4, unversioned, byte-swapped, compressed).
+- Development tool `uc dump <file>`: shows the package summary as text.
+
 ## [0.1.0] - 2026-11-04
 
 ### Added

@@ -12,5 +12,8 @@ publish.workspace = true
 name = "uc"
 path = "src/main.rs"
 
+[dependencies]
+uc-format = { path = "../uc-format" }
+
 [lints]
 workspace = true

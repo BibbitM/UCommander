@@ -16,6 +16,10 @@
 **/tests/fixtures/**/*.utoc   filter=lfs diff=lfs merge=lfs -text
 **/tests/fixtures/**/*.ucas   filter=lfs diff=lfs merge=lfs -text
 
+# PkgInfo output of the fixtures: keep the bytes exactly as UE wrote them
+# (BOM, mixed line ends, control characters).
+**/tests/fixtures/**/*.pkginfo.txt -text
+
 # Other binary files.
 *.png binary
 *.ico binary
