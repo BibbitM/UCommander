@@ -164,3 +164,20 @@ fn a_name_longer_than_1024_characters_is_a_bad_value() {
         );
     }
 }
+
+#[test]
+fn a_name_ends_at_the_first_null_character() {
+    let input = Package {
+        names: vec![
+            Name::ansi("Foo\0Bar"),
+            Name(Str::Utf16("Żół\0w"), 1, 2),
+            Name::ansi("None"),
+        ],
+        ..Package::new(&[])
+    };
+
+    let names = read_header(&input.to_bytes()).unwrap().header.names;
+
+    let texts: Vec<_> = names.iter().map(|name| name.text.as_str()).collect();
+    assert_eq!(texts, ["Foo", "Żół", "None"]);
+}

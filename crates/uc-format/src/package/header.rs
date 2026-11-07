@@ -178,7 +178,11 @@ fn read_names(bytes: &[u8], summary: &PackageSummary) -> Result<Vec<NameEntry>, 
     // parser reads.
     let mut names = Vec::new();
     for _ in 0..count {
-        let text = r.string_limited("name", NAME_SIZE)?;
+        let mut text = r.string_limited("name", NAME_SIZE)?;
+        // UE reads the name as a null-terminated string.
+        if let Some(end) = text.find('\0') {
+            text.truncate(end);
+        }
         let (non_case_preserving_hash, case_preserving_hash) = if has_hashes {
             (Some(r.u16()?), Some(r.u16()?))
         } else {
