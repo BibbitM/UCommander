@@ -129,6 +129,23 @@ fn a_file_that_is_not_a_package_has_an_empty_field() {
 }
 
 #[test]
+fn a_package_that_the_parser_does_not_support_has_an_empty_field() {
+    let bytes = fixture_bytes("BP_SummaryActor.uasset");
+    // Bytes 4..8: legacy file version. Bytes 12..24: UE4, UE5 and licensee
+    // versions.
+    let mut ue4 = bytes.clone();
+    ue4[4..8].copy_from_slice(&(-7i32).to_le_bytes());
+    let mut unversioned = bytes;
+    unversioned[12..24].fill(0);
+
+    for (name, bytes) in [("Ue4.uasset", ue4), ("Unversioned.uasset", unversioned)] {
+        let path = test_file(name, &bytes);
+
+        assert_eq!(get_text(&path, 256).0, FT_FIELDEMPTY, "{name}");
+    }
+}
+
+#[test]
 fn a_damaged_package_has_an_empty_field() {
     let bytes = fixture_bytes("BP_SummaryActor.uasset");
     // In the summary, in the name map, in the import table, in the export
