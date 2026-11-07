@@ -6,7 +6,11 @@ use std::path::PathBuf;
 use uc_format::Error;
 use uc_format::package::read_summary;
 
-const FIXTURES: [&str; 2] = ["BP_SummaryActor.uasset", "L_SummaryLevel.umap"];
+const FIXTURES: [&str; 3] = [
+    "BP_SummaryActor.uasset",
+    "L_SummaryLevel.umap",
+    "M_Summary.uasset",
+];
 
 fn fixture(name: &str) -> Vec<u8> {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))

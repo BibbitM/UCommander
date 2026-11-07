@@ -164,6 +164,11 @@ fn level_fixture_gives_the_expected_summary() {
 }
 
 #[test]
+fn material_fixture_gives_the_expected_summary() {
+    check("M_Summary.uasset", "M_Summary.expected.json");
+}
+
+#[test]
 fn the_fixture_starts_with_the_little_endian_tag() {
     let bytes = std::fs::read(fixture("BP_SummaryActor.uasset")).unwrap();
 
@@ -172,7 +177,11 @@ fn the_fixture_starts_with_the_little_endian_tag() {
 
 #[test]
 fn the_name_map_starts_after_the_summary() {
-    for package in ["BP_SummaryActor.uasset", "L_SummaryLevel.umap"] {
+    for package in [
+        "BP_SummaryActor.uasset",
+        "L_SummaryLevel.umap",
+        "M_Summary.uasset",
+    ] {
         let bytes = std::fs::read(fixture(package)).unwrap();
 
         let read = read_summary(&bytes).unwrap();

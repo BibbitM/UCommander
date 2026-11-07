@@ -10,8 +10,8 @@ use std::fs::File;
 use std::io::{self, Read};
 use std::path::Path;
 
-use uc_format::package::has_package_file_tag;
-use uc_tc::buffers::{read_wide_path, write_ansi};
+use uc_format::package::{ReadError, has_package_file_tag, read_header_from};
+use uc_tc::buffers::{read_wide_path, write_ansi, write_utf16};
 use uc_tc::content::{DefaultParams, FieldType, NO_MORE_FIELDS, ValueError};
 use uc_tc::guard;
 
@@ -20,15 +20,34 @@ const DETECT_STRING: &str = r#"EXT="UASSET" | EXT="UMAP""#;
 
 struct Field {
     name: &'static str,
+    /// The type that `ContentGetSupportedField` gives.
     field_type: FieldType,
+    /// Gives the value of the field for a file. `None` when the file has no
+    /// value. An error is an I/O error.
+    value: fn(&Path) -> io::Result<Option<Value>>,
+}
+
+/// A field value, before the plugin writes it into the TC buffer.
+enum Value {
+    Boolean(bool),
+    /// Written as UTF-16 (`ft_stringw`). The field declares `ft_string`.
+    Text(String),
 }
 
 /// The fields in TC field index order. Names must stay the same after 1.0,
 /// because users save them in column sets and searches.
-const FIELDS: &[Field] = &[Field {
-    name: "Is package",
-    field_type: FieldType::Boolean,
-}];
+const FIELDS: &[Field] = &[
+    Field {
+        name: "Is package",
+        field_type: FieldType::Boolean,
+        value: is_package,
+    },
+    Field {
+        name: "Asset class",
+        field_type: FieldType::String,
+        value: asset_class,
+    },
+];
 
 fn field(index: i32) -> Option<&'static Field> {
     usize::try_from(index)
@@ -105,24 +124,62 @@ pub unsafe extern "system" fn ContentGetValueW(
         let Some(path) = (unsafe { read_wide_path(file_name) }) else {
             return ValueError::FileError.code();
         };
-        if field_value.is_null() || maxlen < size_of::<i32>() as i32 {
+        if field_value.is_null() {
             return ValueError::FieldEmpty.code();
         }
-        match is_package(&path) {
-            Ok(value) => {
-                // SAFETY: `field_value` is not null and has at least 4 bytes.
-                // TC gives no alignment guarantee, so write unaligned.
-                unsafe { field_value.cast::<i32>().write_unaligned(i32::from(value)) };
-                field.field_type.code()
-            }
+        match (field.value)(&path) {
+            // SAFETY: `field_value` is not null, and TC guarantees `maxlen`
+            // writable bytes.
+            Ok(Some(value)) => unsafe { write_value(&value, field_value, maxlen) },
+            Ok(None) => ValueError::FieldEmpty.code(),
             Err(_) => ValueError::FileError.code(),
         }
     })
 }
 
+/// Writes `value` in the format of its type, and gives the return value of
+/// `ContentGetValueW`. A buffer that is too small gives `ft_fieldempty`.
+///
+/// # Safety
+///
+/// `field_value` must not be null, and must be valid for writes of
+/// `maxlen` bytes. It can be unaligned.
+unsafe fn write_value(value: &Value, field_value: *mut c_void, maxlen: i32) -> i32 {
+    match *value {
+        Value::Boolean(value) => {
+            if maxlen < size_of::<i32>() as i32 {
+                return ValueError::FieldEmpty.code();
+            }
+            // SAFETY: the caller guarantees `maxlen` bytes, at least 4. TC
+            // gives no alignment guarantee, so write unaligned.
+            unsafe { field_value.cast::<i32>().write_unaligned(i32::from(value)) };
+            FieldType::Boolean.code()
+        }
+        Value::Text(ref text) => {
+            // One UTF-16 unit for the NUL at least.
+            if maxlen < size_of::<u16>() as i32 {
+                return ValueError::FieldEmpty.code();
+            }
+            // SAFETY: the caller guarantees `maxlen` writable bytes.
+            unsafe { write_utf16(field_value.cast(), maxlen, text) };
+            FieldType::StringW.code()
+        }
+    }
+}
+
 /// Reads the first 4 bytes of the file, and checks the package file tag.
-fn is_package(path: &Path) -> io::Result<bool> {
+fn is_package(path: &Path) -> io::Result<Option<Value>> {
     let mut head = Vec::with_capacity(4);
     File::open(path)?.take(4).read_to_end(&mut head)?;
-    Ok(has_package_file_tag(&head))
+    Ok(Some(Value::Boolean(has_package_file_tag(&head))))
+}
+
+/// Reads the package header, and gives the class of the main asset. A file
+/// that the parser cannot read has no value.
+fn asset_class(path: &Path) -> io::Result<Option<Value>> {
+    match read_header_from(File::open(path)?) {
+        Ok(read) => Ok(read.header.asset_class().map(Value::Text)),
+        Err(ReadError::Io(error)) => Err(error),
+        Err(_) => Ok(None),
+    }
 }

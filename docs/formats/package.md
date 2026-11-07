@@ -34,6 +34,16 @@ The UE58 and UE583 files, with paths relative to `Engine/Source/Runtime/`:
 | `UnrealNames.cpp` | `Core/Private/UObject/UnrealNames.cpp` |
 | `NameTypes.h` | `Core/Public/UObject/NameTypes.h` |
 | `Archive.cpp` | `Core/Private/Serialization/Archive.cpp` |
+| `Package.cpp` | `CoreUObject/Private/UObject/Package.cpp` |
+| `Obj.cpp` | `CoreUObject/Private/UObject/Obj.cpp` |
+| `Class.h` | `CoreUObject/Public/UObject/Class.h` |
+| `AssetData.h` | `CoreUObject/Public/AssetRegistry/AssetData.h` |
+| `AssetData.cpp` | `CoreUObject/Private/AssetRegistry/AssetData.cpp` |
+| `AssetRegistryInterface.cpp` | `CoreUObject/Private/Misc/AssetRegistryInterface.cpp` |
+| `BlueprintGeneratedClass.cpp` | `Engine/Private/BlueprintGeneratedClass.cpp` |
+| `Actor.cpp` | `Engine/Private/Actor.cpp` |
+| `Char.h` | `Core/Public/Misc/Char.h` |
+| `GenericPlatformStricmp.cpp` | `Core/Private/GenericPlatform/GenericPlatformStricmp.cpp` |
 
 ## Package file tag
 
@@ -353,12 +363,98 @@ outer chain contains an import. Example from the `PkgInfo` output of
 The forced export flag can change the package part of the path. UCommander
 does not use this option.
 
+### Main asset
+
+The main asset is the object that UE uses as the asset of a package, for
+example in the Content Browser and in the save code. Its class is the
+asset class of the package.
+
+UE finds it in the loaded package, not in the file. Source: UE583
+`Package.cpp`, the function that finds the asset in a package. The
+function examines each object of the package:
+
+1. It ignores an object that is not an asset (see "Is asset" below).
+2. It ignores an object that the asset registry filter skips (see
+   "Asset registry filter" below).
+3. An object with the "main name" (see below) is the result. The search
+   stops.
+4. If no object has the main name, the result is the first asset that the
+   function found. The order is the order of the objects in memory. The
+   file does not record this order.
+
+Validity checks of loaded objects also change the result. They do not
+apply to a file.
+
+#### Is asset
+
+The export entry field "is asset" contains the value that UE calculated
+for the object when it saved the package. Source: UE583
+`ObjectResource.cpp`, export entry constructor.
+
+The calculation (UE583 `Obj.cpp`, the base "is asset" function): an object
+is an asset when all of these conditions are true:
+
+- It does not have the object flags `Transient` (`0x00000040`) or
+  `ClassDefaultObject` (`0x00000010`). It has the object flag `Public`
+  (`0x00000001`). Source of the values: UE583 `ObjectMacros.h`.
+- It is a valid object (not marked as garbage).
+- Its class does not have the class flag `Optional` (`0x00000010`, UE583
+  `ObjectMacros.h`).
+- In the editor: it is not a property bag placeholder. UE makes a
+  placeholder for an export whose class import was missing at load.
+- Its outer is a package, or it is in an external package.
+- The package is not transient and is not a play-in-editor package.
+
+Classes can change the calculation:
+
+- A class object (`Class`) is never an asset (UE583 `Class.h`).
+- A Blueprint generated class (`BlueprintGeneratedClass`) is an asset
+  with the base calculation (UE583 `BlueprintGeneratedClass.cpp`).
+- An actor is an asset only when it is in an external package (OFPA),
+  and it is the main actor of that package (UE583 `Actor.cpp`).
+
+So a Blueprint package has two assets: the Blueprint and its generated
+class. Observed in fixture `BP_SummaryActor.uasset`: exports 0
+(`BP_SummaryActor`, class `Blueprint`) and 1 (`BP_SummaryActor_C`, class
+`BlueprintGeneratedClass`) have the "is asset" flag. The asset registry
+section of the `PkgInfo` output lists both.
+
+#### Main name
+
+An object has the main name when its path name in the package is equal
+to the short package name. The comparison ignores the case of ASCII
+letters only (UE583 `Char.h` and `GenericPlatformStricmp.cpp`). The short
+package name is the text after the last `/` of the package name. A
+top-level object has a path name in the package equal to its object
+name. An object in an external package never has the main name. Source:
+UE583 `AssetData.cpp` and `AssetData.h`, the functions that detect a
+"UAsset" by its names.
+
+Example: package `/Game/Summary/BP_SummaryActor`, short name
+`BP_SummaryActor`. Export `BP_SummaryActor` has the main name. Export
+`BP_SummaryActor_C` does not.
+
+#### Asset registry filter
+
+In the editor, the filter skips (UE583 `AssetRegistryInterface.cpp`):
+
+- Each object of a package with the package flag `ContainsNoAsset`.
+- In an editor package (no package flag `FilterEditorOnly`): objects of
+  the class `BlueprintGeneratedClass` and of its subclasses that are not
+  abstract.
+- In a cooked package (package flag `FilterEditorOnly`): objects of the
+  class `Blueprint` and of its subclasses that are not abstract.
+
+The filter uses the loaded class. A file gives only the class name, so a
+subclass that is defined in another package is not known from the file.
+
 ## Package flags
 
 | Flag | Value | Source |
 |---|---|---|
 | `NewlyCreated` | `0x00000001` | UE58 `ObjectMacros.h`. |
 | `Cooked` | `0x00000200` | Same. |
+| `ContainsNoAsset` | `0x00000400` | UE583 `ObjectMacros.h`. |
 | `UnversionedProperties` | `0x00002000` | Same. |
 | `IsSaving` | `0x00008000` | Same. |
 | `ReloadingForCooker` | `0x40000000` | Same. |
@@ -485,3 +581,8 @@ the point 1 and point 2 briefs.
 | Name map hash values. | Keep the raw values. Do not check them. |
 | Object flags of an export. | Keep the raw value. Do not apply the `RF_Load` mask. |
 | Import map fix-up of UE. | Not done. UCommander shows the imports as in the file. |
+| Main asset: the package name. | Use the package name of the summary. UE uses the name of the loaded package, which comes from the file path. They are different only for a package that was moved outside the editor. |
+| Main asset: an export with the main name. | An export with a null outer, and an object name (with its number) equal to the short package name. Objects in an external package have a non-null outer in the file, so they never match. |
+| Main asset: no export with the main name. | The first asset in export table order. UE uses the order in memory, which the file does not record. The results are different only when two or more assets are candidates (point 3 owner decision 2). |
+| Main asset: the "is asset" flag is not in the file (UE4 before `COOKED_ASSETS_IN_EDITOR_SUPPORT`). | Not an asset. |
+| Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |

@@ -6,6 +6,7 @@ use common::{GetDetectString, GetSupportedField, ansi_text, export, load};
 
 const FT_NOMOREFIELDS: i32 = 0;
 const FT_BOOLEAN: i32 = 6;
+const FT_STRING: i32 = 8;
 const CANARY: c_char = 0x55;
 
 fn supported_field(index: i32, maxlen: usize) -> (i32, String, String) {
@@ -32,8 +33,18 @@ fn field_0_is_is_package_of_type_boolean_without_units() {
 }
 
 #[test]
-fn there_are_no_more_fields_after_field_0() {
-    assert_eq!(supported_field(1, 256).0, FT_NOMOREFIELDS);
+fn field_1_is_asset_class_of_type_string_without_units() {
+    // The guide: a field declares `ft_string`, and `ContentGetValueW` can
+    // then give `ft_stringw`.
+    assert_eq!(
+        supported_field(1, 256),
+        (FT_STRING, "Asset class".to_string(), String::new())
+    );
+}
+
+#[test]
+fn there_are_no_more_fields_after_field_1() {
+    assert_eq!(supported_field(2, 256).0, FT_NOMOREFIELDS);
 }
 
 #[test]

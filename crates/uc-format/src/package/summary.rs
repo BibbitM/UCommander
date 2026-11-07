@@ -18,7 +18,7 @@ const LEGACY_FILE_VERSION_NEWEST: i32 = -9;
 const LEGACY_FILE_VERSION_UE5: i32 = -8;
 
 /// Package flag `FilterEditorOnly`: the package has no editor-only data.
-const PKG_FILTER_EDITOR_ONLY: u32 = 0x8000_0000;
+pub(crate) const PKG_FILTER_EDITOR_ONLY: u32 = 0x8000_0000;
 
 /// Size of one custom version entry: GUID and `i32`.
 const CUSTOM_VERSION_SIZE: usize = 20;

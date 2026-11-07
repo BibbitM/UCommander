@@ -34,16 +34,28 @@ pub unsafe fn write_ansi(dst: *mut c_char, maxlen: i32, text: &str) {
 /// trailing NUL.
 ///
 /// TC gives the size in bytes, so the buffer holds `maxlen_bytes / 2` UTF-16
-/// units. The buffer can be unaligned. A null `dst` or a buffer below 1 unit
-/// writes nothing.
+/// units. The text is truncated to whole characters, so a surrogate pair is
+/// never split. The buffer can be unaligned. A null `dst` or a buffer below
+/// 1 unit writes nothing.
 ///
 /// # Safety
 ///
 /// If `dst` is not null, it must be valid for writes of `maxlen_bytes` bytes.
 pub unsafe fn write_utf16(dst: *mut u8, maxlen_bytes: i32, text: &str) {
+    let units = maxlen_bytes / 2;
+    // The space for the text: all units except the one for the NUL.
+    let space = usize::try_from(units).unwrap_or(0).saturating_sub(1);
+    let mut used = 0;
+    let fitting: String = text
+        .chars()
+        .take_while(|c| {
+            used += c.len_utf16();
+            used <= space
+        })
+        .collect();
     // SAFETY: the caller guarantees `maxlen_bytes` writable bytes at `dst`, so
-    // `maxlen_bytes / 2` u16 values fit. The function writes them unaligned.
-    unsafe { write_nul_terminated(dst.cast::<u16>(), maxlen_bytes / 2, text.encode_utf16()) };
+    // `units` u16 values fit. The function writes them unaligned.
+    unsafe { write_nul_terminated(dst.cast::<u16>(), units, fitting.encode_utf16()) };
 }
 
 /// Reads a NUL-terminated UTF-16 path from TC.

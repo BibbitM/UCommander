@@ -1,6 +1,7 @@
 {
   "source": "PkgInfo commandlet, stock UE 5.8.3-58210709+++UE5+Release-5.8. Values copied by hand from L_SummaryLevel.pkginfo.txt.",
   "file_size": 10730,
+  "asset_class": "World",
   "summary": {
     "file_version_ue5": 1018,
     "saved_by_engine_version": "5.8.3-58210709+++UE5+Release-5.8",

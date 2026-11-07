@@ -16,6 +16,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   packages, with the object name, class name and full path of each object.
   A damaged name index, package index or outer chain gives an error.
 - `uc dump` also shows the name map, the import table and the export table.
+- Content field **Asset class**: the class of the main asset of a package,
+  for example `Blueprint` or `World`. The plugin reads only the package
+  header.
 
 ## [0.1.0] - 2026-11-04
 

@@ -85,6 +85,29 @@ fn utf16_odd_maxlen_uses_whole_characters_only() {
 }
 
 #[test]
+fn utf16_truncation_does_not_split_a_surrogate_pair() {
+    // "A😀B": A, two surrogates, B. 3 units of space: "A" and the start
+    // of the emoji, then the NUL.
+    let mut buffer = [0x5555u16; 4];
+
+    // SAFETY: the pointer is valid for 4 u16 values; 6 bytes are used.
+    unsafe { write_utf16(buffer.as_mut_ptr().cast(), 6, "A😀B") };
+
+    assert_eq!(buffer, [u16::from(b'A'), 0, 0x5555, 0x5555]);
+}
+
+#[test]
+fn utf16_surrogate_pair_that_fits_is_written() {
+    let mut buffer = [0x5555u16; 4];
+
+    // SAFETY: the pointer is valid for 4 u16 values = 8 bytes.
+    unsafe { write_utf16(buffer.as_mut_ptr().cast(), 8, "A😀B") };
+
+    let expected: Vec<u16> = "A😀".encode_utf16().chain([0]).collect();
+    assert_eq!(buffer.to_vec(), expected);
+}
+
+#[test]
 fn wide_path_is_read_up_to_the_nul() {
     let wide: Vec<u16> = "C:\\Gra\\Żółw.uasset\0ignored".encode_utf16().collect();
 

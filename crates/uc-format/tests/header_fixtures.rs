@@ -152,3 +152,8 @@ fn bp_summary_actor_tables() {
 fn l_summary_level_tables() {
     check("L_SummaryLevel.umap", "L_SummaryLevel.expected.json");
 }
+
+#[test]
+fn m_summary_tables() {
+    check("M_Summary.uasset", "M_Summary.expected.json");
+}

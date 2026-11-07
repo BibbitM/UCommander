@@ -97,7 +97,7 @@ fn a_missing_file_is_a_file_error() {
 fn an_unknown_field_index_is_no_such_field() {
     let path = test_file("Unknown.uasset", &TAG);
 
-    assert_eq!(get_bool(&path, 1).0, FT_NOSUCHFIELD);
+    assert_eq!(get_bool(&path, 2).0, FT_NOSUCHFIELD);
     assert_eq!(get_bool(&path, -1).0, FT_NOSUCHFIELD);
 }
 
