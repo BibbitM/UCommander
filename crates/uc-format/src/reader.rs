@@ -99,6 +99,11 @@ impl<'a> Reader<'a> {
         self.take().map(u32::from_le_bytes)
     }
 
+    /// Reads a boolean: a `u32`. Each value other than 0 is true.
+    pub(crate) fn bool(&mut self) -> Result<bool, Error> {
+        self.u32().map(|value| value != 0)
+    }
+
     pub(crate) fn u16(&mut self) -> Result<u16, Error> {
         self.take().map(u16::from_le_bytes)
     }

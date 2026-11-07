@@ -35,6 +35,7 @@ pub mod ue5 {
     pub const INITIAL_VERSION: i32 = 1000;
     pub const NAMES_REFERENCED_FROM_EXPORT_DATA: i32 = 1001;
     pub const PAYLOAD_TOC: i32 = 1002;
+    pub const OPTIONAL_RESOURCES: i32 = 1003;
     pub const DATA_RESOURCES: i32 = 1009;
     pub const ADD_SOFTOBJECTPATH_LIST: i32 = 1008;
     pub const METADATA_SERIALIZATION_OFFSET: i32 = 1014;
@@ -363,6 +364,11 @@ impl Writer {
         self.0.extend_from_slice(value);
     }
 
+    pub fn name_ref(&mut self, (index, number): NameRef) {
+        self.i32(index);
+        self.i32(number);
+    }
+
     pub fn guid(&mut self, value: [u32; 4]) {
         for part in value {
             self.u32(part);
@@ -409,7 +415,21 @@ impl Name {
     }
 }
 
-/// A synthetic package: a summary, then the name map.
+/// A name reference: name index and number.
+pub type NameRef = (i32, i32);
+
+/// One import entry, with the raw values of the file.
+#[derive(Debug, Clone, Default)]
+pub struct Import {
+    pub class_package: NameRef,
+    pub class_name: NameRef,
+    pub outer_index: i32,
+    pub object_name: NameRef,
+    pub package_name: NameRef,
+    pub import_optional: u32,
+}
+
+/// A synthetic package: a summary, the name map, then the import table.
 ///
 /// `to_bytes` sets the counts, the offsets and the total header size of
 /// the summary from the tables, unless an override is set.
@@ -421,6 +441,9 @@ pub struct Package {
     pub name_count: Option<i32>,
     /// When set, the name offset is this value, not the table position.
     pub name_offset: Option<i32>,
+    pub imports: Vec<Import>,
+    /// When set, the import count is this value, not the list length.
+    pub import_count: Option<i32>,
 }
 
 impl Package {
@@ -430,6 +453,8 @@ impl Package {
             names: names.iter().map(|text| Name::ansi(text)).collect(),
             name_count: None,
             name_offset: None,
+            imports: Vec::new(),
+            import_count: None,
         }
     }
 
@@ -450,10 +475,26 @@ impl Package {
             }
         }
 
+        let import_offset = start + tables.0.len();
+        let (v4, v5) = (self.summary.file_version_ue4, self.summary.file_version_ue5);
+        for import in &self.imports {
+            tables.name_ref(import.class_package);
+            tables.name_ref(import.class_name);
+            tables.i32(import.outer_index);
+            tables.name_ref(import.object_name);
+            if v4 >= ue4::NON_OUTER_PACKAGE_IMPORT {
+                tables.name_ref(import.package_name);
+            }
+            if v5 >= ue5::OPTIONAL_RESOURCES {
+                tables.u32(import.import_optional);
+            }
+        }
+
         let mut summary = self.summary.clone();
         summary.name_count = self.name_count.unwrap_or(self.names.len() as i32);
         summary.name_offset = self.name_offset.unwrap_or(start as i32);
-        summary.import_count = 0;
+        summary.import_count = self.import_count.unwrap_or(self.imports.len() as i32);
+        summary.import_offset = import_offset as i32;
         summary.export_count = 0;
         summary.total_header_size = (start + tables.0.len()) as i32;
 

@@ -4,7 +4,9 @@ mod header;
 mod summary;
 mod version;
 
-pub use header::{HeaderRead, NameEntry, NameRef, PackageHeader, read_header};
+pub use header::{
+    HeaderRead, NameEntry, NameRef, ObjectImport, PackageHeader, PackageIndex, read_header,
+};
 pub use summary::{
     CustomVersion, EngineVersion, Generation, PackageSummary, SummaryRead, Table, Warning,
     read_summary,

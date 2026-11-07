@@ -24,6 +24,7 @@ pub(crate) mod ue5 {
     pub(crate) const INITIAL_VERSION: i32 = 1000;
     pub(crate) const NAMES_REFERENCED_FROM_EXPORT_DATA: i32 = 1001;
     pub(crate) const PAYLOAD_TOC: i32 = 1002;
+    pub(crate) const OPTIONAL_RESOURCES: i32 = 1003;
     pub(crate) const ADD_SOFTOBJECTPATH_LIST: i32 = 1008;
     pub(crate) const DATA_RESOURCES: i32 = 1009;
     pub(crate) const METADATA_SERIALIZATION_OFFSET: i32 = 1014;
