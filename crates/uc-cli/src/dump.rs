@@ -1,7 +1,7 @@
 //! `uc dump <file>`: shows the package summary as text, one field on each
 //! line. The output is for people, not for scripts.
 
-use std::fmt::{Display, Write};
+use std::fmt::Display;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -50,9 +50,18 @@ fn read_file(path: &Path) -> Result<SummaryRead, String> {
 struct Lines(String);
 
 impl Lines {
+    /// Adds one line. Control characters from the file are escaped, so
+    /// that a damaged file cannot change the terminal or add lines.
     fn add(&mut self, name: &str, value: impl Display) {
-        // A write to a String cannot fail.
-        let _ = writeln!(self.0, "{name}: {value}");
+        let line = format!("{name}: {value}");
+        for c in line.chars() {
+            if c.is_control() {
+                self.0.extend(c.escape_unicode());
+            } else {
+                self.0.push(c);
+            }
+        }
+        self.0.push('\n');
     }
 
     fn option<T: Display>(&mut self, name: &str, value: Option<T>) {

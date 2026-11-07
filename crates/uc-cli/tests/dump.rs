@@ -179,3 +179,21 @@ fn a_damaged_count_in_a_large_file_stops_at_the_read_limit() {
         text(&output.stderr)
     );
 }
+
+#[test]
+fn control_characters_in_a_string_are_escaped() {
+    let input = Summary {
+        package_name: Str::Ansi("/Game/\u{1b}[31mRed\n"),
+        ..Summary::default()
+    };
+    let path = temp_file("control.uasset", &input.to_bytes());
+
+    let output = dump(&path);
+
+    assert!(output.status.success(), "{}", text(&output.stderr));
+    assert!(
+        text(&output.stdout).contains(r"Package name: /Game/\u{1b}[31mRed\u{a}"),
+        "{}",
+        text(&output.stdout)
+    );
+}
