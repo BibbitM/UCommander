@@ -64,3 +64,504 @@ Preload dependency offset: 18857
 Names referenced from export data count: 90
 Payload TOC offset: 24322
 Data resource offset: 0
+Name 0: /Game/Summary/BP_SummaryActor
+Name 1: /Script/CoreUObject
+Name 2: /Script/Engine
+Name 3: /Script/SlateCore
+Name 4: AllNodes
+Name 5: ArrayProperty
+Name 6: bAllowDeletion
+Name 7: bCommentBubblePinned
+Name 8: bCommentBubbleVisible
+Name 9: bLegacyNeedToPurgeSkelRefs
+Name 10: BlueprintGuid
+Name 11: BlueprintInternalUseOnly
+Name 12: BlueprintSystemVersion
+Name 13: BlueprintType
+Name 14: BoolProperty
+Name 15: bOverrideFunction
+Name 16: BP_SummaryActor
+Name 17: BP_SummaryActor_C
+Name 18: bVisualizeComponent
+Name 19: ByteProperty
+Name 20: Category
+Name 21: CategoryName
+Name 22: CategorySorting
+Name 23: Comment
+Name 24: ComponentClass
+Name 25: ComponentTemplate
+Name 26: Default
+Name 27: DefaultGraphNode
+Name 28: DefaultSceneRoot
+Name 29: DefaultSceneRootNode
+Name 30: delegate
+Name 31: DeltaSeconds
+Name 32: DeprecateSlateVector2D
+Name 33: DisplayName
+Name 34: EditedDocumentInfo
+Name 35: EditedObjectPath
+Name 36: EnabledState
+Name 37: Engine
+Name 38: ENodeEnabledState
+Name 39: ENodeEnabledState::Disabled
+Name 40: EnumProperty
+Name 41: Event Graph
+Name 42: EventReference
+Name 43: exec
+Name 44: float
+Name 45: FloatProperty
+Name 46: FunctionGraphs
+Name 47: FunctionReference
+Name 48: GeneratedClass
+Name 49: GraphGuid
+Name 50: Guid
+Name 51: InternalVariableName
+Name 52: IntProperty
+Name 53: LastEditedDocuments
+Name 54: MemberName
+Name 55: MemberParent
+Name 56: MemberReference
+Name 57: ModuleRelativePath
+Name 58: NameProperty
+Name 59: NodeComment
+Name 60: NodeGuid
+Name 61: NodePosY
+Name 62: Nodes
+Name 63: None
+Name 64: object
+Name 65: ObjectProperty
+Name 66: OtherActor
+Name 67: OutputDelegate
+Name 68: PackageLocalizationNamespace
+Name 69: ParentClass
+Name 70: real
+Name 71: ReceiveActorBeginOverlap
+Name 72: ReceiveBeginPlay
+Name 73: ReceiveTick
+Name 74: RootNodes
+Name 75: SavedViewOffset
+Name 76: SavedZoomAmount
+Name 77: Schema
+Name 78: SimpleConstructionScript
+Name 79: SKEL_BP_SummaryActor_C
+Name 80: SoftObjectPath
+Name 81: StaticMesh
+Name 82: StrProperty
+Name 83: StructProperty
+Name 84: TextProperty
+Name 85: then
+Name 86: ToolTip
+Name 87: UbergraphPages
+Name 88: UserConstructionScript
+Name 89: VariableGuid
+Name 90: /Script/BlueprintGraph
+Name 91: Actor
+Name 92: Blueprint
+Name 93: BlueprintGeneratedClass
+Name 94: Class
+Name 95: Default__Actor
+Name 96: Default__BP_SummaryActor_C
+Name 97: DefaultSceneRoot_GEN_VARIABLE
+Name 98: EdGraph
+Name 99: EdGraphSchema_K2
+Name 100: EventGraph
+Name 101: K2Node_Event
+Name 102: K2Node_FunctionEntry
+Name 103: Object
+Name 104: Package
+Name 105: SceneComponent
+Name 106: SCS_Node
+Name 107: StaticMesh_GEN_VARIABLE
+Name 108: StaticMeshComponent
+Import 0 object name: Default__Actor
+Import 0 path: /Script/Engine.Default__Actor
+Import 0 outer: -16 (/Script/Engine)
+Import 0 class package: /Script/Engine
+Import 0 class name: Actor
+Import 0 package name: None
+Import 0 import optional: no
+Import 1 object name: EdGraphSchema_K2
+Import 1 path: /Script/BlueprintGraph.EdGraphSchema_K2
+Import 1 outer: -14 (/Script/BlueprintGraph)
+Import 1 class package: /Script/CoreUObject
+Import 1 class name: Class
+Import 1 package name: None
+Import 1 import optional: no
+Import 2 object name: K2Node_Event
+Import 2 path: /Script/BlueprintGraph.K2Node_Event
+Import 2 outer: -14 (/Script/BlueprintGraph)
+Import 2 class package: /Script/CoreUObject
+Import 2 class name: Class
+Import 2 package name: None
+Import 2 import optional: no
+Import 3 object name: K2Node_FunctionEntry
+Import 3 path: /Script/BlueprintGraph.K2Node_FunctionEntry
+Import 3 outer: -14 (/Script/BlueprintGraph)
+Import 3 class package: /Script/CoreUObject
+Import 3 class name: Class
+Import 3 package name: None
+Import 3 import optional: no
+Import 4 object name: Object
+Import 4 path: /Script/CoreUObject.Object
+Import 4 outer: -15 (/Script/CoreUObject)
+Import 4 class package: /Script/CoreUObject
+Import 4 class name: Class
+Import 4 package name: None
+Import 4 import optional: no
+Import 5 object name: Actor
+Import 5 path: /Script/Engine.Actor
+Import 5 outer: -16 (/Script/Engine)
+Import 5 class package: /Script/CoreUObject
+Import 5 class name: Class
+Import 5 package name: None
+Import 5 import optional: no
+Import 6 object name: Blueprint
+Import 6 path: /Script/Engine.Blueprint
+Import 6 outer: -16 (/Script/Engine)
+Import 6 class package: /Script/CoreUObject
+Import 6 class name: Class
+Import 6 package name: None
+Import 6 import optional: no
+Import 7 object name: BlueprintGeneratedClass
+Import 7 path: /Script/Engine.BlueprintGeneratedClass
+Import 7 outer: -16 (/Script/Engine)
+Import 7 class package: /Script/CoreUObject
+Import 7 class name: Class
+Import 7 package name: None
+Import 7 import optional: no
+Import 8 object name: EdGraph
+Import 8 path: /Script/Engine.EdGraph
+Import 8 outer: -16 (/Script/Engine)
+Import 8 class package: /Script/CoreUObject
+Import 8 class name: Class
+Import 8 package name: None
+Import 8 import optional: no
+Import 9 object name: SceneComponent
+Import 9 path: /Script/Engine.SceneComponent
+Import 9 outer: -16 (/Script/Engine)
+Import 9 class package: /Script/CoreUObject
+Import 9 class name: Class
+Import 9 package name: None
+Import 9 import optional: no
+Import 10 object name: SCS_Node
+Import 10 path: /Script/Engine.SCS_Node
+Import 10 outer: -16 (/Script/Engine)
+Import 10 class package: /Script/CoreUObject
+Import 10 class name: Class
+Import 10 package name: None
+Import 10 import optional: no
+Import 11 object name: SimpleConstructionScript
+Import 11 path: /Script/Engine.SimpleConstructionScript
+Import 11 outer: -16 (/Script/Engine)
+Import 11 class package: /Script/CoreUObject
+Import 11 class name: Class
+Import 11 package name: None
+Import 11 import optional: no
+Import 12 object name: StaticMeshComponent
+Import 12 path: /Script/Engine.StaticMeshComponent
+Import 12 outer: -16 (/Script/Engine)
+Import 12 class package: /Script/CoreUObject
+Import 12 class name: Class
+Import 12 package name: None
+Import 12 import optional: no
+Import 13 object name: /Script/BlueprintGraph
+Import 13 path: /Script/BlueprintGraph
+Import 13 outer: 0 (null)
+Import 13 class package: /Script/CoreUObject
+Import 13 class name: Package
+Import 13 package name: None
+Import 13 import optional: no
+Import 14 object name: /Script/CoreUObject
+Import 14 path: /Script/CoreUObject
+Import 14 outer: 0 (null)
+Import 14 class package: /Script/CoreUObject
+Import 14 class name: Package
+Import 14 package name: None
+Import 14 import optional: no
+Import 15 object name: /Script/Engine
+Import 15 path: /Script/Engine
+Import 15 outer: 0 (null)
+Import 15 class package: /Script/CoreUObject
+Import 15 class name: Package
+Import 15 package name: None
+Import 15 import optional: no
+Export 0 object name: BP_SummaryActor
+Export 0 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor
+Export 0 class: -7 (/Script/Engine.Blueprint)
+Export 0 super: 0 (null)
+Export 0 template: 0 (null)
+Export 0 outer: 0 (null)
+Export 0 object flags: 0x0000000B
+Export 0 serial size: 733
+Export 0 serial offset: 18857
+Export 0 forced export: no
+Export 0 not for client: yes
+Export 0 not for server: yes
+Export 0 package GUID: (not in file)
+Export 0 is inherited instance: no
+Export 0 package flags: 0x00000000
+Export 0 not always loaded for editor game: no
+Export 0 is asset: yes
+Export 0 generate public hash: no
+Export 0 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 0 script serialization offsets: 0 to 729
+Export 1 object name: BP_SummaryActor_C
+Export 1 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor_C
+Export 1 class: -8 (/Script/Engine.BlueprintGeneratedClass)
+Export 1 super: -6 (/Script/Engine.Actor)
+Export 1 template: 0 (null)
+Export 1 outer: 0 (null)
+Export 1 object flags: 0x00000009
+Export 1 serial size: 189
+Export 1 serial offset: 19590
+Export 1 forced export: no
+Export 1 not for client: no
+Export 1 not for server: no
+Export 1 package GUID: (not in file)
+Export 1 is inherited instance: no
+Export 1 package flags: 0x00000000
+Export 1 not always loaded for editor game: no
+Export 1 is asset: yes
+Export 1 generate public hash: no
+Export 1 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 1 script serialization offsets: 0 to 38
+Export 2 object name: Default__BP_SummaryActor_C
+Export 2 path: /Game/Summary/BP_SummaryActor.Default__BP_SummaryActor_C
+Export 2 class: 2 (/Game/Summary/BP_SummaryActor.BP_SummaryActor_C)
+Export 2 super: 0 (null)
+Export 2 template: 0 (null)
+Export 2 outer: 0 (null)
+Export 2 object flags: 0x00000031
+Export 2 serial size: 13
+Export 2 serial offset: 19779
+Export 2 forced export: no
+Export 2 not for client: no
+Export 2 not for server: no
+Export 2 package GUID: (not in file)
+Export 2 is inherited instance: no
+Export 2 package flags: 0x00000000
+Export 2 not always loaded for editor game: no
+Export 2 is asset: no
+Export 2 generate public hash: no
+Export 2 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 2 script serialization offsets: 0 to 9
+Export 3 object name: EventGraph
+Export 3 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph
+Export 3 class: -9 (/Script/Engine.EdGraph)
+Export 3 super: 0 (null)
+Export 3 template: 0 (null)
+Export 3 outer: 1 (/Game/Summary/BP_SummaryActor.BP_SummaryActor)
+Export 3 object flags: 0x00000008
+Export 3 serial size: 185
+Export 3 serial offset: 19792
+Export 3 forced export: no
+Export 3 not for client: no
+Export 3 not for server: no
+Export 3 package GUID: (not in file)
+Export 3 is inherited instance: no
+Export 3 package flags: 0x00000000
+Export 3 not always loaded for editor game: no
+Export 3 is asset: no
+Export 3 generate public hash: no
+Export 3 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 3 script serialization offsets: 0 to 181
+Export 4 object name: UserConstructionScript
+Export 4 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor:UserConstructionScript
+Export 4 class: -9 (/Script/Engine.EdGraph)
+Export 4 super: 0 (null)
+Export 4 template: 0 (null)
+Export 4 outer: 1 (/Game/Summary/BP_SummaryActor.BP_SummaryActor)
+Export 4 object flags: 0x00000008
+Export 4 serial size: 177
+Export 4 serial offset: 19977
+Export 4 forced export: no
+Export 4 not for client: no
+Export 4 not for server: no
+Export 4 package GUID: (not in file)
+Export 4 is inherited instance: no
+Export 4 package flags: 0x00000000
+Export 4 not always loaded for editor game: no
+Export 4 is asset: no
+Export 4 generate public hash: no
+Export 4 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 4 script serialization offsets: 0 to 173
+Export 5 object name: K2Node_Event_0
+Export 5 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_0
+Export 5 class: -3 (/Script/BlueprintGraph.K2Node_Event)
+Export 5 super: 0 (null)
+Export 5 template: 0 (null)
+Export 5 outer: 4 (/Game/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph)
+Export 5 object flags: 0x00000008
+Export 5 serial size: 854
+Export 5 serial offset: 20154
+Export 5 forced export: no
+Export 5 not for client: no
+Export 5 not for server: no
+Export 5 package GUID: (not in file)
+Export 5 is inherited instance: no
+Export 5 package flags: 0x00000000
+Export 5 not always loaded for editor game: no
+Export 5 is asset: no
+Export 5 generate public hash: no
+Export 5 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 5 script serialization offsets: 0 to 450
+Export 6 object name: K2Node_Event_1
+Export 6 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_1
+Export 6 class: -3 (/Script/BlueprintGraph.K2Node_Event)
+Export 6 super: 0 (null)
+Export 6 template: 0 (null)
+Export 6 outer: 4 (/Game/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph)
+Export 6 object flags: 0x00000008
+Export 6 serial size: 1114
+Export 6 serial offset: 21008
+Export 6 forced export: no
+Export 6 not for client: no
+Export 6 not for server: no
+Export 6 package GUID: (not in file)
+Export 6 is inherited instance: no
+Export 6 package flags: 0x00000000
+Export 6 not always loaded for editor game: no
+Export 6 is asset: no
+Export 6 generate public hash: no
+Export 6 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 6 script serialization offsets: 0 to 479
+Export 7 object name: K2Node_Event_2
+Export 7 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph.K2Node_Event_2
+Export 7 class: -3 (/Script/BlueprintGraph.K2Node_Event)
+Export 7 super: 0 (null)
+Export 7 template: 0 (null)
+Export 7 outer: 4 (/Game/Summary/BP_SummaryActor.BP_SummaryActor:EventGraph)
+Export 7 object flags: 0x00000008
+Export 7 serial size: 1126
+Export 7 serial offset: 22122
+Export 7 forced export: no
+Export 7 not for client: no
+Export 7 not for server: no
+Export 7 package GUID: (not in file)
+Export 7 is inherited instance: no
+Export 7 package flags: 0x00000000
+Export 7 not always loaded for editor game: no
+Export 7 is asset: no
+Export 7 generate public hash: no
+Export 7 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 7 script serialization offsets: 0 to 479
+Export 8 object name: K2Node_FunctionEntry_0
+Export 8 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor:UserConstructionScript.K2Node_FunctionEntry_0
+Export 8 class: -4 (/Script/BlueprintGraph.K2Node_FunctionEntry)
+Export 8 super: 0 (null)
+Export 8 template: 0 (null)
+Export 8 outer: 5 (/Game/Summary/BP_SummaryActor.BP_SummaryActor:UserConstructionScript)
+Export 8 object flags: 0x00000008
+Export 8 serial size: 401
+Export 8 serial offset: 23248
+Export 8 forced export: no
+Export 8 not for client: no
+Export 8 not for server: no
+Export 8 package GUID: (not in file)
+Export 8 is inherited instance: no
+Export 8 package flags: 0x00000000
+Export 8 not always loaded for editor game: no
+Export 8 is asset: no
+Export 8 generate public hash: no
+Export 8 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 8 script serialization offsets: 0 to 193
+Export 9 object name: DefaultSceneRoot_GEN_VARIABLE
+Export 9 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor_C:DefaultSceneRoot_GEN_VARIABLE
+Export 9 class: -10 (/Script/Engine.SceneComponent)
+Export 9 super: 0 (null)
+Export 9 template: 0 (null)
+Export 9 outer: 2 (/Game/Summary/BP_SummaryActor.BP_SummaryActor_C)
+Export 9 object flags: 0x00000029
+Export 9 serial size: 42
+Export 9 serial offset: 23649
+Export 9 forced export: no
+Export 9 not for client: no
+Export 9 not for server: no
+Export 9 package GUID: (not in file)
+Export 9 is inherited instance: no
+Export 9 package flags: 0x00000000
+Export 9 not always loaded for editor game: no
+Export 9 is asset: no
+Export 9 generate public hash: no
+Export 9 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 9 script serialization offsets: 0 to 34
+Export 10 object name: SCS_Node_0
+Export 10 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor_C:SimpleConstructionScript_0.SCS_Node_0
+Export 10 class: -11 (/Script/Engine.SCS_Node)
+Export 10 super: 0 (null)
+Export 10 template: 0 (null)
+Export 10 outer: 13 (/Game/Summary/BP_SummaryActor.BP_SummaryActor_C:SimpleConstructionScript_0)
+Export 10 object flags: 0x00000008
+Export 10 serial size: 235
+Export 10 serial offset: 23691
+Export 10 forced export: no
+Export 10 not for client: no
+Export 10 not for server: no
+Export 10 package GUID: (not in file)
+Export 10 is inherited instance: no
+Export 10 package flags: 0x00000000
+Export 10 not always loaded for editor game: no
+Export 10 is asset: no
+Export 10 generate public hash: no
+Export 10 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 10 script serialization offsets: 0 to 231
+Export 11 object name: SCS_Node_1
+Export 11 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor_C:SimpleConstructionScript_0.SCS_Node_1
+Export 11 class: -11 (/Script/Engine.SCS_Node)
+Export 11 super: 0 (null)
+Export 11 template: 0 (null)
+Export 11 outer: 13 (/Game/Summary/BP_SummaryActor.BP_SummaryActor_C:SimpleConstructionScript_0)
+Export 11 object flags: 0x00000008
+Export 11 serial size: 235
+Export 11 serial offset: 23926
+Export 11 forced export: no
+Export 11 not for client: no
+Export 11 not for server: no
+Export 11 package GUID: (not in file)
+Export 11 is inherited instance: no
+Export 11 package flags: 0x00000000
+Export 11 not always loaded for editor game: no
+Export 11 is asset: no
+Export 11 generate public hash: no
+Export 11 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 11 script serialization offsets: 0 to 231
+Export 12 object name: SimpleConstructionScript_0
+Export 12 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor_C:SimpleConstructionScript_0
+Export 12 class: -12 (/Script/Engine.SimpleConstructionScript)
+Export 12 super: 0 (null)
+Export 12 template: 0 (null)
+Export 12 outer: 2 (/Game/Summary/BP_SummaryActor.BP_SummaryActor_C)
+Export 12 object flags: 0x00000008
+Export 12 serial size: 132
+Export 12 serial offset: 24161
+Export 12 forced export: no
+Export 12 not for client: no
+Export 12 not for server: no
+Export 12 package GUID: (not in file)
+Export 12 is inherited instance: no
+Export 12 package flags: 0x00000000
+Export 12 not always loaded for editor game: no
+Export 12 is asset: no
+Export 12 generate public hash: no
+Export 12 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 12 script serialization offsets: 0 to 128
+Export 13 object name: StaticMesh_GEN_VARIABLE
+Export 13 path: /Game/Summary/BP_SummaryActor.BP_SummaryActor_C:StaticMesh_GEN_VARIABLE
+Export 13 class: -13 (/Script/Engine.StaticMeshComponent)
+Export 13 super: 0 (null)
+Export 13 template: 0 (null)
+Export 13 outer: 2 (/Game/Summary/BP_SummaryActor.BP_SummaryActor_C)
+Export 13 object flags: 0x00000029
+Export 13 serial size: 25
+Export 13 serial offset: 24293
+Export 13 forced export: no
+Export 13 not for client: no
+Export 13 not for server: no
+Export 13 package GUID: (not in file)
+Export 13 is inherited instance: no
+Export 13 package flags: 0x00000000
+Export 13 not always loaded for editor game: no
+Export 13 is asset: no
+Export 13 generate public hash: no
+Export 13 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 13 script serialization offsets: 0 to 9
