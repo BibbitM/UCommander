@@ -311,7 +311,11 @@ operator; types from UE583 `ObjectResource.h`.
 Notes:
 
 - When UE reads the object flags, it keeps only the load flags (`RF_Load`
-  mask, UE583 `ObjectMacros.h`). The file can contain other bits.
+  mask, UE583 `ObjectMacros.h`). The file can contain other bits. UE also
+  applies the mask when it writes (UE583 `ObjectResource.cpp`, same
+  operator), so a package that UE saved contains only load flags. Observed
+  in fixtures `BP_SummaryActor.uasset` and `L_SummaryLevel.umap`: the
+  stored flags are equal to the `PkgInfo` values.
 - The condition of rows 23 and 24 uses the "unversioned properties" state
   of the load linker. The load linker sets this state from the package flag
   `UnversionedProperties`. Source: UE583 `LinkerLoad.cpp`, summary
