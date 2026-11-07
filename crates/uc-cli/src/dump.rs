@@ -4,19 +4,11 @@
 
 use std::fmt::Display;
 use std::fs::File;
-use std::io::Read;
 use std::path::Path;
 
-use uc_format::Error;
 use uc_format::package::{
-    EngineVersion, HeaderRead, NameRef, PackageHeader, PackageIndex, Table, read_header,
+    EngineVersion, HeaderRead, NameRef, PackageHeader, PackageIndex, Table, read_header_from,
 };
-
-/// The first read size. The parser asks for more if the header is larger.
-const FIRST_READ_SIZE: usize = 64 * 1024;
-/// The largest read size. A real header is much smaller, so a header that
-/// needs more bytes has a damaged count, length or offset.
-const MAX_READ_SIZE: usize = 16 * 1024 * 1024;
 
 /// Reads the header of the package at `path`, and gives the output text.
 pub fn run(path: &Path) -> Result<String, String> {
@@ -24,28 +16,10 @@ pub fn run(path: &Path) -> Result<String, String> {
     Ok(format_header(&read))
 }
 
-/// Reads the start of the file. If the parser says "truncated", reads two
-/// times more bytes, until the file ends or the read limit is reached.
+/// Reads only the header bytes of the file.
 fn read_file(path: &Path) -> Result<HeaderRead, String> {
-    let mut file = File::open(path).map_err(|error| error.to_string())?;
-    let mut bytes = Vec::new();
-    let mut size = FIRST_READ_SIZE;
-    loop {
-        let missing = (size - bytes.len()) as u64;
-        (&mut file)
-            .take(missing)
-            .read_to_end(&mut bytes)
-            .map_err(|error| error.to_string())?;
-        match read_header(&bytes) {
-            Err(Error::Truncated { .. }) if bytes.len() == size => {
-                if size >= MAX_READ_SIZE {
-                    return Err("damaged package: the header is larger than 16 MiB".to_string());
-                }
-                size = (size * 2).min(MAX_READ_SIZE);
-            }
-            result => return result.map_err(|error| error.to_string()),
-        }
-    }
+    let file = File::open(path).map_err(|error| error.to_string())?;
+    read_header_from(file).map_err(|error| error.to_string())
 }
 
 /// Lines of `Name: value`.
