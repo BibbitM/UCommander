@@ -42,6 +42,8 @@ The UE58 and UE583 files, with paths relative to `Engine/Source/Runtime/`:
 | `AssetRegistryInterface.cpp` | `CoreUObject/Private/Misc/AssetRegistryInterface.cpp` |
 | `BlueprintGeneratedClass.cpp` | `Engine/Private/BlueprintGeneratedClass.cpp` |
 | `Actor.cpp` | `Engine/Private/Actor.cpp` |
+| `Char.h` | `Core/Public/Misc/Char.h` |
+| `GenericPlatformStricmp.cpp` | `Core/Private/GenericPlatform/GenericPlatformStricmp.cpp` |
 
 ## Package file tag
 
@@ -415,7 +417,8 @@ section of the `PkgInfo` output lists both.
 #### Main name
 
 An object has the main name when its path name in the package is equal
-to the short package name. The comparison ignores the case. The short
+to the short package name. The comparison ignores the case of ASCII
+letters only (UE583 `Char.h` and `GenericPlatformStricmp.cpp`). The short
 package name is the text after the last `/` of the package name. A
 top-level object has a path name in the package equal to its object
 name. An object in an external package never has the main name. Source:
@@ -573,3 +576,8 @@ the point 1 and point 2 briefs.
 | Name map hash values. | Keep the raw values. Do not check them. |
 | Object flags of an export. | Keep the raw value. Do not apply the `RF_Load` mask. |
 | Import map fix-up of UE. | Not done. UCommander shows the imports as in the file. |
+| Main asset: the package name. | Use the package name of the summary. UE uses the name of the loaded package, which comes from the file path. They are different only for a package that was moved outside the editor. |
+| Main asset: an export with the main name. | An export with a null outer, and an object name (with its number) equal to the short package name. Objects in an external package have a non-null outer in the file, so they never match. |
+| Main asset: no export with the main name. | The first asset in export table order. UE uses the order in memory, which the file does not record. The results are different only when two or more assets are candidates (point 3 owner decision 2). |
+| Main asset: the "is asset" flag is not in the file (UE4 before `COOKED_ASSETS_IN_EDITOR_SUPPORT`). | Not an asset. |
+| Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |

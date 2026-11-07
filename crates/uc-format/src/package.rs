@@ -1,5 +1,6 @@
 //! Unreal Engine packages (`.uasset`, `.umap`).
 
+mod asset;
 mod header;
 mod objects;
 mod summary;

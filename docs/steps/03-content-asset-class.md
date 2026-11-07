@@ -79,6 +79,10 @@ an OFPA external actor package (its actor has a level as outer, and its
 package name is a hash), and a package that is renamed outside the editor.
 See open question 2.
 
+Result of increment 1: the source confirms the rule, with two changes.
+The name comparison ignores the case of ASCII letters. When no asset has
+the main name, UE uses another asset (fallback). See owner decision 2.
+
 ### `uc-format`
 
 | Item | Content |
@@ -184,7 +188,12 @@ The owner approved this brief, the guide download, and the proposal of
 each open question below:
 
 1. Read the guide again for the string field type.
-2. A package with no main asset gives `ft_fieldempty`. No fallback.
+2. A package with no main asset gives `ft_fieldempty`. **Changed after
+   increment 1:** the UE source has a fallback. When no asset has the main
+   name, UE uses the first asset that the asset registry filter does not
+   skip. The owner decided: use the UE fallback, with the export table
+   order. The rule is in `docs/formats/package.md`, "Main asset". So an
+   OFPA external actor package shows its actor class.
 3. The cache comes in point 4.
 4. F3 is optional. Point 3 continues without it.
 5. The field shows the short class name.
