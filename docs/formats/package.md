@@ -286,3 +286,5 @@ the point 1 brief.
 | String with 8-bit characters. | Read each byte as one Latin-1 character. We did not examine how UE converts bytes 128 to 255. |
 | String with UTF-16 characters that are not valid UTF-16. | Use U+FFFD for each bad character. |
 | A count or a length that is larger than the remaining input. | Error: truncated. No allocation. |
+| A count that fits in the remaining input. | Allocate capacity from the count only when one element in memory is not larger than its bytes in the file. Other lists grow with the elements that the parser reads. |
+| Size of a string in memory. | At most 2 times its bytes in the file: Latin-1 bytes 128 to 255 are 2 UTF-8 bytes, and U+FFFD for 2 bad UTF-16 bytes is 3 UTF-8 bytes. |

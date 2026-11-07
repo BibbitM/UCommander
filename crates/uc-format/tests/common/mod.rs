@@ -110,6 +110,9 @@ pub struct Summary {
     pub compressed_chunk_count: i32,
     pub package_source: u32,
     pub additional_packages_to_cook: Vec<Str>,
+    /// When set, the additional package count is this value, not the list
+    /// length.
+    pub additional_package_count: Option<i32>,
     pub asset_registry_data_offset: i32,
     pub bulk_data_start_offset: i64,
     pub world_tile_info_data_offset: i32,
@@ -188,6 +191,7 @@ impl Default for Summary {
             compressed_chunk_count: 0,
             package_source: 0xDEAD_BEEF,
             additional_packages_to_cook: vec![Str::Ansi("/Game/A"), Str::Utf16("/Game/B")],
+            additional_package_count: None,
             asset_registry_data_offset: 206,
             bulk_data_start_offset: 0x1_0000_0207,
             world_tile_info_data_offset: 208,
@@ -304,7 +308,10 @@ impl Summary {
             w.bytes(&[0; 16]);
         }
         w.u32(self.package_source);
-        w.i32(self.additional_packages_to_cook.len() as i32);
+        let count = self
+            .additional_package_count
+            .unwrap_or(self.additional_packages_to_cook.len() as i32);
+        w.i32(count);
         for package in &self.additional_packages_to_cook {
             w.string(package);
         }

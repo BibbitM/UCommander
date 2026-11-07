@@ -381,7 +381,9 @@ fn read_end(r: &mut Reader, s: &mut PackageSummary) -> Result<(), Error> {
     s.package_source = r.u32()?;
 
     let count = r.array_count(MIN_STRING_SIZE, "additional packages to cook count")?;
-    s.additional_packages_to_cook = Vec::with_capacity(count);
+    // No capacity from the count: a `String` is larger than its 4 input
+    // bytes. The list grows only with the strings that the parser reads.
+    s.additional_packages_to_cook = Vec::new();
     for _ in 0..count {
         let package = r.string("additional package to cook")?;
         s.additional_packages_to_cook.push(package);
