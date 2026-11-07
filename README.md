@@ -61,7 +61,8 @@ Run all checks:
 cargo xtask check
 ```
 
-Show the package summary of a `.uasset` or `.umap` file:
+Show the package summary, the name map, the import table and the export
+table of a `.uasset` or `.umap` file:
 
 ```bash
 cargo run -p uc-cli -- dump <file>
