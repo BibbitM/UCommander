@@ -20,7 +20,16 @@ const DETECT_STRING: &str = r#"EXT="UASSET" | EXT="UMAP""#;
 
 struct Field {
     name: &'static str,
+    /// The type that `ContentGetSupportedField` gives.
     field_type: FieldType,
+    /// Gives the value of the field for a file. `None` when the file has no
+    /// value. An error is an I/O error.
+    value: fn(&Path) -> io::Result<Option<Value>>,
+}
+
+/// A field value, before the plugin writes it into the TC buffer.
+enum Value {
+    Boolean(bool),
 }
 
 /// The fields in TC field index order. Names must stay the same after 1.0,
@@ -28,6 +37,7 @@ struct Field {
 const FIELDS: &[Field] = &[Field {
     name: "Is package",
     field_type: FieldType::Boolean,
+    value: is_package,
 }];
 
 fn field(index: i32) -> Option<&'static Field> {
@@ -105,24 +115,43 @@ pub unsafe extern "system" fn ContentGetValueW(
         let Some(path) = (unsafe { read_wide_path(file_name) }) else {
             return ValueError::FileError.code();
         };
-        if field_value.is_null() || maxlen < size_of::<i32>() as i32 {
+        if field_value.is_null() {
             return ValueError::FieldEmpty.code();
         }
-        match is_package(&path) {
-            Ok(value) => {
-                // SAFETY: `field_value` is not null and has at least 4 bytes.
-                // TC gives no alignment guarantee, so write unaligned.
-                unsafe { field_value.cast::<i32>().write_unaligned(i32::from(value)) };
-                field.field_type.code()
-            }
+        match (field.value)(&path) {
+            // SAFETY: `field_value` is not null, and TC guarantees `maxlen`
+            // writable bytes.
+            Ok(Some(value)) => unsafe { write_value(&value, field_value, maxlen) },
+            Ok(None) => ValueError::FieldEmpty.code(),
             Err(_) => ValueError::FileError.code(),
         }
     })
 }
 
+/// Writes `value` in the format of its type, and gives the return value of
+/// `ContentGetValueW`. A buffer that is too small gives `ft_fieldempty`.
+///
+/// # Safety
+///
+/// `field_value` must not be null, and must be valid for writes of
+/// `maxlen` bytes. It can be unaligned.
+unsafe fn write_value(value: &Value, field_value: *mut c_void, maxlen: i32) -> i32 {
+    match *value {
+        Value::Boolean(value) => {
+            if maxlen < size_of::<i32>() as i32 {
+                return ValueError::FieldEmpty.code();
+            }
+            // SAFETY: the caller guarantees `maxlen` bytes, at least 4. TC
+            // gives no alignment guarantee, so write unaligned.
+            unsafe { field_value.cast::<i32>().write_unaligned(i32::from(value)) };
+            FieldType::Boolean.code()
+        }
+    }
+}
+
 /// Reads the first 4 bytes of the file, and checks the package file tag.
-fn is_package(path: &Path) -> io::Result<bool> {
+fn is_package(path: &Path) -> io::Result<Option<Value>> {
     let mut head = Vec::with_capacity(4);
     File::open(path)?.take(4).read_to_end(&mut head)?;
-    Ok(has_package_file_tag(&head))
+    Ok(Some(Value::Boolean(has_package_file_tag(&head))))
 }
