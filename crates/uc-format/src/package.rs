@@ -5,7 +5,8 @@ mod summary;
 mod version;
 
 pub use header::{
-    HeaderRead, NameEntry, NameRef, ObjectImport, PackageHeader, PackageIndex, read_header,
+    ExportDependencies, HeaderRead, NameEntry, NameRef, ObjectExport, ObjectImport, PackageHeader,
+    PackageIndex, read_header,
 };
 pub use summary::{
     CustomVersion, EngineVersion, Generation, PackageSummary, SummaryRead, Table, Warning,
