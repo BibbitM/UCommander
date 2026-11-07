@@ -75,6 +75,7 @@ fn keeps_the_summary_and_its_warnings() {
     let read = read_header(&input.to_bytes()).unwrap();
 
     assert_eq!(read.header.summary.package_name, "/Game/Fixtures/BP_Test");
+    assert_eq!(read.summary_size, input.summary_size());
     assert_eq!(read.warnings.len(), 1);
 }
 

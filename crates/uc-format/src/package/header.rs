@@ -132,6 +132,8 @@ impl PackageHeader {
 #[non_exhaustive]
 pub struct HeaderRead {
     pub header: PackageHeader,
+    /// The size of the summary in bytes.
+    pub summary_size: usize,
     pub warnings: Vec<Warning>,
 }
 
@@ -163,6 +165,7 @@ pub fn read_header(bytes: &[u8]) -> Result<HeaderRead, Error> {
     check_outer_loops(&header, import_entry_size, export_entry_size)?;
     Ok(HeaderRead {
         header,
+        summary_size: read.size,
         warnings: read.warnings,
     })
 }
