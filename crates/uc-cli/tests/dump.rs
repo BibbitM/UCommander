@@ -6,7 +6,7 @@ mod common;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
 
-use common::{Str, Summary};
+use common::{Export, Import, Package, Str};
 
 /// Compares `actual` with the stored file `tests/snapshots/<name>`. Set the
 /// environment variable `UC_UPDATE_SNAPSHOTS=1` to write the file again.
@@ -39,9 +39,68 @@ fn text(bytes: &[u8]) -> String {
     String::from_utf8(bytes.to_vec()).unwrap()
 }
 
+/// A package with 6 names, 2 imports (`/Script/Engine` and its class
+/// `Actor`), and 2 exports (`BP_Test`, and `BP_Test:Root_0`).
+fn package() -> Package {
+    Package {
+        imports: vec![
+            Import {
+                class_package: (0, 0),
+                class_name: (3, 0),
+                outer_index: 0,
+                object_name: (0, 0),
+                package_name: (5, 0),
+                import_optional: 0,
+            },
+            Import {
+                class_package: (0, 0),
+                class_name: (2, 0),
+                outer_index: -1,
+                object_name: (1, 0),
+                package_name: (5, 0),
+                import_optional: 1,
+            },
+        ],
+        exports: vec![
+            Export {
+                class_index: -2,
+                object_name: (4, 0),
+                object_flags: 0x0000_000B,
+                serial_size: 733,
+                serial_offset: 18857,
+                not_for_client: 1,
+                is_asset: 1,
+                dependencies: [-1, 0, 0, 0, 0],
+                script_serialization_end_offset: 725,
+                ..Export::default()
+            },
+            Export {
+                class_index: -2,
+                super_index: -2,
+                template_index: -2,
+                outer_index: 1,
+                object_name: (6, 1),
+                serial_size: 13,
+                serial_offset: 19590,
+                package_flags: 0x0000_0400,
+                ..Export::default()
+            },
+        ],
+        ..Package::new(&[
+            "/Script/Engine",
+            "Actor",
+            "Class",
+            "Package",
+            "BP_Test",
+            "None",
+            "Root",
+        ])
+    }
+}
+
 #[test]
-fn dump_prints_the_summary_fields() {
-    let path = temp_file("synthetic.uasset", &Summary::default().to_bytes());
+fn dump_prints_the_summary_and_the_tables() {
+    let path = temp_file("synthetic.uasset", &package().to_bytes());
 
     let output = dump(&path);
 
@@ -51,7 +110,7 @@ fn dump_prints_the_summary_fields() {
 
 #[test]
 fn each_line_is_a_name_and_a_value() {
-    let path = temp_file("lines.uasset", &Summary::default().to_bytes());
+    let path = temp_file("lines.uasset", &package().to_bytes());
 
     let output = dump(&path);
 
@@ -63,25 +122,68 @@ fn each_line_is_a_name_and_a_value() {
 }
 
 #[test]
-fn dump_reads_a_summary_that_is_larger_than_64_kib() {
-    let input = Summary {
-        custom_versions: vec![([1, 2, 3, 4], 5); 4000],
-        ..Summary::default()
-    };
+fn dump_shows_package_indexes_with_their_paths() {
+    let path = temp_file("paths.uasset", &package().to_bytes());
+
+    let output = dump(&path);
+
+    let stdout = text(&output.stdout);
+    assert!(stdout.contains("Name 6: Root\n"), "{stdout}");
+    assert!(
+        stdout.contains("Import 1 outer: -1 (/Script/Engine)\n"),
+        "{stdout}"
+    );
+    assert!(
+        stdout.contains("Export 1 path: /Game/Fixtures/BP_Test.BP_Test:Root_0\n"),
+        "{stdout}"
+    );
+    assert!(stdout.contains("Export 0 outer: 0 (null)\n"), "{stdout}");
+}
+
+#[test]
+fn a_path_longer_than_the_limit_is_marked() {
+    let mut input = package();
+    input.names[6] = common::Name::ansi("R".repeat(1020).leak());
+    let path = temp_file("long-path.uasset", &input.to_bytes());
+
+    let output = dump(&path);
+
+    assert!(output.status.success(), "{}", text(&output.stderr));
+    let stdout = text(&output.stdout);
+    assert!(
+        stdout.contains(
+            "Export 1 path: (path too long)
+"
+        ),
+        "{stdout}"
+    );
+    assert!(
+        stdout.contains(
+            "Export 0 outer: 0 (null)
+"
+        ),
+        "{stdout}"
+    );
+}
+
+#[test]
+fn dump_reads_a_header_that_is_larger_than_64_kib() {
+    let mut input = package();
+    input.summary.custom_versions = vec![([1, 2, 3, 4], 5); 4000];
     let path = temp_file("large.uasset", &input.to_bytes());
 
     let output = dump(&path);
 
     assert!(output.status.success(), "{}", text(&output.stderr));
-    assert!(text(&output.stdout).contains("Custom version count: 4000\n"));
+    let stdout = text(&output.stdout);
+    assert!(stdout.contains("Custom version count: 4000\n"));
+    assert!(stdout.contains("Export 1 object name: Root_0\n"));
 }
 
 #[test]
 fn dump_prints_a_warning_for_a_newer_version() {
-    let input = Summary {
-        file_version_ue5: 1019,
-        ..Summary::default()
-    };
+    let mut input = package();
+    input.summary.file_version_ue5 = 1019;
     let path = temp_file("newer.uasset", &input.to_bytes());
 
     let output = dump(&path);
@@ -107,13 +209,29 @@ fn a_file_that_is_not_a_package_gives_an_error_and_exit_code_1() {
 
 #[test]
 fn a_truncated_package_gives_an_error_and_exit_code_1() {
-    let bytes = Summary::default().to_bytes();
+    let bytes = package().to_bytes();
     let path = temp_file("truncated.uasset", &bytes[..bytes.len() - 1]);
 
     let output = dump(&path);
 
     assert_eq!(output.status.code(), Some(1));
     assert!(text(&output.stderr).contains("truncated"));
+}
+
+#[test]
+fn a_damaged_index_gives_an_error_and_exit_code_1() {
+    let mut input = package();
+    input.exports[1].outer_index = 3;
+    let path = temp_file("bad-index.uasset", &input.to_bytes());
+
+    let output = dump(&path);
+
+    assert_eq!(output.status.code(), Some(1));
+    assert!(
+        text(&output.stderr).contains("bad value of export outer index"),
+        "{}",
+        text(&output.stderr)
+    );
 }
 
 #[test]
@@ -137,10 +255,8 @@ fn dump_without_a_file_gives_the_usage() {
 
 #[test]
 fn a_utf16_package_name_is_printed() {
-    let input = Summary {
-        package_name: Str::Utf16("/Game/Żółw"),
-        ..Summary::default()
-    };
+    let mut input = package();
+    input.summary.package_name = Str::Utf16("/Game/Żółw");
     let path = temp_file("utf16.uasset", &input.to_bytes());
 
     let output = dump(&path);
@@ -161,11 +277,9 @@ fn dump_of_the_blueprint_fixture_matches_the_snapshot() {
 
 #[test]
 fn a_damaged_count_in_a_large_file_stops_at_the_read_limit() {
-    let mut bytes = Summary {
-        custom_version_count: Some(i32::MAX),
-        ..Summary::default()
-    }
-    .to_bytes();
+    let mut input = package();
+    input.summary.custom_version_count = Some(i32::MAX);
+    let mut bytes = input.to_bytes();
     // Larger than the read limit of 16 MiB.
     bytes.resize(17 * 1024 * 1024, 0);
     let path = temp_file("damaged-large.uasset", &bytes);
@@ -174,7 +288,7 @@ fn a_damaged_count_in_a_large_file_stops_at_the_read_limit() {
 
     assert_eq!(output.status.code(), Some(1));
     assert!(
-        text(&output.stderr).contains("summary is larger than 16 MiB"),
+        text(&output.stderr).contains("header is larger than 16 MiB"),
         "{}",
         text(&output.stderr)
     );
@@ -182,18 +296,18 @@ fn a_damaged_count_in_a_large_file_stops_at_the_read_limit() {
 
 #[test]
 fn control_characters_in_a_string_are_escaped() {
-    let input = Summary {
-        package_name: Str::Ansi("/Game/\u{1b}[31mRed\n"),
-        ..Summary::default()
-    };
+    let mut input = package();
+    input.summary.package_name = Str::Ansi("/Game/\u{1b}[31mRed\n");
+    input.names[6] = common::Name::ansi("Ro\rot");
     let path = temp_file("control.uasset", &input.to_bytes());
 
     let output = dump(&path);
 
     assert!(output.status.success(), "{}", text(&output.stderr));
+    let stdout = text(&output.stdout);
     assert!(
-        text(&output.stdout).contains(r"Package name: /Game/\u{1b}[31mRed\u{a}"),
-        "{}",
-        text(&output.stdout)
+        stdout.contains(r"Package name: /Game/\u{1b}[31mRed\u{a}"),
+        "{stdout}"
     );
+    assert!(stdout.contains(r"Name 6: Ro\u{d}ot"), "{stdout}");
 }

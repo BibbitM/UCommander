@@ -12,6 +12,10 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Package summary parser for UE 5.8 editor packages, with errors for
   unsupported packages (UE4, unversioned, byte-swapped, compressed).
 - Development tool `uc dump <file>`: shows the package summary as text.
+- Name map, import table and export table parser for UE 5.8 editor
+  packages, with the object name, class name and full path of each object.
+  A damaged name index, package index or outer chain gives an error.
+- `uc dump` also shows the name map, the import table and the export table.
 
 ## [0.1.0] - 2026-11-04
 

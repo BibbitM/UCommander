@@ -23,7 +23,7 @@ brings the correct status to `main`. CI checks this on each PR.
 | Pt | Name | IDs | Release | Status |
 |---|---|---|---|---|
 | 1 | Package summary parser and `uc dump` | — | | Done |
-| 2 | Name map, import table, export table | — | | Planned |
+| 2 | Name map, import table, export table | — | | Done |
 | 3 | Content: asset class | D1 | v0.2.0 | Planned |
 | 4 | Content: name, path, engine version | D2, D7 | | Planned |
 | 5 | OFPA actor data parser | — | | Planned |

@@ -1,7 +1,15 @@
 //! Unreal Engine packages (`.uasset`, `.umap`).
 
+mod header;
+mod objects;
 mod summary;
+mod version;
 
+pub use header::{
+    ExportDependencies, HeaderRead, NameEntry, NameRef, ObjectExport, ObjectImport, PackageHeader,
+    PackageIndex, read_header,
+};
+pub use objects::{IndexTarget, MAX_OBJECT_PATH_LENGTH};
 pub use summary::{
     CustomVersion, EngineVersion, Generation, PackageSummary, SummaryRead, Table, Warning,
     read_summary,

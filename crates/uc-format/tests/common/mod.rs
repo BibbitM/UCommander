@@ -1,4 +1,4 @@
-//! Builds synthetic package summaries, field by field.
+//! Builds synthetic package summaries and tables, field by field.
 //!
 //! The layout follows `docs/formats/package.md`. The default values give a
 //! valid summary of a UE 5.8 editor package.
@@ -12,6 +12,8 @@ pub const TAG_SWAPPED: u32 = 0xC1832A9E;
 
 /// Package flag `FilterEditorOnly`.
 pub const PKG_FILTER_EDITOR_ONLY: u32 = 0x8000_0000;
+/// Package flag `UnversionedProperties`.
+pub const PKG_UNVERSIONED_PROPERTIES: u32 = 0x0000_2000;
 
 /// UE4 file versions.
 pub mod ue4 {
@@ -19,6 +21,11 @@ pub mod ue4 {
     pub const SERIALIZE_TEXT_IN_PACKAGES: i32 = 459;
     pub const ADDED_SEARCHABLE_NAMES: i32 = 510;
     pub const ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID: i32 = 516;
+    pub const NAME_HASHES_SERIALIZED: i32 = 504;
+    pub const LOAD_FOR_EDITOR_GAME: i32 = 365;
+    pub const COOKED_ASSETS_IN_EDITOR_SUPPORT: i32 = 485;
+    pub const TEMPLATE_INDEX_IN_COOKED_EXPORTS: i32 = 508;
+    pub const EXPORTMAP_SERIALSIZES_64BIT: i32 = 511;
     pub const WORLD_LEVEL_INFO: i32 = 224;
     pub const ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE: i32 = 278;
     pub const CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS: i32 = 326;
@@ -34,6 +41,10 @@ pub mod ue5 {
     pub const INITIAL_VERSION: i32 = 1000;
     pub const NAMES_REFERENCED_FROM_EXPORT_DATA: i32 = 1001;
     pub const PAYLOAD_TOC: i32 = 1002;
+    pub const OPTIONAL_RESOURCES: i32 = 1003;
+    pub const REMOVE_OBJECT_EXPORT_PACKAGE_GUID: i32 = 1005;
+    pub const TRACK_OBJECT_EXPORT_IS_INHERITED: i32 = 1006;
+    pub const SCRIPT_SERIALIZATION_OFFSET: i32 = 1010;
     pub const DATA_RESOURCES: i32 = 1009;
     pub const ADD_SOFTOBJECTPATH_LIST: i32 = 1008;
     pub const METADATA_SERIALIZATION_OFFSET: i32 = 1014;
@@ -354,12 +365,21 @@ impl Writer {
         self.0.extend_from_slice(&value.to_le_bytes());
     }
 
+    pub fn i64(&mut self, value: i64) {
+        self.0.extend_from_slice(&value.to_le_bytes());
+    }
+
     pub fn i32(&mut self, value: i32) {
         self.0.extend_from_slice(&value.to_le_bytes());
     }
 
     pub fn bytes(&mut self, value: &[u8]) {
         self.0.extend_from_slice(value);
+    }
+
+    pub fn name_ref(&mut self, (index, number): NameRef) {
+        self.i32(index);
+        self.i32(number);
     }
 
     pub fn guid(&mut self, value: [u32; 4]) {
@@ -392,5 +412,187 @@ impl Writer {
             }
             Str::Length(length) => self.i32(*length),
         }
+    }
+}
+
+/// One name map entry: text and the two hash values.
+#[derive(Debug, Clone)]
+pub struct Name(pub Str, pub u16, pub u16);
+
+impl Name {
+    /// An 8-bit name. The hash values come from the text length, so that
+    /// each name has different values.
+    pub fn ansi(text: &'static str) -> Self {
+        let len = text.len() as u16;
+        Self(Str::Ansi(text), 0x1000 + len, 0x2000 + len)
+    }
+}
+
+/// A name reference: name index and number.
+pub type NameRef = (i32, i32);
+
+/// One import entry, with the raw values of the file.
+#[derive(Debug, Clone, Default)]
+pub struct Import {
+    pub class_package: NameRef,
+    pub class_name: NameRef,
+    pub outer_index: i32,
+    pub object_name: NameRef,
+    pub package_name: NameRef,
+    pub import_optional: u32,
+}
+
+/// One export entry, with the raw values of the file. Booleans are `u32`.
+#[derive(Debug, Clone, Default)]
+pub struct Export {
+    pub class_index: i32,
+    pub super_index: i32,
+    pub template_index: i32,
+    pub outer_index: i32,
+    pub object_name: NameRef,
+    pub object_flags: u32,
+    pub serial_size: i64,
+    pub serial_offset: i64,
+    pub forced_export: u32,
+    pub not_for_client: u32,
+    pub not_for_server: u32,
+    pub package_guid: [u32; 4],
+    pub is_inherited_instance: u32,
+    pub package_flags: u32,
+    pub not_always_loaded_for_editor_game: u32,
+    pub is_asset: u32,
+    pub generate_public_hash: u32,
+    pub dependencies: [i32; 5],
+    pub script_serialization_start_offset: i64,
+    pub script_serialization_end_offset: i64,
+}
+
+/// A synthetic package: a summary, the name map, the import table, then
+/// the export table.
+///
+/// `to_bytes` sets the counts, the offsets and the total header size of
+/// the summary from the tables, unless an override is set.
+#[derive(Debug, Clone)]
+pub struct Package {
+    pub summary: Summary,
+    pub names: Vec<Name>,
+    /// When set, the name count is this value, not the list length.
+    pub name_count: Option<i32>,
+    /// When set, the name offset is this value, not the table position.
+    pub name_offset: Option<i32>,
+    pub imports: Vec<Import>,
+    /// When set, the import count is this value, not the list length.
+    pub import_count: Option<i32>,
+    pub exports: Vec<Export>,
+    /// When set, the export count is this value, not the list length.
+    pub export_count: Option<i32>,
+}
+
+impl Package {
+    pub fn new(names: &[&'static str]) -> Self {
+        Self {
+            summary: Summary::default(),
+            names: names.iter().map(|text| Name::ansi(text)).collect(),
+            name_count: None,
+            name_offset: None,
+            imports: Vec::new(),
+            import_count: None,
+            exports: Vec::new(),
+            export_count: None,
+        }
+    }
+
+    /// The size of the summary. The size does not change with the counts
+    /// and offsets, because they all have a fixed size.
+    pub fn summary_size(&self) -> usize {
+        self.summary.to_bytes().len()
+    }
+
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let start = self.summary_size();
+        let mut tables = Writer::default();
+        for Name(text, non_case_preserving, case_preserving) in &self.names {
+            tables.string(text);
+            if self.summary.file_version_ue4 >= ue4::NAME_HASHES_SERIALIZED {
+                tables.bytes(&non_case_preserving.to_le_bytes());
+                tables.bytes(&case_preserving.to_le_bytes());
+            }
+        }
+
+        let import_offset = start + tables.0.len();
+        let (v4, v5) = (self.summary.file_version_ue4, self.summary.file_version_ue5);
+        for import in &self.imports {
+            tables.name_ref(import.class_package);
+            tables.name_ref(import.class_name);
+            tables.i32(import.outer_index);
+            tables.name_ref(import.object_name);
+            if v4 >= ue4::NON_OUTER_PACKAGE_IMPORT {
+                tables.name_ref(import.package_name);
+            }
+            if v5 >= ue5::OPTIONAL_RESOURCES {
+                tables.u32(import.import_optional);
+            }
+        }
+
+        let export_offset = start + tables.0.len();
+        let unversioned = self.summary.package_flags & PKG_UNVERSIONED_PROPERTIES != 0;
+        for export in &self.exports {
+            tables.i32(export.class_index);
+            tables.i32(export.super_index);
+            if v4 >= ue4::TEMPLATE_INDEX_IN_COOKED_EXPORTS {
+                tables.i32(export.template_index);
+            }
+            tables.i32(export.outer_index);
+            tables.name_ref(export.object_name);
+            tables.u32(export.object_flags);
+            if v4 >= ue4::EXPORTMAP_SERIALSIZES_64BIT {
+                tables.i64(export.serial_size);
+                tables.i64(export.serial_offset);
+            } else {
+                tables.i32(export.serial_size as i32);
+                tables.i32(export.serial_offset as i32);
+            }
+            tables.u32(export.forced_export);
+            tables.u32(export.not_for_client);
+            tables.u32(export.not_for_server);
+            if v5 < ue5::REMOVE_OBJECT_EXPORT_PACKAGE_GUID {
+                tables.guid(export.package_guid);
+            }
+            if v5 >= ue5::TRACK_OBJECT_EXPORT_IS_INHERITED {
+                tables.u32(export.is_inherited_instance);
+            }
+            tables.u32(export.package_flags);
+            if v4 >= ue4::LOAD_FOR_EDITOR_GAME {
+                tables.u32(export.not_always_loaded_for_editor_game);
+            }
+            if v4 >= ue4::COOKED_ASSETS_IN_EDITOR_SUPPORT {
+                tables.u32(export.is_asset);
+            }
+            if v5 >= ue5::OPTIONAL_RESOURCES {
+                tables.u32(export.generate_public_hash);
+            }
+            if v4 >= ue4::PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS {
+                for value in export.dependencies {
+                    tables.i32(value);
+                }
+            }
+            if !unversioned && v5 >= ue5::SCRIPT_SERIALIZATION_OFFSET {
+                tables.i64(export.script_serialization_start_offset);
+                tables.i64(export.script_serialization_end_offset);
+            }
+        }
+
+        let mut summary = self.summary.clone();
+        summary.name_count = self.name_count.unwrap_or(self.names.len() as i32);
+        summary.name_offset = self.name_offset.unwrap_or(start as i32);
+        summary.import_count = self.import_count.unwrap_or(self.imports.len() as i32);
+        summary.import_offset = import_offset as i32;
+        summary.export_count = self.export_count.unwrap_or(self.exports.len() as i32);
+        summary.export_offset = export_offset as i32;
+        summary.total_header_size = (start + tables.0.len()) as i32;
+
+        let mut bytes = summary.to_bytes();
+        bytes.extend_from_slice(&tables.0);
+        bytes
     }
 }

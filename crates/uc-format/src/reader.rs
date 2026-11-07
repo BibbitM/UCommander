@@ -15,13 +15,19 @@ impl<'a> Reader<'a> {
         Self { bytes, offset: 0 }
     }
 
+    /// Creates a reader that starts at `offset`. The offset can be after
+    /// the end of `bytes`: then the first read gives "truncated".
+    pub(crate) fn at(bytes: &'a [u8], offset: usize) -> Self {
+        Self { bytes, offset }
+    }
+
     /// The offset of the next value.
     pub(crate) fn offset(&self) -> usize {
         self.offset
     }
 
     fn remaining(&self) -> usize {
-        self.bytes.len() - self.offset
+        self.bytes.len().saturating_sub(self.offset)
     }
 
     fn take<const N: usize>(&mut self) -> Result<[u8; N], Error> {
@@ -39,10 +45,11 @@ impl<'a> Reader<'a> {
         let truncated = Error::Truncated {
             offset: self.offset,
         };
-        if len > self.remaining() {
-            return Err(truncated);
-        }
-        let value = &self.bytes[self.offset..self.offset + len];
+        let value = self
+            .bytes
+            .get(self.offset..)
+            .and_then(|rest| rest.get(..len))
+            .ok_or(truncated)?;
         self.offset += len;
         Ok(value)
     }
@@ -52,8 +59,21 @@ impl<'a> Reader<'a> {
     /// characters. The last character is the null terminator, and is
     /// not part of the result. A UTF-16 error gives U+FFFD.
     pub(crate) fn string(&mut self, field: &'static str) -> Result<String, Error> {
+        self.string_limited(field, u32::MAX)
+    }
+
+    /// Reads a string, as [`Self::string`]. A length with an absolute
+    /// value greater than `max_length` is a bad value.
+    pub(crate) fn string_limited(
+        &mut self,
+        field: &'static str,
+        max_length: u32,
+    ) -> Result<String, Error> {
         let offset = self.offset;
         let length = self.i32()?;
+        if length.unsigned_abs() > max_length {
+            return Err(Error::BadValue { offset, field });
+        }
         if length >= 0 {
             let bytes = self.slice(length.unsigned_abs() as usize)?;
             let text = bytes.split_last().map_or(&[][..], |(_, text)| text);
@@ -77,6 +97,11 @@ impl<'a> Reader<'a> {
 
     pub(crate) fn u32(&mut self) -> Result<u32, Error> {
         self.take().map(u32::from_le_bytes)
+    }
+
+    /// Reads a boolean: a `u32`. Each value other than 0 is true.
+    pub(crate) fn bool(&mut self) -> Result<bool, Error> {
+        self.u32().map(|value| value != 0)
     }
 
     pub(crate) fn u16(&mut self) -> Result<u16, Error> {
@@ -115,7 +140,24 @@ impl<'a> Reader<'a> {
     ) -> Result<usize, Error> {
         let offset = self.offset;
         let count = self.i32()?;
-        let count = usize::try_from(count).map_err(|_| Error::BadValue { offset, field })?;
+        self.check_count(count, element_size, offset, field)
+    }
+
+    /// Checks an element count from the file, for elements of
+    /// `element_size` bytes from the current offset. A negative count is a
+    /// bad value at `field_offset`. If the elements cannot fit in the
+    /// remaining input, the result is "truncated".
+    pub(crate) fn check_count(
+        &self,
+        count: i32,
+        element_size: usize,
+        field_offset: usize,
+        field: &'static str,
+    ) -> Result<usize, Error> {
+        let count = usize::try_from(count).map_err(|_| Error::BadValue {
+            offset: field_offset,
+            field,
+        })?;
         if count.saturating_mul(element_size) > self.remaining() {
             return Err(Error::Truncated {
                 offset: self.offset,

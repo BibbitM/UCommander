@@ -5,23 +5,23 @@ File version UE4: 522
 File version UE5: 1018
 File version licensee: 0
 Saved hash: 0102030405060708090a0b0c0d0e0f1011121314
-Total header size: 4660
+Total header size: 845
 Custom version count: 2
 Custom version 9C54D522-A8264FBE-94210746-61B482D0: 52
 Custom version 11111111-22222222-33333333-44444444: 7
 Package name: /Game/Fixtures/BP_Test
 Package flags: 0x00000400
-Name count: 101
-Name offset: 102
+Name count: 7
+Name offset: 432
 Soft object paths count: 103
 Soft object paths offset: 104
 Localization ID: 0123456789ABCDEF
 Gatherable text data count: 105
 Gatherable text data offset: 106
-Export count: 107
-Export offset: 108
-Import count: 109
-Import offset: 110
+Export count: 2
+Export offset: 621
+Import count: 2
+Import offset: 541
 Cell export count: 111
 Cell export offset: 112
 Cell import count: 113
@@ -57,3 +57,64 @@ Preload dependency offset: 210
 Names referenced from export data count: 211
 Payload TOC offset: 8589935122
 Data resource offset: 213
+Name 0: /Script/Engine
+Name 1: Actor
+Name 2: Class
+Name 3: Package
+Name 4: BP_Test
+Name 5: None
+Name 6: Root
+Import 0 object name: /Script/Engine
+Import 0 path: /Script/Engine
+Import 0 outer: 0 (null)
+Import 0 class package: /Script/Engine
+Import 0 class name: Package
+Import 0 package name: None
+Import 0 import optional: no
+Import 1 object name: Actor
+Import 1 path: /Script/Engine.Actor
+Import 1 outer: -1 (/Script/Engine)
+Import 1 class package: /Script/Engine
+Import 1 class name: Class
+Import 1 package name: None
+Import 1 import optional: yes
+Export 0 object name: BP_Test
+Export 0 path: /Game/Fixtures/BP_Test.BP_Test
+Export 0 class: -2 (/Script/Engine.Actor)
+Export 0 super: 0 (null)
+Export 0 template: 0 (null)
+Export 0 outer: 0 (null)
+Export 0 object flags: 0x0000000B
+Export 0 serial size: 733
+Export 0 serial offset: 18857
+Export 0 forced export: no
+Export 0 not for client: yes
+Export 0 not for server: no
+Export 0 package GUID: (not in file)
+Export 0 is inherited instance: no
+Export 0 package flags: 0x00000000
+Export 0 not always loaded for editor game: no
+Export 0 is asset: yes
+Export 0 generate public hash: no
+Export 0 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 0 script serialization offsets: 0 to 725
+Export 1 object name: Root_0
+Export 1 path: /Game/Fixtures/BP_Test.BP_Test:Root_0
+Export 1 class: -2 (/Script/Engine.Actor)
+Export 1 super: -2 (/Script/Engine.Actor)
+Export 1 template: -2 (/Script/Engine.Actor)
+Export 1 outer: 1 (/Game/Fixtures/BP_Test.BP_Test)
+Export 1 object flags: 0x00000000
+Export 1 serial size: 13
+Export 1 serial offset: 19590
+Export 1 forced export: no
+Export 1 not for client: no
+Export 1 not for server: no
+Export 1 package GUID: (not in file)
+Export 1 is inherited instance: no
+Export 1 package flags: 0x00000400
+Export 1 not always loaded for editor game: no
+Export 1 is asset: no
+Export 1 generate public hash: no
+Export 1 preload dependencies: first 0, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 1 script serialization offsets: 0 to 0
