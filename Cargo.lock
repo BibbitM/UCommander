@@ -88,14 +88,14 @@ dependencies = [
 
 [[package]]
 name = "uc-cli"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "uc-format",
 ]
 
 [[package]]
 name = "uc-content"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "uc-format",
  "uc-tc",
@@ -104,7 +104,7 @@ dependencies = [
 
 [[package]]
 name = "uc-format"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -112,19 +112,19 @@ dependencies = [
 
 [[package]]
 name = "uc-lister"
-version = "0.1.0"
+version = "0.2.0"
 
 [[package]]
 name = "uc-packer"
-version = "0.1.0"
+version = "0.2.0"
 
 [[package]]
 name = "uc-tc"
-version = "0.1.0"
+version = "0.2.0"
 
 [[package]]
 name = "uc-test-host"
-version = "0.1.0"
+version = "0.2.0"
 
 [[package]]
 name = "unicode-ident"
@@ -134,7 +134,7 @@ checksum = "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563"
 
 [[package]]
 name = "xtask"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "uc-test-host",
 ]

@@ -7,6 +7,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-07
+
 ### Added
 
 - Package summary parser for UE 5.8 editor packages, with errors for
@@ -43,5 +45,6 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - The plugins link the C runtime statically, so they need no VC++ runtime.
 
-[Unreleased]: https://github.com/BibbitM/UCommander/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/BibbitM/UCommander/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/BibbitM/UCommander/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/BibbitM/UCommander/releases/tag/v0.1.0
