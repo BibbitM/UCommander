@@ -397,6 +397,11 @@ is an asset when all of these conditions are true:
 - It does not have the object flags `Transient` (`0x00000040`) or
   `ClassDefaultObject` (`0x00000010`). It has the object flag `Public`
   (`0x00000001`). Source of the values: UE583 `ObjectMacros.h`.
+- It is a valid object (not marked as garbage).
+- Its class does not have the class flag `Optional` (`0x00000010`, UE583
+  `ObjectMacros.h`).
+- In the editor: it is not a property bag placeholder. UE makes a
+  placeholder for an export whose class import was missing at load.
 - Its outer is a package, or it is in an external package.
 - The package is not transient and is not a play-in-editor package.
 
