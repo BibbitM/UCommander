@@ -100,8 +100,9 @@ the PR.
 
 ### `uc-tc` and `uc-content`
 
-- `FIELDS` gets the field **Asset class**, type `FieldType::StringW`, at
-  index 1.
+- `FIELDS` gets the field **Asset class**, type `FieldType::String`, at
+  index 1. `ContentGetValueW` returns `ft_stringw` for it. (Changed after
+  the guide check, owner decision 1: the brief said `FieldType::StringW`.)
 - `ContentGetValueW` selects the value write by field type: `i32` for
   `Boolean`, `write_utf16` for `StringW`. The value is computed before the
   write. Each field has one function that gives the value from the file.

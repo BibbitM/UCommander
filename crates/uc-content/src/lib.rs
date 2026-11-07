@@ -10,8 +10,8 @@ use std::fs::File;
 use std::io::{self, Read};
 use std::path::Path;
 
-use uc_format::package::has_package_file_tag;
-use uc_tc::buffers::{read_wide_path, write_ansi};
+use uc_format::package::{ReadError, has_package_file_tag, read_header_from};
+use uc_tc::buffers::{read_wide_path, write_ansi, write_utf16};
 use uc_tc::content::{DefaultParams, FieldType, NO_MORE_FIELDS, ValueError};
 use uc_tc::guard;
 
@@ -30,15 +30,24 @@ struct Field {
 /// A field value, before the plugin writes it into the TC buffer.
 enum Value {
     Boolean(bool),
+    /// Written as UTF-16 (`ft_stringw`). The field declares `ft_string`.
+    Text(String),
 }
 
 /// The fields in TC field index order. Names must stay the same after 1.0,
 /// because users save them in column sets and searches.
-const FIELDS: &[Field] = &[Field {
-    name: "Is package",
-    field_type: FieldType::Boolean,
-    value: is_package,
-}];
+const FIELDS: &[Field] = &[
+    Field {
+        name: "Is package",
+        field_type: FieldType::Boolean,
+        value: is_package,
+    },
+    Field {
+        name: "Asset class",
+        field_type: FieldType::String,
+        value: asset_class,
+    },
+];
 
 fn field(index: i32) -> Option<&'static Field> {
     usize::try_from(index)
@@ -146,6 +155,15 @@ unsafe fn write_value(value: &Value, field_value: *mut c_void, maxlen: i32) -> i
             unsafe { field_value.cast::<i32>().write_unaligned(i32::from(value)) };
             FieldType::Boolean.code()
         }
+        Value::Text(ref text) => {
+            // One UTF-16 unit for the NUL at least.
+            if maxlen < size_of::<u16>() as i32 {
+                return ValueError::FieldEmpty.code();
+            }
+            // SAFETY: the caller guarantees `maxlen` writable bytes.
+            unsafe { write_utf16(field_value.cast(), maxlen, text) };
+            FieldType::StringW.code()
+        }
     }
 }
 
@@ -154,4 +172,14 @@ fn is_package(path: &Path) -> io::Result<Option<Value>> {
     let mut head = Vec::with_capacity(4);
     File::open(path)?.take(4).read_to_end(&mut head)?;
     Ok(Some(Value::Boolean(has_package_file_tag(&head))))
+}
+
+/// Reads the package header, and gives the class of the main asset. A file
+/// that the parser cannot read has no value.
+fn asset_class(path: &Path) -> io::Result<Option<Value>> {
+    match read_header_from(File::open(path)?) {
+        Ok(read) => Ok(read.header.asset_class().map(Value::Text)),
+        Err(ReadError::Io(error)) => Err(error),
+        Err(_) => Ok(None),
+    }
 }

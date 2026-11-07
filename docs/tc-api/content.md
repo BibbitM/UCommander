@@ -27,6 +27,11 @@ from <https://www.ghisler.com/plugins.htm>. Header version in the guide:
   loads a Unicode-only 64-bit plugin.
 - So field names, unit names and the detect string are ANSI.
 - `ContentGetValueW` returns `ft_stringw` (not `ft_string`) for UTF-16 text.
+- `ft_stringw` is not in the list of return values of
+  `ContentGetSupportedField`. A text field declares `ft_string`. Then
+  `ContentGetValueW` can return `ft_string` or `ft_stringw` for it. Source:
+  guide page `contentgetsupportedfield.htm`, value `ft_string`. Checked
+  again for point 3.
 
 The functions use `__stdcall`. On x64 there is only one calling convention, so
 Rust uses `extern "system"`.
