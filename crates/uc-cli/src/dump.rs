@@ -181,6 +181,10 @@ fn format_header(read: &HeaderRead) -> String {
     l.0
 }
 
+/// The text for an object path that the parser does not give, because it
+/// is longer than the limit.
+const NO_PATH: &str = "path too long";
+
 fn yes_no(value: bool) -> &'static str {
     if value { "yes" } else { "no" }
 }
@@ -189,8 +193,16 @@ fn yes_no(value: bool) -> &'static str {
 fn index_text(header: &PackageHeader, index: PackageIndex) -> String {
     match header.object_path(index) {
         Some(path) => format!("{} ({path})", index.0),
-        None => format!("{} (null)", index.0),
+        None if index == PackageIndex(0) => "0 (null)".to_owned(),
+        None => format!("{} ({NO_PATH})", index.0),
     }
+}
+
+/// The path of an import or an export. The parser checked the index.
+fn path_text(header: &PackageHeader, index: PackageIndex) -> String {
+    header
+        .object_path(index)
+        .unwrap_or_else(|| format!("({NO_PATH})"))
 }
 
 /// A name reference as text. The parser checked the name index.
@@ -212,7 +224,7 @@ fn format_imports(l: &mut Lines, header: &PackageHeader) {
             &format!("{p} object name"),
             name_text(header, import.object_name),
         );
-        l.option(&format!("{p} path"), header.object_path(index));
+        l.add(&format!("{p} path"), path_text(header, index));
         l.add(
             &format!("{p} outer"),
             index_text(header, import.outer_index),
@@ -245,7 +257,7 @@ fn format_exports(l: &mut Lines, header: &PackageHeader) {
             &format!("{p} object name"),
             name_text(header, export.object_name),
         );
-        l.option(&format!("{p} path"), header.object_path(index));
+        l.add(&format!("{p} path"), path_text(header, index));
         l.add(&format!("{p} class"), index_of(export.class_index));
         l.add(&format!("{p} super"), index_of(export.super_index));
         l.option(

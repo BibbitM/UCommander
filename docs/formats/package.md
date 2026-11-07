@@ -480,6 +480,7 @@ the point 1 and point 2 briefs.
 | Name index out of the name map. | Error: bad value (point 2 owner decision 3). |
 | Package index out of the import or export table. | Error: bad value (point 2 owner decision 3). |
 | Outer chain with a loop. | Error: bad value. UE has no check for this case. |
+| Object path longer than 1024 bytes. | No path. UE has no limit. The limit keeps the time and the memory of a path walk small for a deep outer chain of long names. |
 | Boolean with a value greater than 1. | Read as true. No error. UE also reads it as true. |
 | Name map hash values. | Keep the raw values. Do not check them. |
 | Object flags of an export. | Keep the raw value. Do not apply the `RF_Load` mask. |

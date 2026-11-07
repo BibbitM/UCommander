@@ -2,9 +2,9 @@
 
 mod common;
 
-use common::{Export, Import, Package};
+use common::{Export, Import, Name, Package};
 use uc_format::Error;
-use uc_format::package::{IndexTarget, PackageIndex, read_header};
+use uc_format::package::{IndexTarget, MAX_OBJECT_PATH_LENGTH, PackageIndex, read_header};
 
 const NAMES: &[&str] = &[
     "/Script/CoreUObject", // 0
@@ -190,4 +190,77 @@ fn an_outer_chain_with_a_loop_is_a_bad_value() {
             "{result:?}"
         );
     }
+}
+
+/// A package with two names of `first` and `second` characters, and two
+/// imports: `<first>`, and its inner object `<first>:<second>`.
+fn two_part_import(first: usize, second: usize) -> Package {
+    let mut input = Package::new(&["Package", "None"]);
+    input.names.push(Name::ansi("A".repeat(first).leak()));
+    input.names.push(Name::ansi("B".repeat(second).leak()));
+    input.imports = vec![import(1, 0, 2), import(1, -1, 3)];
+    for import in &mut input.imports {
+        import.package_name = (1, 0);
+    }
+    input
+}
+
+#[test]
+fn a_path_of_1024_bytes_is_given() {
+    let header = read_header(&two_part_import(1000, 23).to_bytes())
+        .unwrap()
+        .header;
+
+    let path = header.object_path(PackageIndex(-2)).unwrap();
+
+    assert_eq!(path.len(), MAX_OBJECT_PATH_LENGTH);
+    assert_eq!(path, format!("{}:{}", "A".repeat(1000), "B".repeat(23)));
+}
+
+#[test]
+fn a_path_longer_than_1024_bytes_is_not_given() {
+    let header = read_header(&two_part_import(1000, 24).to_bytes())
+        .unwrap()
+        .header;
+
+    assert_eq!(header.object_path(PackageIndex(-2)), None);
+    assert_eq!(header.object_path(PackageIndex(-1)).unwrap().len(), 1000);
+}
+
+/// A package with one export: a name of `length` characters. Its path
+/// is the package name `/Game/Fixtures/BP_Test` (22 bytes), `.` and the
+/// name.
+fn one_export(length: usize) -> Package {
+    let mut input = Package::new(&["None"]);
+    input.names.push(Name::ansi("A".repeat(length).leak()));
+    input.exports = vec![export(0, 0, (1, 0))];
+    input
+}
+
+#[test]
+fn the_package_name_is_part_of_the_path_length() {
+    let fits = read_header(&one_export(1001).to_bytes()).unwrap().header;
+    let too_long = read_header(&one_export(1002).to_bytes()).unwrap().header;
+
+    let path = fits.object_path(PackageIndex(1)).unwrap();
+    assert_eq!(path.len(), MAX_OBJECT_PATH_LENGTH);
+    assert_eq!(too_long.object_path(PackageIndex(1)), None);
+}
+
+/// A deep outer chain of long names is valid input. The path walk stops
+/// at the length limit, so the time and the memory do not grow with the
+/// chain depth.
+#[test]
+fn a_deep_chain_of_long_names_gives_no_path_and_stops_early() {
+    let mut input = Package::new(&["None"]);
+    input.names.push(Name::ansi("A".repeat(1023).leak()));
+    input.exports = (0..5_000).map(|i| export(0, i, (1, 0))).collect();
+    let header = read_header(&input.to_bytes()).unwrap().header;
+
+    let start = std::time::Instant::now();
+    for index in 1..=5_000 {
+        assert_eq!(header.object_path(PackageIndex(index)), None, "{index}");
+    }
+
+    assert!(start.elapsed() < std::time::Duration::from_secs(5));
 }

@@ -9,6 +9,11 @@ const PACKAGE_CLASS: &str = "Package";
 /// The class name of an export with a null class index.
 const CLASS_CLASS: &str = "Class";
 
+/// The longest object path, in bytes, that [`PackageHeader::object_path`]
+/// gives. UE has no limit. A limit keeps the time and the memory of a path
+/// walk small for a deep outer chain of long names.
+pub const MAX_OBJECT_PATH_LENGTH: usize = 1024;
+
 /// The table entry that a [`PackageIndex`] refers to.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum IndexTarget {
@@ -62,30 +67,42 @@ impl PackageHeader {
     /// Gives the full path of an import or an export, from its outer chain.
     /// An export path starts with the package name, except when its outer
     /// chain contains an import. `None` for a null index, an index out of
-    /// the tables, or an outer chain that does not end.
+    /// the tables, an outer chain that does not end, or a path longer than
+    /// [`MAX_OBJECT_PATH_LENGTH`] bytes.
     pub fn object_path(&self, index: PackageIndex) -> Option<String> {
-        let mut path = self.object_name(index)?;
+        // The parts in reverse order: the object name, a separator, the
+        // outer name, and so on. Join them one time at the end.
+        let mut parts = vec![self.object_name(index)?];
+        let mut length = parts[0].len();
         let mut has_import = false;
         let mut current = self.outer_index(index)?;
-        // A chain without a loop visits each entry at most one time.
-        for _ in 0..=self.imports.len() + self.exports.len() {
+        // Each step adds at least one byte, so the length limit stops a
+        // deep chain or a loop after at most `MAX_OBJECT_PATH_LENGTH` steps.
+        while length <= MAX_OBJECT_PATH_LENGTH {
             if current == PackageIndex(0) {
                 let is_export = matches!(index.target(), IndexTarget::Export(_));
                 if is_export && !has_import {
-                    path.insert(0, '.');
-                    path.insert_str(0, &self.summary.package_name);
+                    length += 1 + self.summary.package_name.len();
+                    parts.push(".".to_owned());
+                    parts.push(self.summary.package_name.clone());
                 }
-                return Some(path);
+                if length > MAX_OBJECT_PATH_LENGTH {
+                    return None;
+                }
+                parts.reverse();
+                return Some(parts.concat());
             }
             has_import |= matches!(current.target(), IndexTarget::Import(_));
             let outer = self.outer_index(current)?;
             let separator = if self.is_package(current) || !self.is_package_or_null(outer) {
-                '.'
+                "."
             } else {
-                ':'
+                ":"
             };
-            path.insert(0, separator);
-            path.insert_str(0, &self.object_name(current)?);
+            let name = self.object_name(current)?;
+            length += 1 + name.len();
+            parts.push(separator.to_owned());
+            parts.push(name);
             current = outer;
         }
         None

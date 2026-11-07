@@ -141,6 +141,32 @@ fn dump_shows_package_indexes_with_their_paths() {
 }
 
 #[test]
+fn a_path_longer_than_the_limit_is_marked() {
+    let mut input = package();
+    input.names[6] = common::Name::ansi("R".repeat(1020).leak());
+    let path = temp_file("long-path.uasset", &input.to_bytes());
+
+    let output = dump(&path);
+
+    assert!(output.status.success(), "{}", text(&output.stderr));
+    let stdout = text(&output.stdout);
+    assert!(
+        stdout.contains(
+            "Export 1 path: (path too long)
+"
+        ),
+        "{stdout}"
+    );
+    assert!(
+        stdout.contains(
+            "Export 0 outer: 0 (null)
+"
+        ),
+        "{stdout}"
+    );
+}
+
+#[test]
 fn dump_reads_a_header_that_is_larger_than_64_kib() {
     let mut input = package();
     input.summary.custom_versions = vec![([1, 2, 3, 4], 5); 4000];
