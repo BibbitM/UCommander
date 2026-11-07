@@ -1,7 +1,9 @@
 //! Unreal Engine packages (`.uasset`, `.umap`).
 
+mod header;
 mod summary;
 
+pub use header::{HeaderRead, NameEntry, NameRef, PackageHeader, read_header};
 pub use summary::{
     CustomVersion, EngineVersion, Generation, PackageSummary, SummaryRead, Table, Warning,
     read_summary,

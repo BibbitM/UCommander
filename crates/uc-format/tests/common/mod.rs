@@ -1,4 +1,4 @@
-//! Builds synthetic package summaries, field by field.
+//! Builds synthetic package summaries and tables, field by field.
 //!
 //! The layout follows `docs/formats/package.md`. The default values give a
 //! valid summary of a UE 5.8 editor package.
@@ -19,6 +19,7 @@ pub mod ue4 {
     pub const SERIALIZE_TEXT_IN_PACKAGES: i32 = 459;
     pub const ADDED_SEARCHABLE_NAMES: i32 = 510;
     pub const ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID: i32 = 516;
+    pub const NAME_HASHES_SERIALIZED: i32 = 504;
     pub const WORLD_LEVEL_INFO: i32 = 224;
     pub const ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE: i32 = 278;
     pub const CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS: i32 = 326;
@@ -392,5 +393,72 @@ impl Writer {
             }
             Str::Length(length) => self.i32(*length),
         }
+    }
+}
+
+/// One name map entry: text and the two hash values.
+#[derive(Debug, Clone)]
+pub struct Name(pub Str, pub u16, pub u16);
+
+impl Name {
+    /// An 8-bit name. The hash values come from the text length, so that
+    /// each name has different values.
+    pub fn ansi(text: &'static str) -> Self {
+        let len = text.len() as u16;
+        Self(Str::Ansi(text), 0x1000 + len, 0x2000 + len)
+    }
+}
+
+/// A synthetic package: a summary, then the name map.
+///
+/// `to_bytes` sets the counts, the offsets and the total header size of
+/// the summary from the tables, unless an override is set.
+#[derive(Debug, Clone)]
+pub struct Package {
+    pub summary: Summary,
+    pub names: Vec<Name>,
+    /// When set, the name count is this value, not the list length.
+    pub name_count: Option<i32>,
+    /// When set, the name offset is this value, not the table position.
+    pub name_offset: Option<i32>,
+}
+
+impl Package {
+    pub fn new(names: &[&'static str]) -> Self {
+        Self {
+            summary: Summary::default(),
+            names: names.iter().map(|text| Name::ansi(text)).collect(),
+            name_count: None,
+            name_offset: None,
+        }
+    }
+
+    /// The size of the summary. The size does not change with the counts
+    /// and offsets, because they all have a fixed size.
+    pub fn summary_size(&self) -> usize {
+        self.summary.to_bytes().len()
+    }
+
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let start = self.summary_size();
+        let mut tables = Writer::default();
+        for Name(text, non_case_preserving, case_preserving) in &self.names {
+            tables.string(text);
+            if self.summary.file_version_ue4 >= ue4::NAME_HASHES_SERIALIZED {
+                tables.bytes(&non_case_preserving.to_le_bytes());
+                tables.bytes(&case_preserving.to_le_bytes());
+            }
+        }
+
+        let mut summary = self.summary.clone();
+        summary.name_count = self.name_count.unwrap_or(self.names.len() as i32);
+        summary.name_offset = self.name_offset.unwrap_or(start as i32);
+        summary.import_count = 0;
+        summary.export_count = 0;
+        summary.total_header_size = (start + tables.0.len()) as i32;
+
+        let mut bytes = summary.to_bytes();
+        bytes.extend_from_slice(&tables.0);
+        bytes
     }
 }
