@@ -9,8 +9,9 @@ Each fact has a source.
 |---|---|
 | CUE4Parse | CUE4Parse (Apache-2.0), commit `21e2231`. |
 | UE58 | Unreal Engine source, GitHub `EpicGames/UnrealEngine`, branch `5.8`, commit `8f7af10`. Read only. No code is copied. |
+| UE583 | Unreal Engine 5.8.3 source, from the Epic Games Launcher installation (`Build.version`: changelist 58210709, branch `++UE5+Release-5.8`). This engine made the point 1 fixtures. Read only. No code is copied. |
 
-The UE58 files, with paths relative to `Engine/Source/Runtime/`:
+The UE58 and UE583 files, with paths relative to `Engine/Source/Runtime/`:
 
 | Short name | Path |
 |---|---|
@@ -25,6 +26,14 @@ The UE58 files, with paths relative to `Engine/Source/Runtime/`:
 | `String.cpp.inl` | `Core/Private/Containers/String.cpp.inl` |
 | `Guid.cpp` | `Core/Private/Misc/Guid.cpp` |
 | `IoHash.h` | `Core/Public/IO/IoHash.h` |
+| `Linker.h` | `CoreUObject/Public/UObject/Linker.h` |
+| `LinkerLoad.cpp` | `CoreUObject/Private/UObject/LinkerLoad.cpp` |
+| `LinkerLoad.h` | `CoreUObject/Public/UObject/LinkerLoad.h` |
+| `ObjectResource.cpp` | `CoreUObject/Private/UObject/ObjectResource.cpp` |
+| `ObjectResource.h` | `CoreUObject/Public/UObject/ObjectResource.h` |
+| `UnrealNames.cpp` | `Core/Private/UObject/UnrealNames.cpp` |
+| `NameTypes.h` | `Core/Public/UObject/NameTypes.h` |
+| `Archive.cpp` | `Core/Private/Serialization/Archive.cpp` |
 
 ## Package file tag
 
@@ -46,6 +55,7 @@ All integers are little-endian.
 | Hash (`IoHash`) | 20 raw bytes. | UE58 `IoHash.h`: the hash is a 20-byte array. |
 | String (`FString`) | `i32` length, then the characters. See below. | UE58 `String.cpp.inl`, string read function. |
 | Array | `i32` count, then the elements. | Usual UE array layout. Used in UE58 `Summary.cpp`. |
+| Boolean | `u32`: 0 is false, 1 is true. UE reads a value greater than 1 as true, and marks the archive as damaged. | UE583 `Archive.cpp`, boolean read function. |
 
 String rules:
 
@@ -177,6 +187,168 @@ and engine version 4.26.0 with changelist 12740027 or more, UE clears the
 licensee flag. Source: UE58 `Summary.cpp`. This does not apply to UE 5
 packages.
 
+## Tables
+
+The name map, the import table and the export table are in the package
+header, before the total header size. UE reads them from the offsets and
+counts of the summary. They are not adjacent: other tables can be between
+them. Source: UE583 `LinkerLoad.cpp`, name map, import map and export map
+read functions. Observed in fixture `BP_SummaryActor.uasset`: name offset
+607, soft object paths offset 3108, import offset 5309, export offset 5949.
+
+### Name map
+
+The name map has "name count" entries. Each entry:
+
+| # | Field | Type | Condition |
+|---|---|---|---|
+| 1 | Length | `i32` | Always. |
+| 2 | Characters | `length` bytes (8-bit), or `-length` UTF-16 characters | Always. The same rules as a string. |
+| 3 | Non-case-preserving hash | `u16` | UE4 ≥ `NAME_HASHES_SERIALIZED`. |
+| 4 | Case-preserving hash | `u16` | UE4 ≥ `NAME_HASHES_SERIALIZED`. |
+
+Source: UE583 `UnrealNames.cpp`, name entry read function.
+
+- UE stops with a critical error when the absolute value of the length is
+  more than 1024 (`NAME_SIZE`, UE583 `NameTypes.h`).
+- UE ignores the two hash values when it reads. They are only kept for the
+  file layout.
+- The name text ends at the first null character.
+- UE does not split a number suffix from a name map entry. The text
+  `K2Node_Event` stays one entry.
+- Observed in fixture `BP_SummaryActor.uasset`: entry 0 has length 30
+  (`/Game/Summary/BP_SummaryActor` and the terminator), then 2 hash values.
+
+### Name reference
+
+A name in the tables (`FName`) is two `i32` values: name index, then
+number. Source: UE583 `LinkerLoad.h`, name read operator of the load
+linker.
+
+- A name index that is not in the name map gives a critical error. UE uses
+  an empty name.
+- Display text: the name map text. If the number is not 0, add `_` and
+  `number - 1`. Example: name `K2Node_Event` with number 1 is
+  `K2Node_Event_0`. Source: UE583 `NameTypes.h` (number 0 means "no
+  number", external number is the internal number minus 1) and
+  `UnrealNames.cpp` (name to text functions).
+
+### Package index
+
+A reference to an object (`FPackageIndex`) is one `i32`. Source: UE583
+`ObjectResource.h`.
+
+| Value | Meaning |
+|---|---|
+| 0 | Null (no object). |
+| Less than 0 | Import `-value - 1`. Example: -1 is import 0. |
+| More than 0 | Export `value - 1`. Example: 1 is export 0. |
+
+UE stops with a fatal error for an import or export index out of the table
+when it resolves the object. Source: UE583 `LinkerLoad.cpp`, index to
+object function.
+
+### Import entry
+
+Fields in file order. Source: UE583 `ObjectResource.cpp`, import read
+operator; types from UE583 `ObjectResource.h`.
+
+| # | Field | Type | Condition |
+|---|---|---|---|
+| 1 | Class package | Name reference | Always. |
+| 2 | Class name | Name reference | Always. |
+| 3 | Outer index | Package index | Always. |
+| 4 | Object name | Name reference | Always. |
+| 5 | Package name | Name reference | UE4 ≥ `NON_OUTER_PACKAGE_IMPORT`. |
+| 6 | Import optional | Boolean | UE5 ≥ `OPTIONAL_RESOURCES`. |
+
+Notes:
+
+- The package name is in all packages of these versions, also in editor
+  packages. It can be `None`: then the package of the import is found from
+  the outer chain.
+- For packages with the `FilterEditorOnly` flag, the saver can write the
+  object name as the package name. Then UE sets the package name to `None`
+  when it reads.
+- An entry is 40 bytes for a UE 5.8 package. Observed in fixture
+  `BP_SummaryActor.uasset`: 16 imports from offset 5309 end at the export
+  offset 5949.
+- After the read, UE changes some imports for old packages (import map
+  fix-up, UE583 `LinkerLoad.cpp`). UCommander does not do this.
+
+### Export entry
+
+Fields in file order. Source: UE583 `ObjectResource.cpp`, export read
+operator; types from UE583 `ObjectResource.h`.
+
+| # | Field | Type | Condition |
+|---|---|---|---|
+| 1 | Class index | Package index | Always. |
+| 2 | Super index | Package index | Always. |
+| 3 | Template index | Package index | UE4 ≥ `TEMPLATE_INDEX_IN_COOKED_EXPORTS`. |
+| 4 | Outer index | Package index | Always. |
+| 5 | Object name | Name reference | Always. |
+| 6 | Object flags | `u32` | Always. |
+| 7 | Serial size | `i64` | UE4 ≥ `64BIT_EXPORTMAP_SERIALSIZES`. Before: `i32`. |
+| 8 | Serial offset | `i64` | UE4 ≥ `64BIT_EXPORTMAP_SERIALSIZES`. Before: `i32`. |
+| 9 | Forced export | Boolean | Always. |
+| 10 | Not for client | Boolean | Always. |
+| 11 | Not for server | Boolean | Always. |
+| 12 | Package GUID | GUID | UE5 < `REMOVE_OBJECT_EXPORT_PACKAGE_GUID`. UE ignores the value. |
+| 13 | Is inherited instance | Boolean | UE5 ≥ `TRACK_OBJECT_EXPORT_IS_INHERITED`. |
+| 14 | Package flags | `u32` | Always. |
+| 15 | Not always loaded for editor game | Boolean | UE4 ≥ `LOAD_FOR_EDITOR_GAME`. |
+| 16 | Is asset | Boolean | UE4 ≥ `COOKED_ASSETS_IN_EDITOR_SUPPORT`. |
+| 17 | Generate public hash | Boolean | UE5 ≥ `OPTIONAL_RESOURCES`. |
+| 18 | First export dependency | `i32` | UE4 ≥ `PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS`. |
+| 19 | Serialization before serialization dependencies | `i32` | Same as row 18. |
+| 20 | Create before serialization dependencies | `i32` | Same as row 18. |
+| 21 | Serialization before create dependencies | `i32` | Same as row 18. |
+| 22 | Create before create dependencies | `i32` | Same as row 18. |
+| 23 | Script serialization start offset | `i64` | UE5 ≥ `SCRIPT_SERIALIZATION_OFFSET`, and package flag `UnversionedProperties` not set. Without the field, UE uses 0. |
+| 24 | Script serialization end offset | `i64` | Same as row 23. |
+
+Notes:
+
+- When UE reads the object flags, it keeps only the load flags (`RF_Load`
+  mask, UE583 `ObjectMacros.h`). The file can contain other bits.
+- The condition of rows 23 and 24 uses the "unversioned properties" state
+  of the load linker. The load linker sets this state from the package flag
+  `UnversionedProperties`. Source: UE583 `LinkerLoad.cpp`, summary
+  processing.
+- An entry is 112 bytes for a UE 5.8 editor package. Observed in fixture
+  `BP_SummaryActor.uasset`: 14 exports from offset 5949 end at 7517, which
+  is the depends offset.
+
+### Object path
+
+UE makes the path name of an import or an export from the outer chain.
+Source: UE583 `Linker.cpp`, import and export path name functions, and
+`Linker.h`, class name functions.
+
+1. Start with the object name of the entry.
+2. Go to the outer. Put the outer name before the text, with a separator.
+3. Continue until the outer index is null.
+
+Separator between an outer and its inner object: `:` when the outer is not
+a package, and the outer of the outer is null or a package. Else `.`. An
+object is a package when its class name is `Package`.
+
+Class name of an entry:
+
+- Import: its class name field.
+- Export: the object name of its class index. When the class index is null,
+  the class name is `Class`.
+
+For an export, add the package name and `.` at the start, except when the
+outer chain contains an import. Example from the `PkgInfo` output of
+`BP_SummaryActor.uasset`: export `EventGraph`, with outer export
+`BP_SummaryActor` (class `Blueprint`, outer null), gives
+`<package>.BP_SummaryActor:EventGraph`.
+
+The forced export flag can change the package part of the path. UCommander
+does not use this option.
+
 ## Package flags
 
 | Flag | Value | Source |
@@ -193,6 +365,12 @@ packages.
 Source for all values: UE58 `ObjectVersion.h`. The values come from the enum
 order. We calculated them from the enum, and they agree with the values that
 CUE4Parse uses for the same names.
+
+Point 2 added the UE4 versions 365, 485, 504, 508 and 511. Source: UE583
+`ObjectVersion.h`. We calculated them from the enum order with a script.
+The same script gave the correct values for the known versions 214, 507,
+518, 520 and 522. We did not compare them with CUE4Parse. In the source,
+the name of 508 is `VER_UE4_TemplateIndex_IN_COOKED_EXPORTS`.
 
 ### Legacy file version
 
@@ -248,7 +426,7 @@ UE 5.8 behavior:
 
 ### UE4 file versions
 
-Only the versions that the summary uses. The newest UE4 version in UE 5.8 is
+Only the versions that the summary and the tables use. The newest UE4 version in UE 5.8 is
 522 (`CORRECT_LICENSEE_FLAG`).
 
 | Name | Value |
@@ -258,11 +436,16 @@ Only the versions that the summary uses. The newest UE4 version in UE 5.8 is
 | `ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE` | 278 |
 | `CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS` | 326 |
 | `ENGINE_VERSION_OBJECT` | 336 |
+| `LOAD_FOR_EDITOR_GAME` | 365 |
 | `ADD_STRING_ASSET_REFERENCES_MAP` | 384 |
 | `PACKAGE_SUMMARY_HAS_COMPATIBLE_ENGINE_VERSION` | 444 |
 | `SERIALIZE_TEXT_IN_PACKAGES` | 459 |
+| `COOKED_ASSETS_IN_EDITOR_SUPPORT` | 485 |
+| `NAME_HASHES_SERIALIZED` | 504 |
 | `PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS` | 507 |
+| `TEMPLATE_INDEX_IN_COOKED_EXPORTS` | 508 |
 | `ADDED_SEARCHABLE_NAMES` | 510 |
+| `64BIT_EXPORTMAP_SERIALSIZES` | 511 |
 | `ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID` | 516 |
 | `ADDED_PACKAGE_OWNER` | 518 |
 | `NON_OUTER_PACKAGE_IMPORT` | 520 |
@@ -271,7 +454,7 @@ Only the versions that the summary uses. The newest UE4 version in UE 5.8 is
 ## UCommander rules
 
 These are our decisions, not UE facts. They follow from the facts above and
-the point 1 brief.
+the point 1 and point 2 briefs.
 
 | Case | Result |
 |---|---|
@@ -289,3 +472,11 @@ the point 1 brief.
 | A count or a length that is larger than the remaining input. | Error: truncated. No allocation. |
 | A count that fits in the remaining input. | Allocate capacity from the count only when one element in memory is not larger than its bytes in the file. Other lists grow with the elements that the parser reads. |
 | Size of a string in memory. | At most 2 times its bytes in the file: Latin-1 bytes 128 to 255 are 2 UTF-8 bytes, and U+FFFD for 2 bad UTF-16 bytes is 3 UTF-8 bytes. |
+| Name map entry with a length of more than 1024 characters (absolute value). | Error: bad value. UE stops for this length too. |
+| Name index out of the name map. | Error: bad value (point 2 owner decision 3). |
+| Package index out of the import or export table. | Error: bad value (point 2 owner decision 3). |
+| Outer chain with a loop. | Error: bad value. UE has no check for this case. |
+| Boolean with a value greater than 1. | Read as true. No error. UE also reads it as true. |
+| Name map hash values. | Keep the raw values. Do not check them. |
+| Object flags of an export. | Keep the raw value. Do not apply the `RF_Load` mask. |
+| Import map fix-up of UE. | Not done. UCommander shows the imports as in the file. |
