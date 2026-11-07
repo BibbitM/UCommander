@@ -281,7 +281,8 @@ the point 1 brief.
 | Legacy file version less than -9. | Error: unsupported version. The layout is not known. |
 | UE4, UE5 and licensee versions all 0. | Error: unversioned package. |
 | UE5 version less than `INITIAL_VERSION` (1000). | Error: unsupported version (UE4 package). |
-| UE4 version greater than 522, or UE5 version greater than 1018. | Warning. Read with the newest known layout. |
+| UE4 version greater than 522, or UE5 version greater than 1018. | Warning. Read with the newest known layout. Risk: with legacy file version -9, a newer version can change the layout after the licensee version. Then the values after that point can be wrong without an error. Owner decision (brief, acceptance criterion 5). |
+| Compression flags with bits that UE does not know. | Not checked. Keep the raw value. UE stops for these flags, but we did not record the known bits. |
 | Non-empty compressed chunk list. | Error: compressed package. |
 | String with 8-bit characters. | Read each byte as one Latin-1 character. We did not examine how UE converts bytes 128 to 255. |
 | String with UTF-16 characters that are not valid UTF-16. | Use U+FFFD for each bad character. |

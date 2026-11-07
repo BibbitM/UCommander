@@ -7,7 +7,9 @@ use std::fmt;
 #[non_exhaustive]
 pub enum Error {
     /// The input ends before the data ends. `offset` is the start of the
-    /// value that is not complete. More input can remove the error.
+    /// data that is not complete: for a value, the start of the value; for
+    /// an array or a string, the start of its elements, after the count or
+    /// the length. More input can remove the error.
     Truncated { offset: usize },
     /// The input does not start with the package file tag.
     NotAPackage,
