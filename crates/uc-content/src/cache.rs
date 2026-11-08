@@ -19,12 +19,14 @@ const CAPACITY: usize = 16;
 #[derive(Debug)]
 pub struct PackageValues {
     pub asset_class: Option<String>,
+    pub asset_class_path: Option<String>,
 }
 
 impl PackageValues {
     fn new(header: &PackageHeader) -> Self {
         Self {
             asset_class: header.asset_class(),
+            asset_class_path: header.asset_class_path(),
         }
     }
 }

@@ -12,7 +12,7 @@ use std::fs::File;
 use std::io::{self, Read};
 use std::path::Path;
 
-use cache::package_values;
+use cache::{PackageValues, package_values};
 use uc_format::package::has_package_file_tag;
 use uc_tc::buffers::{read_wide_path, write_ansi, write_utf16};
 use uc_tc::content::{DefaultParams, FieldType, NO_MORE_FIELDS, ValueError};
@@ -49,6 +49,11 @@ const FIELDS: &[Field] = &[
         name: "Asset class",
         field_type: FieldType::String,
         value: asset_class,
+    },
+    Field {
+        name: "Asset class path",
+        field_type: FieldType::String,
+        value: asset_class_path,
     },
 ];
 
@@ -177,11 +182,22 @@ fn is_package(path: &Path) -> io::Result<Option<Value>> {
     Ok(Some(Value::Boolean(has_package_file_tag(&head))))
 }
 
-/// Gives the class of the main asset. A file that the parser cannot read
-/// has no value.
-fn asset_class(path: &Path) -> io::Result<Option<Value>> {
+/// Gives a text value from the package values. A file that the parser
+/// cannot read has no value.
+fn text_value(
+    path: &Path,
+    value: impl FnOnce(&PackageValues) -> Option<String>,
+) -> io::Result<Option<Value>> {
     let values = package_values(path)?;
-    Ok(values
-        .and_then(|values| values.asset_class.clone())
-        .map(Value::Text))
+    Ok(values.and_then(|values| value(&values)).map(Value::Text))
+}
+
+/// The short class name of the main asset, for example `Blueprint`.
+fn asset_class(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.asset_class.clone())
+}
+
+/// The class path of the main asset, for example `/Script/Engine.Blueprint`.
+fn asset_class_path(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.asset_class_path.clone())
 }
