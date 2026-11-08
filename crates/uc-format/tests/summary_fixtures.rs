@@ -1,5 +1,7 @@
 //! Package summary of real fixtures, compared with their `.expected.json`
 //! files. The expected values come from the `PkgInfo` commandlet of UE.
+//! The UE4 and the licensee file versions are engine facts (key
+//! `file_versions_source`), because `PkgInfo` does not show them.
 
 use std::path::PathBuf;
 
@@ -16,6 +18,8 @@ struct Expected {
 #[derive(Debug, Deserialize)]
 struct ExpectedSummary {
     file_version_ue5: i32,
+    file_version_ue4: i32,
+    file_version_licensee: i32,
     saved_by_engine_version: String,
     compatible_with_engine_version: String,
     /// Hex digits without a prefix, as `PkgInfo` writes them.
@@ -93,6 +97,8 @@ fn check(package: &str, expected: &str) {
     assert_eq!(bytes.len() as u64, expected.file_size);
     assert!(read.warnings.is_empty(), "{:?}", read.warnings);
     assert_eq!(s.file_version_ue5, e.file_version_ue5);
+    assert_eq!(s.file_version_ue4, e.file_version_ue4);
+    assert_eq!(s.file_version_licensee_ue, e.file_version_licensee);
     assert_eq!(
         s.saved_by_engine_version.as_ref().unwrap().to_string(),
         e.saved_by_engine_version
