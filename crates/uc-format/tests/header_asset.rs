@@ -2,7 +2,7 @@
 
 mod common;
 
-use common::{Export, Import, Package};
+use common::{Export, Import, Package, Str};
 use uc_format::package::{PackageIndex, read_header};
 
 /// Package flag `ContainsNoAsset`.
@@ -277,4 +277,26 @@ fn a_package_without_a_main_asset_has_no_asset_paths() {
     let package = package(vec![export(BLUEPRINT, 0, (8, 0), false)]);
 
     assert_eq!(asset_paths(&package), [None, None, None]);
+}
+
+#[test]
+fn a_valid_package_name_is_the_long_package_name() {
+    let package = package(vec![export(BLUEPRINT, 0, (8, 0), true)]);
+    let header = read_header(&package.to_bytes()).unwrap().header;
+
+    assert_eq!(header.long_package_name(), Some("/Game/Fixtures/BP_Test"));
+}
+
+#[test]
+fn a_package_name_without_a_leading_slash_gives_no_package_and_object_path() {
+    for name in ["None", ""] {
+        let mut package = package(vec![export(BLUEPRINT, 0, (11, 0), true)]);
+        package.summary.package_name = Str::Ansi(name);
+        let header = read_header(&package.to_bytes()).unwrap().header;
+
+        assert_eq!(header.long_package_name(), None, "{name:?}");
+        assert_eq!(header.asset_object_path(), None, "{name:?}");
+        // The values that do not use the package name stay.
+        assert_eq!(header.asset_name().as_deref(), Some("Other"), "{name:?}");
+    }
 }

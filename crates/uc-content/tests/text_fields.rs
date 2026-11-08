@@ -69,6 +69,8 @@ const FIELDS: &[Field] = &[
     },
 ];
 
+const OBJECT_PATH: i32 = 4;
+const PACKAGE_PATH: i32 = 5;
 const ENGINE_VERSION: i32 = 6;
 const FULL_ENGINE_VERSION: i32 = 7;
 
@@ -140,6 +142,35 @@ fn an_empty_engine_version_gives_empty_engine_version_fields() {
 
     for field in FIELDS {
         let expected = if [ENGINE_VERSION, FULL_ENGINE_VERSION].contains(&field.index) {
+            FT_FIELDEMPTY
+        } else {
+            FT_STRINGW
+        };
+
+        assert_eq!(
+            get_text(&path, field.index, 256).0,
+            expected,
+            "field {}",
+            field.index
+        );
+    }
+}
+
+#[test]
+fn a_package_name_that_is_not_valid_gives_no_package_and_object_path() {
+    let mut bytes = fixture_bytes("BP_SummaryActor.uasset");
+    // The first copy of the name is the package name of the summary. The
+    // name map comes after the summary.
+    let name = b"/Game/Summary/BP_SummaryActor\0";
+    let start = bytes
+        .windows(name.len())
+        .position(|window| window == name)
+        .unwrap();
+    bytes[start] = b'X';
+    let path = test_file("NotValidName.uasset", &bytes);
+
+    for field in FIELDS {
+        let expected = if [OBJECT_PATH, PACKAGE_PATH].contains(&field.index) {
             FT_FIELDEMPTY
         } else {
             FT_STRINGW

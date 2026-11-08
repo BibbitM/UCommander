@@ -44,6 +44,7 @@ The UE58 and UE583 files, with paths relative to `Engine/Source/Runtime/`:
 | `BlueprintGeneratedClass.cpp` | `Engine/Private/BlueprintGeneratedClass.cpp` |
 | `Actor.cpp` | `Engine/Private/Actor.cpp` |
 | `Char.h` | `Core/Public/Misc/Char.h` |
+| `PackageName.cpp` | `CoreUObject/Private/Misc/PackageName.cpp` |
 | `GenericPlatformStricmp.cpp` | `Core/Private/GenericPlatform/GenericPlatformStricmp.cpp` |
 
 ## Package file tag
@@ -488,6 +489,11 @@ the same as the names of the asset data fields:
 | Asset name | Asset name | `BP_SummaryActor` |
 | Asset class path | Asset class path | `/Script/Engine.Blueprint` |
 
+A valid long package name starts with `/`. UE also requires at least 4
+characters, no `/` at the end, no `//`, and no characters that are not
+allowed. Source: UE583 `PackageName.cpp`, the function that checks the
+text of a long package name.
+
 The class of an export is its class index (see "Export entry"). The
 class path is the object path of that import or export. A null class
 index means the class `Class`, whose path is `/Script/CoreUObject.Class`.
@@ -632,6 +638,7 @@ the point 1 and point 2 briefs.
 | Main asset: no export with the main name. | The first asset in export table order. UE uses the order in memory, which the file does not record. The results are different only when two or more assets are candidates (point 3 owner decision 2). |
 | Main asset: the "is asset" flag is not in the file (UE4 before `COOKED_ASSETS_IN_EDITOR_SUPPORT`). | Not an asset. |
 | Package path field. | The package name of the summary, as for the main asset. The `.uproject` file is not used (point 4 owner decision 1). |
+| Package name that does not start with `/` (for example `None` or empty). | Not a valid long package name. No package path, and no object path for an export path that needs the package name. UCommander checks only the first character, not the other UE rules. |
 | Asset class path: null class index. | `/Script/CoreUObject.Class`. A main asset never has this class, because a `Class` object is never an asset. |
 | Engine version fields: empty engine version. | No value (point 4 owner decision 5, with the UE rule for "empty"). |
 | Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |

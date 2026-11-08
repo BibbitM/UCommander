@@ -79,11 +79,21 @@ impl PackageHeader {
         }
     }
 
+    /// Gives the package name of the summary when it is a valid long
+    /// package name: it starts with `/`. `None` for other text, for example
+    /// `None` or an empty name.
+    pub fn long_package_name(&self) -> Option<&str> {
+        let name = self.summary.package_name.as_str();
+        name.starts_with('/').then_some(name)
+    }
+
     /// Gives the full path of an import or an export, from its outer chain.
     /// An export path starts with the package name, except when its outer
     /// chain contains an import. `None` for a null index, an index out of
-    /// the tables, an outer chain that does not end, or a path longer than
-    /// [`MAX_OBJECT_PATH_LENGTH`] bytes.
+    /// the tables, an outer chain that does not end, a path longer than
+    /// [`MAX_OBJECT_PATH_LENGTH`] bytes, or an export path that needs the
+    /// package name when the package name is not valid (see
+    /// [`long_package_name`](Self::long_package_name)).
     pub fn object_path(&self, index: PackageIndex) -> Option<String> {
         // The parts in reverse order: the object name, a separator, the
         // outer name, and so on. Join them one time at the end.
@@ -97,9 +107,10 @@ impl PackageHeader {
             if current == PackageIndex(0) {
                 let is_export = matches!(index.target(), IndexTarget::Export(_));
                 if is_export && !has_import {
-                    length += 1 + self.summary.package_name.len();
+                    let package_name = self.long_package_name()?;
+                    length += 1 + package_name.len();
                     parts.push(".".to_owned());
-                    parts.push(self.summary.package_name.clone());
+                    parts.push(package_name.to_owned());
                 }
                 if length > MAX_OBJECT_PATH_LENGTH {
                     return None;

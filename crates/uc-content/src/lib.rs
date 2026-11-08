@@ -279,9 +279,10 @@ fn object_path(path: &Path) -> io::Result<Option<Value>> {
 }
 
 /// The package name of the summary, for example
-/// `/Game/Summary/BP_SummaryActor`. It does not need a main asset.
+/// `/Game/Summary/BP_SummaryActor`. It does not need a main asset. A
+/// package name that is not valid gives no value.
 fn package_path(path: &Path) -> io::Result<Option<Value>> {
-    text_value(path, |values| Some(values.package_path.clone()))
+    text_value(path, |values| values.package_path.clone())
 }
 
 /// The saved-by engine version, for example `5.8.3`.

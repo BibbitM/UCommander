@@ -22,7 +22,7 @@ pub struct PackageValues {
     pub asset_class_path: Option<String>,
     pub asset_name: Option<String>,
     pub object_path: Option<String>,
-    pub package_path: String,
+    pub package_path: Option<String>,
     /// `major.minor.patch` of the saved-by engine version.
     pub engine_version: Option<String>,
     /// The full text of the saved-by engine version.
@@ -50,7 +50,7 @@ impl PackageValues {
             asset_class_path: header.asset_class_path(),
             asset_name: header.asset_name(),
             object_path: header.asset_object_path(),
-            package_path: header.summary.package_name.clone(),
+            package_path: header.long_package_name().map(str::to_owned),
         }
     }
 }
