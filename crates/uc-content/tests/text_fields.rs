@@ -55,7 +55,20 @@ const FIELDS: &[Field] = &[
         ],
         needs_asset: false,
     },
+    Field {
+        index: ENGINE_VERSION,
+        values: ["5.8.3"; 3],
+        needs_asset: false,
+    },
+    Field {
+        index: FULL_ENGINE_VERSION,
+        values: ["5.8.3-58210709+++UE5+Release-5.8"; 3],
+        needs_asset: false,
+    },
 ];
+
+const ENGINE_VERSION: i32 = 6;
+const FULL_ENGINE_VERSION: i32 = 7;
 
 /// Package flag `ContainsNoAsset`.
 const PKG_CONTAINS_NO_ASSET: u32 = 0x0000_0400;
@@ -94,6 +107,37 @@ fn a_package_without_an_asset_has_only_the_package_values() {
 
     for field in FIELDS {
         let expected = if field.needs_asset {
+            FT_FIELDEMPTY
+        } else {
+            FT_STRINGW
+        };
+
+        assert_eq!(
+            get_text(&path, field.index, 256).0,
+            expected,
+            "field {}",
+            field.index
+        );
+    }
+}
+
+#[test]
+fn an_empty_engine_version_gives_empty_engine_version_fields() {
+    let mut bytes = fixture_bytes("BP_SummaryActor.uasset");
+    // The saved-by engine version: major 5, minor 8, patch 3 (3 × u16),
+    // then the changelist 58210709 (u32). The compatible-with version has
+    // another changelist.
+    let mut version = [5u16, 8, 3].map(u16::to_le_bytes).concat();
+    version.extend_from_slice(&58210709u32.to_le_bytes());
+    let start = bytes
+        .windows(version.len())
+        .position(|window| window == version)
+        .unwrap();
+    bytes[start..start + 6].fill(0);
+    let path = test_file("EmptyVersion.uasset", &bytes);
+
+    for field in FIELDS {
+        let expected = if [ENGINE_VERSION, FULL_ENGINE_VERSION].contains(&field.index) {
             FT_FIELDEMPTY
         } else {
             FT_STRINGW

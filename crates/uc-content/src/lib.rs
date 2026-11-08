@@ -70,6 +70,16 @@ const FIELDS: &[Field] = &[
         field_type: FieldType::String,
         value: package_path,
     },
+    Field {
+        name: "Engine version",
+        field_type: FieldType::String,
+        value: engine_version,
+    },
+    Field {
+        name: "Full engine version",
+        field_type: FieldType::String,
+        value: full_engine_version,
+    },
 ];
 
 fn field(index: i32) -> Option<&'static Field> {
@@ -232,4 +242,15 @@ fn object_path(path: &Path) -> io::Result<Option<Value>> {
 /// `/Game/Summary/BP_SummaryActor`. It does not need a main asset.
 fn package_path(path: &Path) -> io::Result<Option<Value>> {
     text_value(path, |values| Some(values.package_path.clone()))
+}
+
+/// The saved-by engine version, for example `5.8.3`.
+fn engine_version(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.engine_version.clone())
+}
+
+/// The full saved-by engine version, for example
+/// `5.8.3-58210709+++UE5+Release-5.8`.
+fn full_engine_version(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.full_engine_version.clone())
 }

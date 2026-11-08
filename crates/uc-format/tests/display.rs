@@ -60,3 +60,32 @@ fn the_text_of_an_engine_version_with_no_branch_has_no_plus() {
 
     assert_eq!(version.to_string(), "5.8.0-0");
 }
+
+#[test]
+fn the_short_text_of_an_engine_version_is_major_minor_patch() {
+    let version = EngineVersion {
+        major: 5,
+        minor: 8,
+        patch: 3,
+        changelist: 58210709,
+        branch: "++UE5+Release-5.8".to_string(),
+    };
+
+    assert_eq!(version.short_text(), "5.8.3");
+}
+
+#[test]
+fn an_engine_version_is_empty_when_major_minor_and_patch_are_0() {
+    let empty = EngineVersion {
+        changelist: 4660,
+        branch: "++Custom".to_string(),
+        ..EngineVersion::default()
+    };
+    let patch_only = EngineVersion {
+        patch: 1,
+        ..EngineVersion::default()
+    };
+
+    assert!(empty.is_empty());
+    assert!(!patch_only.is_empty());
+}

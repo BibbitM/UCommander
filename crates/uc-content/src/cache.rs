@@ -23,11 +23,23 @@ pub struct PackageValues {
     pub asset_name: Option<String>,
     pub object_path: Option<String>,
     pub package_path: String,
+    /// `major.minor.patch` of the saved-by engine version.
+    pub engine_version: Option<String>,
+    /// The full text of the saved-by engine version.
+    pub full_engine_version: Option<String>,
 }
 
 impl PackageValues {
     fn new(header: &PackageHeader) -> Self {
+        // An empty engine version has no value (UE rule).
+        let engine_version = header
+            .summary
+            .saved_by_engine_version
+            .as_ref()
+            .filter(|version| !version.is_empty());
         Self {
+            engine_version: engine_version.map(|version| version.short_text()),
+            full_engine_version: engine_version.map(|version| version.to_string()),
             asset_class: header.asset_class(),
             asset_class_path: header.asset_class_path(),
             asset_name: header.asset_name(),

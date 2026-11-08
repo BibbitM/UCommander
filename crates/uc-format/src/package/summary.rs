@@ -125,6 +125,18 @@ impl EngineVersion {
     pub fn changelist_number(&self) -> u32 {
         self.changelist & !Self::LICENSEE_BIT
     }
+
+    /// `true` when major, minor and patch are 0, as in UE. The changelist
+    /// and the branch are not part of the rule.
+    pub fn is_empty(&self) -> bool {
+        self.major == 0 && self.minor == 0 && self.patch == 0
+    }
+
+    /// Gives `major.minor.patch`, for example `5.8.3`. The full text is
+    /// the `Display` form.
+    pub fn short_text(&self) -> String {
+        format!("{}.{}.{}", self.major, self.minor, self.patch)
+    }
 }
 
 impl fmt::Display for EngineVersion {
