@@ -2,80 +2,21 @@
 
 mod common;
 
-use std::os::windows::ffi::OsStrExt;
 use std::path::{Path, PathBuf};
 
-use common::{GetValueW, export, load};
-
-const FT_STRINGW: i32 = 11;
-const FT_FILEERROR: i32 = -2;
-const FT_FIELDEMPTY: i32 = -3;
-const CONTENT_DELAYIFSLOW: i32 = 1;
+use common::{FT_FIELDEMPTY, FT_FILEERROR, FT_STRINGW, fixture, fixture_bytes};
 
 const ASSET_CLASS: i32 = 1;
-/// A buffer value that the plugin does not write.
-const CANARY: u8 = 0x55;
 
 /// Package flag `ContainsNoAsset`.
 const PKG_CONTAINS_NO_ASSET: u32 = 0x0000_0400;
 
-fn fixture(name: &str) -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../tests/fixtures/editor")
-        .join(name)
-}
-
-fn fixture_bytes(name: &str) -> Vec<u8> {
-    let bytes = std::fs::read(fixture(name)).unwrap();
-    // A Git LFS pointer file is small text, not a package.
-    assert!(
-        !bytes.starts_with(b"version https://git-lfs"),
-        "{name} is a Git LFS pointer: run `git lfs pull`"
-    );
-    bytes
-}
-
-/// Writes `bytes` to a new file in a test folder for this process.
 fn test_file(name: &str, bytes: &[u8]) -> PathBuf {
-    let dir = std::env::temp_dir().join(format!("uc-content-asset-tests-{}", std::process::id()));
-    std::fs::create_dir_all(&dir).unwrap();
-    let path = dir.join(name);
-    std::fs::write(&path, bytes).unwrap();
-    path
+    common::test_file("asset", name, bytes)
 }
 
-/// Calls ContentGetValueW for the asset class with a buffer of `maxlen`
-/// bytes. The buffer starts at an odd address, and has canary bytes before
-/// and after it. Returns the result and the UTF-16 text before the NUL.
 fn get_text(path: &Path, maxlen: usize) -> (i32, String) {
-    let plugin = load();
-    let get: GetValueW = export(&plugin, "ContentGetValueW");
-    let path: Vec<u16> = path.as_os_str().encode_wide().chain([0]).collect();
-    let mut buffer = vec![CANARY; maxlen + 2];
-
-    // SAFETY: `path` is NUL-terminated, and the buffer from offset 1 has
-    // `maxlen` bytes.
-    let result = unsafe {
-        get(
-            path.as_ptr(),
-            ASSET_CLASS,
-            0,
-            buffer.as_mut_ptr().add(1),
-            maxlen as i32,
-            CONTENT_DELAYIFSLOW,
-        )
-    };
-
-    assert_eq!(buffer[0], CANARY, "write before the buffer");
-    assert_eq!(buffer[maxlen + 1], CANARY, "write after the buffer");
-    let units: Vec<u16> = buffer[1..=maxlen]
-        .as_chunks::<2>()
-        .0
-        .iter()
-        .map(|&pair| u16::from_le_bytes(pair))
-        .take_while(|&unit| unit != 0)
-        .collect();
-    (result, String::from_utf16(&units).unwrap_or_default())
+    common::get_text(path, ASSET_CLASS, maxlen)
 }
 
 /// The expected values are the `asset_class` values of the
