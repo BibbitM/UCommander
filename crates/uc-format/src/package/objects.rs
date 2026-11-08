@@ -8,6 +8,8 @@ use crate::error::Error;
 const PACKAGE_CLASS: &str = "Package";
 /// The class name of an export with a null class index.
 const CLASS_CLASS: &str = "Class";
+/// The class path of an export with a null class index.
+const CLASS_CLASS_PATH: &str = "/Script/CoreUObject.Class";
 
 /// The longest object path, in bytes, that [`PackageHeader::object_path`]
 /// gives. UE has no limit. A limit keeps the time and the memory of a path
@@ -61,6 +63,19 @@ impl PackageHeader {
                 PackageIndex(0) => Some(CLASS_CLASS.to_owned()),
                 class => self.object_name(class),
             },
+        }
+    }
+
+    /// Gives the class path of an export: the object path of its class, or
+    /// `/Script/CoreUObject.Class` when its class index is null. `None` for
+    /// an index that is not an export of the table.
+    pub(super) fn export_class_path(&self, index: PackageIndex) -> Option<String> {
+        let IndexTarget::Export(i) = index.target() else {
+            return None;
+        };
+        match self.exports.get(i)?.class_index {
+            PackageIndex(0) => Some(CLASS_CLASS_PATH.to_owned()),
+            class => self.object_path(class),
         }
     }
 

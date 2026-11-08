@@ -2,11 +2,7 @@
 //! rules are in `docs/formats/package.md`, "Main asset" and "Asset paths".
 
 use super::header::{PackageHeader, PackageIndex};
-use super::objects::IndexTarget;
 use super::summary::PKG_FILTER_EDITOR_ONLY;
-
-/// The class path of an export with a null class index.
-const CLASS_CLASS_PATH: &str = "/Script/CoreUObject.Class";
 
 /// Package flag `ContainsNoAsset`.
 const PKG_CONTAINS_NO_ASSET: u32 = 0x0000_0400;
@@ -57,13 +53,7 @@ impl PackageHeader {
     /// Gives the path of the class of the main asset, for example
     /// `/Script/Engine.Blueprint`. `None` when the package has no asset.
     pub fn asset_class_path(&self) -> Option<String> {
-        let IndexTarget::Export(position) = self.main_asset()?.target() else {
-            return None;
-        };
-        match self.exports.get(position)?.class_index {
-            PackageIndex(0) => Some(CLASS_CLASS_PATH.to_owned()),
-            class => self.object_path(class),
-        }
+        self.export_class_path(self.main_asset()?)
     }
 
     /// Gives the object name of the main asset. `None` when the package
