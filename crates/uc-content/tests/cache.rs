@@ -10,12 +10,20 @@ use std::fs::File;
 use std::path::Path;
 use std::time::{Duration, SystemTime};
 
-use common::{FT_FIELDEMPTY, FT_STRINGW, fixture, fixture_bytes, get_text, test_file};
+use common::{FT_FIELDEMPTY, FT_STRINGW, fixture, fixture_bytes, get_text, load, test_file};
+use uc_test_host::Plugin;
 
 const ASSET_CLASS: i32 = 1;
 
 fn asset_class(path: &Path) -> (i32, String) {
     get_text(path, ASSET_CLASS, 256)
+}
+
+/// Keeps the DLL loaded while the result is alive. `get_text` loads and
+/// frees the DLL for each call, and Windows unloads a DLL with no other
+/// reference. Then the cache is lost. TC keeps the DLL loaded.
+fn keep_loaded() -> Plugin {
+    load()
 }
 
 fn text(value: &str) -> (i32, String) {
@@ -50,6 +58,7 @@ fn rewrite(path: &Path, bytes: &[u8], time: SystemTime) {
 
 #[test]
 fn a_file_with_another_size_gives_the_new_value() {
+    let _plugin = keep_loaded();
     let path = test_file(
         "cache",
         "OtherSize.uasset",
@@ -64,6 +73,7 @@ fn a_file_with_another_size_gives_the_new_value() {
 
 #[test]
 fn a_file_with_another_write_time_gives_the_new_value() {
+    let _plugin = keep_loaded();
     let bytes = fixture_bytes("BP_SummaryActor.uasset");
     let path = test_file("cache", "OtherTime.uasset", &bytes);
     set_write_time(&path, write_time(0));
@@ -79,6 +89,7 @@ fn a_file_with_another_write_time_gives_the_new_value() {
 /// find a change.
 #[test]
 fn a_file_with_the_same_size_and_times_gives_the_cached_value() {
+    let _plugin = keep_loaded();
     let bytes = fixture_bytes("BP_SummaryActor.uasset");
     let path = test_file("cache", "SameTime.uasset", &bytes);
     set_write_time(&path, write_time(0));
@@ -91,6 +102,7 @@ fn a_file_with_the_same_size_and_times_gives_the_cached_value() {
 
 #[test]
 fn calls_from_many_threads_give_the_correct_values() {
+    let _plugin = keep_loaded();
     let cases = [
         ("BP_SummaryActor.uasset", "Blueprint"),
         ("L_SummaryLevel.umap", "World"),
