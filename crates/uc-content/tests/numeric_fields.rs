@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 
 use common::{
     CANARY, CONTENT_DELAYIFSLOW, FT_FIELDEMPTY, FT_FILEERROR, GetValueW, export, fixture,
-    fixture_bytes, load,
+    fixture_bytes, load, unsupported_packages,
 };
 
 const FT_NUMERIC_32: i32 = 1;
@@ -92,6 +92,21 @@ fn a_package_without_an_asset_has_the_file_versions() {
 
     for (index, value) in FIELDS {
         assert_eq!(get_i32(&path, index, 4), (FT_NUMERIC_32, value));
+    }
+}
+
+#[test]
+fn a_package_that_the_parser_does_not_support_has_empty_fields() {
+    for (name, bytes) in unsupported_packages() {
+        let path = test_file(name, &bytes);
+
+        for (index, _) in FIELDS {
+            assert_eq!(
+                get_i32(&path, index, 4).0,
+                FT_FIELDEMPTY,
+                "field {index}, {name}"
+            );
+        }
     }
 }
 

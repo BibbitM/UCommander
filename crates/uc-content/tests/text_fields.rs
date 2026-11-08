@@ -4,7 +4,9 @@ mod common;
 
 use std::path::PathBuf;
 
-use common::{FT_FIELDEMPTY, FT_FILEERROR, FT_STRINGW, fixture, fixture_bytes, get_text};
+use common::{
+    FT_FIELDEMPTY, FT_FILEERROR, FT_STRINGW, fixture, fixture_bytes, get_text, unsupported_packages,
+};
 
 /// A text field and its expected values.
 struct Field {
@@ -149,6 +151,22 @@ fn an_empty_engine_version_gives_empty_engine_version_fields() {
             "field {}",
             field.index
         );
+    }
+}
+
+#[test]
+fn a_package_that_the_parser_does_not_support_has_empty_fields() {
+    for (name, bytes) in unsupported_packages() {
+        let path = test_file(name, &bytes);
+
+        for field in FIELDS {
+            assert_eq!(
+                get_text(&path, field.index, 256).0,
+                FT_FIELDEMPTY,
+                "field {}, {name}",
+                field.index
+            );
+        }
     }
 }
 

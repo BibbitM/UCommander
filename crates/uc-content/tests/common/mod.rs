@@ -45,6 +45,20 @@ pub fn fixture_bytes(name: &str) -> Vec<u8> {
     bytes
 }
 
+/// Packages that the parser does not support: a UE4 package and an
+/// unversioned package, made from fixture F1. Gives a file name and the
+/// bytes of each.
+pub fn unsupported_packages() -> [(&'static str, Vec<u8>); 2] {
+    let bytes = fixture_bytes("BP_SummaryActor.uasset");
+    // Bytes 4..8: legacy file version. Bytes 12..24: UE4, UE5 and licensee
+    // versions.
+    let mut ue4 = bytes.clone();
+    ue4[4..8].copy_from_slice(&(-7i32).to_le_bytes());
+    let mut unversioned = bytes;
+    unversioned[12..24].fill(0);
+    [("Ue4.uasset", ue4), ("Unversioned.uasset", unversioned)]
+}
+
 /// Writes `bytes` to a new file in the test folder `folder` of this
 /// process. Use a different file name in each test.
 pub fn test_file(folder: &str, name: &str, bytes: &[u8]) -> PathBuf {
