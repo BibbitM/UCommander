@@ -47,3 +47,16 @@ fn the_text_of_an_engine_version_has_no_licensee_flag() {
 
     assert_eq!(version.to_string(), "5.8.0-4660+++Custom");
 }
+
+#[test]
+fn the_text_of_an_engine_version_with_no_branch_has_no_plus() {
+    let version = EngineVersion {
+        major: 5,
+        minor: 8,
+        patch: 0,
+        changelist: 0,
+        branch: String::new(),
+    };
+
+    assert_eq!(version.to_string(), "5.8.0-0");
+}

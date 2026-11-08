@@ -129,7 +129,7 @@ impl EngineVersion {
 
 impl fmt::Display for EngineVersion {
     /// Writes `major.minor.patch-changelist+branch`, as UE does. The
-    /// changelist has no licensee flag.
+    /// changelist has no licensee flag. An empty branch gives no `+`.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Self {
             major,
@@ -139,7 +139,11 @@ impl fmt::Display for EngineVersion {
             ..
         } = self;
         let changelist = self.changelist_number();
-        write!(f, "{major}.{minor}.{patch}-{changelist}+{branch}")
+        write!(f, "{major}.{minor}.{patch}-{changelist}")?;
+        if !branch.is_empty() {
+            write!(f, "+{branch}")?;
+        }
+        Ok(())
     }
 }
 
