@@ -10,7 +10,12 @@ const FT_STRING: i32 = 8;
 const CANARY: c_char = 0x55;
 
 /// The text fields of point 4: index and name.
-const TEXT_FIELDS: &[(i32, &str)] = &[(2, "Asset class path")];
+const TEXT_FIELDS: &[(i32, &str)] = &[
+    (2, "Asset class path"),
+    (3, "Asset name"),
+    (4, "Object path"),
+    (5, "Package path"),
+];
 
 fn supported_field(index: i32, maxlen: usize) -> (i32, String, String) {
     let plugin = load();
@@ -58,7 +63,7 @@ fn the_text_fields_of_point_4_are_of_type_string_without_units() {
 
 #[test]
 fn there_are_no_more_fields_after_the_last_field() {
-    assert_eq!(supported_field(3, 256).0, FT_NOMOREFIELDS);
+    assert_eq!(supported_field(6, 256).0, FT_NOMOREFIELDS);
 }
 
 #[test]

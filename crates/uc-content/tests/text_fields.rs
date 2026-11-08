@@ -22,15 +22,40 @@ const FIXTURES: [&str; 3] = [
     "M_Summary.uasset",
 ];
 
-const FIELDS: &[Field] = &[Field {
-    index: 2,
-    values: [
-        "/Script/Engine.Blueprint",
-        "/Script/Engine.World",
-        "/Script/Engine.Material",
-    ],
-    needs_asset: true,
-}];
+const FIELDS: &[Field] = &[
+    Field {
+        index: 2,
+        values: [
+            "/Script/Engine.Blueprint",
+            "/Script/Engine.World",
+            "/Script/Engine.Material",
+        ],
+        needs_asset: true,
+    },
+    Field {
+        index: 3,
+        values: ["BP_SummaryActor", "L_SummaryLevel", "M_Summary"],
+        needs_asset: true,
+    },
+    Field {
+        index: 4,
+        values: [
+            "/Game/Summary/BP_SummaryActor.BP_SummaryActor",
+            "/Game/Summary/L_SummaryLevel.L_SummaryLevel",
+            "/Game/Summary/M_Summary.M_Summary",
+        ],
+        needs_asset: true,
+    },
+    Field {
+        index: 5,
+        values: [
+            "/Game/Summary/BP_SummaryActor",
+            "/Game/Summary/L_SummaryLevel",
+            "/Game/Summary/M_Summary",
+        ],
+        needs_asset: false,
+    },
+];
 
 /// Package flag `ContainsNoAsset`.
 const PKG_CONTAINS_NO_ASSET: u32 = 0x0000_0400;

@@ -20,6 +20,9 @@ const CAPACITY: usize = 16;
 pub struct PackageValues {
     pub asset_class: Option<String>,
     pub asset_class_path: Option<String>,
+    pub asset_name: Option<String>,
+    pub object_path: Option<String>,
+    pub package_path: String,
 }
 
 impl PackageValues {
@@ -27,6 +30,9 @@ impl PackageValues {
         Self {
             asset_class: header.asset_class(),
             asset_class_path: header.asset_class_path(),
+            asset_name: header.asset_name(),
+            object_path: header.asset_object_path(),
+            package_path: header.summary.package_name.clone(),
         }
     }
 }

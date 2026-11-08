@@ -55,6 +55,21 @@ const FIELDS: &[Field] = &[
         field_type: FieldType::String,
         value: asset_class_path,
     },
+    Field {
+        name: "Asset name",
+        field_type: FieldType::String,
+        value: asset_name,
+    },
+    Field {
+        name: "Object path",
+        field_type: FieldType::String,
+        value: object_path,
+    },
+    Field {
+        name: "Package path",
+        field_type: FieldType::String,
+        value: package_path,
+    },
 ];
 
 fn field(index: i32) -> Option<&'static Field> {
@@ -200,4 +215,21 @@ fn asset_class(path: &Path) -> io::Result<Option<Value>> {
 /// The class path of the main asset, for example `/Script/Engine.Blueprint`.
 fn asset_class_path(path: &Path) -> io::Result<Option<Value>> {
     text_value(path, |values| values.asset_class_path.clone())
+}
+
+/// The object name of the main asset, for example `BP_SummaryActor`.
+fn asset_name(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.asset_name.clone())
+}
+
+/// The object path of the main asset, for example
+/// `/Game/Summary/BP_SummaryActor.BP_SummaryActor`.
+fn object_path(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.object_path.clone())
+}
+
+/// The package name of the summary, for example
+/// `/Game/Summary/BP_SummaryActor`. It does not need a main asset.
+fn package_path(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| Some(values.package_path.clone()))
 }
