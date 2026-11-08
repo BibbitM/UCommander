@@ -243,7 +243,9 @@ None.
    the asset class path and the object path from it. Also give the
    package path as the editor shows it.
 4. Do the manual test in TC (after increment 8): `cargo xtask install`,
-   then add the new columns, and open the fixture folder.
+   then add the new columns, and open the fixture folder. Also sort by a
+   new column, and save an asset in UE while TC shows its folder. Done:
+   the owner reported no problem.
 
 ## Out of scope
 
