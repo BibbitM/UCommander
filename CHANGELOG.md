@@ -7,6 +7,23 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+### Added
+
+- Content fields **Asset class path**, **Asset name**, **Object path**
+  and **Package path** for the main asset of a package.
+- Content fields **Engine version** (`5.8.3`) and **Full engine version**
+  (`5.8.3-58210709+++UE5+Release-5.8`): the engine version that saved
+  the package.
+- Content fields **File version UE5**, **File version UE4** and **File
+  version licensee**, as numbers.
+- The content plugin keeps the values of the last 16 files in a cache, so
+  that it reads a package header one time for all fields.
+
+### Fixed
+
+- `uc dump` no longer writes a `+` after the engine version when the
+  branch is empty.
+
 ## [0.2.0] - 2026-11-07
 
 ### Added

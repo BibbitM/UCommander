@@ -43,7 +43,21 @@ The plugin needs no extra runtime.
 | Field | Value |
 |---|---|
 | Is package | "Yes" when the file starts with the UE package file tag. |
-| Asset class | The class of the main asset of the package, for example `Blueprint`, `World` or `StaticMesh`. Empty when the file is not a package that UCommander can read. |
+| Asset class | The class of the main asset of the package, for example `Blueprint`, `World` or `StaticMesh`. |
+| Asset class path | The full class path of the main asset, for example `/Script/Engine.Blueprint`. |
+| Asset name | The name of the main asset, for example `BP_Hero`. |
+| Object path | The object path of the main asset, for example `/Game/Heroes/BP_Hero.BP_Hero`. |
+| Package path | The package path, for example `/Game/Heroes/BP_Hero`. It comes from the package, not from the file path. |
+| Engine version | The engine version that saved the package, for example `5.8.3`. |
+| Full engine version | The same version with the changelist and the branch, for example `5.8.3-58210709+++UE5+Release-5.8`. |
+| File version UE5 | The UE5 file version of the package, for example 1018. A number. |
+| File version UE4 | The UE4 file version of the package, for example 522. A number. |
+| File version licensee | The licensee file version of the package. 0 for a stock engine. A number. |
+
+All fields except **Is package** are empty when the file is not a
+package that UCommander can read. The asset fields are empty when the
+package has no main asset. The plugin reads only the package header, and
+keeps the values of the last 16 files in a cache.
 
 ## Development
 
