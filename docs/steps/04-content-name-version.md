@@ -44,7 +44,7 @@ now many fields read the same header.
    |---|---|
    | Package with a value for the field. | The field type (`ft_stringw` or `ft_numeric_32`). |
    | Package with no main asset (fields 2 to 4). | `ft_fieldempty`. |
-   | Package with no engine version, or an empty engine version (fields 6 and 7). | `ft_fieldempty`. See open question 5. |
+   | Package with no engine version, or an empty engine version (fields 6 and 7). | `ft_fieldempty`. See owner decision 5. |
    | File that is not a package, or a package that the parser does not support. | `ft_fieldempty`. |
    | Damaged package (parser error). | `ft_fieldempty`. |
    | File that cannot be opened or read. | `ft_fileerror`. |
@@ -211,6 +211,7 @@ No new asset. Owner action 3 asks for three values from the editor.
 |---|---|---|
 | 0 | Add point 4 step brief | This file, after approval. |
 | 1 | Add asset path and engine version notes | `docs/formats/package.md`: the class path and the object path of the main asset, the package path and the UE API terms, the empty engine version rule. With the source. No code. |
+| 1a | Omit an empty branch in engine version text | Fix of the point 1 `Display` for `EngineVersion`: no `+` when the branch is empty, as in UE. Synthetic test. The `uc dump` snapshots do not change. Added after increment 1 (owner decision 5). |
 | 2 | Give the class, name and path of the main asset | `asset_class_path`, `asset_name` and `asset_object_path`. Synthetic tests: a top-level asset, a class from another package, no main asset. |
 | 3 | Add asset name and path fixture values | `asset_class_path`, `asset_name`, `object_path` and `package_path` keys, and the file version keys, in F1, F2 and F3 `.expected.json`. Fixture tests. |
 | 4 | Cache package values in the content plugin | Refactor of **Asset class**: it gets its value from the cache. FFI tests: other content and other size give the new value; the same size and another last write time give the new value; the same size and the same times give the cached value (the known limit); calls from more than one thread. The **Asset class** FFI tests do not change. `docs/tc-api/content.md`: the call order from the guide (owner decision 7). |
@@ -274,7 +275,12 @@ None.
    UE5**, **File version UE4** and **File version licensee**.
 5. An empty "saved by" engine version gives `ft_fieldempty` in both
    engine version fields. Increment 1 checks the UE rule for "empty". If
-   it is different, I stop and tell the owner.
+   it is different, I stop and tell the owner. **Changed after increment
+   1:** in UE, a version is empty when major, minor and patch are 0. The
+   changelist and the branch are not part of the rule. The owner decided:
+   use the UE rule. Also, the UE text has no `+` when the branch is
+   empty, but the point 1 `Display` always writes `+`. The owner decided:
+   fix `Display` in increment 1a.
 6. The expected UE4 file version is 522, the newest UE4 version in UE
    5.8.3 (`ObjectVersion.h`). The expected licensee version is 0, the
    value of a stock engine. Both are engine facts, not parser output.

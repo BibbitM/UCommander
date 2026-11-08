@@ -21,6 +21,7 @@ The UE58 and UE583 files, with paths relative to `Engine/Source/Runtime/`:
 | `ObjectMacros.h` | `CoreUObject/Public/UObject/ObjectMacros.h` |
 | `Linker.cpp` | `CoreUObject/Private/UObject/Linker.cpp` |
 | `EngineVersion.cpp` | `Core/Private/Misc/EngineVersion.cpp` |
+| `EngineVersion.h` | `Core/Public/Misc/EngineVersion.h` |
 | `EngineVersionBase.h` | `Core/Public/Misc/EngineVersionBase.h` |
 | `CustomVersion.cpp` | `Core/Private/Serialization/CustomVersion.cpp` |
 | `String.cpp.inl` | `Core/Private/Containers/String.cpp.inl` |
@@ -191,6 +192,22 @@ Each generation is two `i32` values: export count, then name count
 Bit 31 of the changelist is the licensee flag. The lower 31 bits are the
 changelist number. Source: UE58 `EngineVersion.cpp` and
 `EngineVersionBase.h`.
+
+An engine version is empty when major, minor and patch are all 0. The
+changelist and the branch do not change this result. Source: UE583
+`EngineVersion.cpp`, the "is empty" function.
+
+UE makes the text of an engine version with one function, which stops
+after a selected component (UE583 `EngineVersion.cpp` and
+`EngineVersion.h`):
+
+| Last component | Text | Example (fixture F1) |
+|---|---|---|
+| Patch | `major.minor.patch` | `5.8.3` |
+| Branch (the default) | `major.minor.patch-changelist+branch` | `5.8.3-58210709+++UE5+Release-5.8` |
+
+The changelist in the text has no licensee flag. When the branch is
+empty, the text has no `+` and no branch, for example `5.8.0-0`.
 
 UE corrects one known error in old packages: for UE4 < `CORRECT_LICENSEE_FLAG`
 and engine version 4.26.0 with changelist 12740027 or more, UE clears the
@@ -448,6 +465,35 @@ In the editor, the filter skips (UE583 `AssetRegistryInterface.cpp`):
 The filter uses the loaded class. A file gives only the class name, so a
 subclass that is defined in another package is not known from the file.
 
+### Asset paths
+
+The asset registry keeps these values for each asset. Source: UE583
+`AssetData.h`, the comments of the asset data fields.
+
+| UE field | Meaning | Example (fixture F1) |
+|---|---|---|
+| Package name | The long package name. | `/Game/Summary/BP_SummaryActor` |
+| Package path | The package name without the last `/` and the short package name: the folder. | `/Game/Summary` |
+| Asset name | The object name of the asset. | `BP_SummaryActor` |
+| Asset class path | The path of the class of the asset. | `/Script/Engine.Blueprint` |
+
+The content fields use the terms of the UE editor user interface, as
+the owner gives them (point 4 owner decision 2). These terms are not
+the same as the names of the asset data fields:
+
+| UCommander field | UE field | Example (fixture F1) |
+|---|---|---|
+| Package path | Package name | `/Game/Summary/BP_SummaryActor` |
+| Object path | The object path of the asset (see "Object path"). | `/Game/Summary/BP_SummaryActor.BP_SummaryActor` |
+| Asset name | Asset name | `BP_SummaryActor` |
+| Asset class path | Asset class path | `/Script/Engine.Blueprint` |
+
+The class of an export is its class index (see "Export entry"). The
+class path is the object path of that import or export. A null class
+index means the class `Class`, whose path is `/Script/CoreUObject.Class`.
+Observed in fixture `BP_SummaryActor.uasset`: the `PkgInfo` output shows
+the tag `ParentClass` with the class `/Script/CoreUObject.Class`.
+
 ## Package flags
 
 | Flag | Value | Source |
@@ -585,4 +631,7 @@ the point 1 and point 2 briefs.
 | Main asset: an export with the main name. | An export with a null outer, and an object name (with its number) equal to the short package name. Objects in an external package have a non-null outer in the file, so they never match. |
 | Main asset: no export with the main name. | The first asset in export table order. UE uses the order in memory, which the file does not record. The results are different only when two or more assets are candidates (point 3 owner decision 2). |
 | Main asset: the "is asset" flag is not in the file (UE4 before `COOKED_ASSETS_IN_EDITOR_SUPPORT`). | Not an asset. |
+| Package path field. | The package name of the summary, as for the main asset. The `.uproject` file is not used (point 4 owner decision 1). |
+| Asset class path: null class index. | `/Script/CoreUObject.Class`. A main asset never has this class, because a `Class` object is never an asset. |
+| Engine version fields: empty engine version. | No value (point 4 owner decision 5, with the UE rule for "empty"). |
 | Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |
