@@ -147,10 +147,13 @@ pub unsafe extern "system" fn ContentGetDetectString(
 #[unsafe(no_mangle)]
 pub extern "system" fn ContentSetDefaultParams(_params: *const DefaultParams) {}
 
-/// TC calls this function just before it unloads the DLL. There is nothing to
-/// release yet.
+/// TC calls this function just before it unloads the DLL. The plugin
+/// releases the cache: Rust does not drop statics, so the memory would stay
+/// in the TC process.
 #[unsafe(no_mangle)]
-pub extern "system" fn ContentPluginUnloading() {}
+pub extern "system" fn ContentPluginUnloading() {
+    guard((), cache::clear);
+}
 
 /// # Safety
 ///

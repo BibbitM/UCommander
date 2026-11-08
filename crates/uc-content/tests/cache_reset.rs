@@ -12,7 +12,9 @@ use std::path::{Path, PathBuf};
 use std::sync::{Mutex, MutexGuard, PoisonError};
 use std::time::{Duration, SystemTime};
 
-use common::{FT_FIELDEMPTY, FT_STRINGW, fixture_bytes, get_text, load, test_file};
+use common::{FT_FIELDEMPTY, FT_STRINGW, export, fixture_bytes, get_text, load, test_file};
+
+type PluginUnloading = unsafe extern "system" fn();
 
 const ASSET_CLASS: i32 = 1;
 /// The number of entries in the cache (point 4 owner decision 7).
@@ -58,6 +60,23 @@ fn rewrite_with_the_same_key(path: &Path) {
         .unwrap()
         .set_modified(write_time())
         .unwrap();
+}
+
+#[test]
+fn tc_unloading_the_plugin_clears_the_cache() {
+    let _serial = serial();
+    // Keep the DLL loaded: the test calls the unload function, not
+    // FreeLibrary.
+    let plugin = load();
+    let unloading: PluginUnloading = export(&plugin, "ContentPluginUnloading");
+    let path = package_file("Unload.uasset");
+    assert_eq!(asset_class(&path), (FT_STRINGW, "Blueprint".to_owned()));
+    rewrite_with_the_same_key(&path);
+
+    // SAFETY: the function has no parameters.
+    unsafe { unloading() };
+
+    assert_eq!(asset_class(&path).0, FT_FIELDEMPTY);
 }
 
 #[test]

@@ -113,6 +113,13 @@ fn lock() -> MutexGuard<'static, VecDeque<(Key, Entry)>> {
     CACHE.lock().unwrap_or_else(PoisonError::into_inner)
 }
 
+/// Removes all entries, and releases their memory.
+pub fn clear() {
+    let mut cache = lock();
+    cache.clear();
+    cache.shrink_to_fit();
+}
+
 fn find(key: &Key) -> Option<Entry> {
     lock()
         .iter()
