@@ -23,6 +23,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 - `uc dump` no longer writes a `+` after the engine version when the
   branch is empty.
+- `uc dump` shows no export path that starts with a package name that is
+  not valid, for example `None`.
 
 ## [0.2.0] - 2026-11-07
 

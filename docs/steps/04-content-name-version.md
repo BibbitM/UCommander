@@ -162,7 +162,14 @@ in the PR.
 - Known limit: a different file with the same path, size, last write
   time and creation time gives the cached values. On NTFS the times have
   a resolution of 100 ns. On FAT32 the last write time has a resolution
-  of 2 s. Network drives are not examined.
+  of 2 s. Network drives are not examined. A file system that gives no
+  file times has a key of only the path and the size (review finding;
+  not seen on NTFS or FAT).
+- Not tested: the rule that a file that changed during the read does not
+  go into the cache. An FFI test cannot change a file at a known point
+  during the read (review finding).
+- When TC unloads the plugin, the cache releases all entries (review
+  finding).
 - The same file with two paths (letter case, 8.3 name, link) gives two
   entries. This costs one more read. The values stay correct.
 - The cache also keeps the result "no values" (not a package, not
