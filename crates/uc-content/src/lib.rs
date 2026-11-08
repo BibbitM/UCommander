@@ -5,12 +5,15 @@
 
 #![allow(non_snake_case)]
 
+mod cache;
+
 use std::ffi::{c_char, c_void};
 use std::fs::File;
 use std::io::{self, Read};
 use std::path::Path;
 
-use uc_format::package::{ReadError, has_package_file_tag, read_header_from};
+use cache::package_values;
+use uc_format::package::has_package_file_tag;
 use uc_tc::buffers::{read_wide_path, write_ansi, write_utf16};
 use uc_tc::content::{DefaultParams, FieldType, NO_MORE_FIELDS, ValueError};
 use uc_tc::guard;
@@ -174,12 +177,11 @@ fn is_package(path: &Path) -> io::Result<Option<Value>> {
     Ok(Some(Value::Boolean(has_package_file_tag(&head))))
 }
 
-/// Reads the package header, and gives the class of the main asset. A file
-/// that the parser cannot read has no value.
+/// Gives the class of the main asset. A file that the parser cannot read
+/// has no value.
 fn asset_class(path: &Path) -> io::Result<Option<Value>> {
-    match read_header_from(File::open(path)?) {
-        Ok(read) => Ok(read.header.asset_class().map(Value::Text)),
-        Err(ReadError::Io(error)) => Err(error),
-        Err(_) => Ok(None),
-    }
+    let values = package_values(path)?;
+    Ok(values
+        .and_then(|values| values.asset_class.clone())
+        .map(Value::Text))
 }

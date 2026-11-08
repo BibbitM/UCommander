@@ -156,7 +156,9 @@ in the PR.
      during the read (for example during a save in UE) does not go into
      the cache. The call still gives the result.
 - An old entry is not removed when its file changes. No call finds it,
-  because the key is different. A new entry replaces it later.
+  because the key is different. When the plugin keeps the new values of
+  the same path, they replace the old entry. Else a new entry replaces
+  it later.
 - Known limit: a different file with the same path, size, last write
   time and creation time gives the cached values. On NTFS the times have
   a resolution of 100 ns. On FAT32 the last write time has a resolution

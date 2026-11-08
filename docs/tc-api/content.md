@@ -75,6 +75,23 @@ then passes `UnitIndex` 0.
 | `CONTENT_DELAYIFSLOW` | 1 | TC calls in the foreground. A slow field can return `ft_delayed`, and TC calls again in a background thread. This needs a thread-safe plugin. |
 | `CONTENT_PASSTHROUGH` | 2 | Only with `contflags_passthrough_size_float`. Not used. |
 
+### Call order and caching
+
+The guide (page `contentgetvalue.htm`, the part about caching) says:
+
+- TC does not mix calls for different files. It calls for the next file
+  only after it is complete with the previous file. So one cache for
+  each running TC is enough.
+- Other calls, for other fields, can come at the same time from a
+  background thread, for example for a list of search results.
+- More than one TC can run at the same time.
+
+Limit: this part of the page is in the description of full-text fields.
+It is possibly only for full-text fields. We did not check the call
+order of TC for other fields, for example when the user sorts by a field
+column. UCommander uses a small cache that is safe for calls from more
+than one thread (point 4 owner decision 7).
+
 ### `ContentDefaultParamStruct`
 
 | Field | Type | Meaning |
