@@ -27,6 +27,9 @@ pub struct PackageValues {
     pub engine_version: Option<String>,
     /// The full text of the saved-by engine version.
     pub full_engine_version: Option<String>,
+    pub file_version_ue5: i32,
+    pub file_version_ue4: i32,
+    pub file_version_licensee: i32,
 }
 
 impl PackageValues {
@@ -40,6 +43,9 @@ impl PackageValues {
         Self {
             engine_version: engine_version.map(|version| version.short_text()),
             full_engine_version: engine_version.map(|version| version.to_string()),
+            file_version_ue5: header.summary.file_version_ue5,
+            file_version_ue4: header.summary.file_version_ue4,
+            file_version_licensee: header.summary.file_version_licensee_ue,
             asset_class: header.asset_class(),
             asset_class_path: header.asset_class_path(),
             asset_name: header.asset_name(),

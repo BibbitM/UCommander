@@ -5,6 +5,7 @@ use std::ffi::c_char;
 use common::{GetDetectString, GetSupportedField, ansi_text, export, load};
 
 const FT_NOMOREFIELDS: i32 = 0;
+const FT_NUMERIC_32: i32 = 1;
 const FT_BOOLEAN: i32 = 6;
 const FT_STRING: i32 = 8;
 const CANARY: c_char = 0x55;
@@ -65,7 +66,22 @@ fn the_text_fields_of_point_4_are_of_type_string_without_units() {
 
 #[test]
 fn there_are_no_more_fields_after_the_last_field() {
-    assert_eq!(supported_field(8, 256).0, FT_NOMOREFIELDS);
+    assert_eq!(supported_field(11, 256).0, FT_NOMOREFIELDS);
+}
+
+#[test]
+fn the_file_version_fields_are_of_type_numeric_32_without_units() {
+    for (index, name) in [
+        (8, "File version UE5"),
+        (9, "File version UE4"),
+        (10, "File version licensee"),
+    ] {
+        assert_eq!(
+            supported_field(index, 256),
+            (FT_NUMERIC_32, name.to_string(), String::new()),
+            "field {index}"
+        );
+    }
 }
 
 #[test]

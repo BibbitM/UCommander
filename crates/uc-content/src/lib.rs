@@ -33,6 +33,7 @@ struct Field {
 /// A field value, before the plugin writes it into the TC buffer.
 enum Value {
     Boolean(bool),
+    Numeric32(i32),
     /// Written as UTF-16 (`ft_stringw`). The field declares `ft_string`.
     Text(String),
 }
@@ -79,6 +80,21 @@ const FIELDS: &[Field] = &[
         name: "Full engine version",
         field_type: FieldType::String,
         value: full_engine_version,
+    },
+    Field {
+        name: "File version UE5",
+        field_type: FieldType::Numeric32,
+        value: file_version_ue5,
+    },
+    Field {
+        name: "File version UE4",
+        field_type: FieldType::Numeric32,
+        value: file_version_ue4,
+    },
+    Field {
+        name: "File version licensee",
+        field_type: FieldType::Numeric32,
+        value: file_version_licensee,
     },
 ];
 
@@ -180,13 +196,12 @@ pub unsafe extern "system" fn ContentGetValueW(
 unsafe fn write_value(value: &Value, field_value: *mut c_void, maxlen: i32) -> i32 {
     match *value {
         Value::Boolean(value) => {
-            if maxlen < size_of::<i32>() as i32 {
-                return ValueError::FieldEmpty.code();
-            }
-            // SAFETY: the caller guarantees `maxlen` bytes, at least 4. TC
-            // gives no alignment guarantee, so write unaligned.
-            unsafe { field_value.cast::<i32>().write_unaligned(i32::from(value)) };
-            FieldType::Boolean.code()
+            // SAFETY: the caller guarantees `maxlen` writable bytes.
+            unsafe { write_i32(field_value, maxlen, i32::from(value), FieldType::Boolean) }
+        }
+        Value::Numeric32(value) => {
+            // SAFETY: the caller guarantees `maxlen` writable bytes.
+            unsafe { write_i32(field_value, maxlen, value, FieldType::Numeric32) }
         }
         Value::Text(ref text) => {
             // One UTF-16 unit for the NUL at least.
@@ -198,6 +213,28 @@ unsafe fn write_value(value: &Value, field_value: *mut c_void, maxlen: i32) -> i
             FieldType::StringW.code()
         }
     }
+}
+
+/// Writes an `i32` value, and gives `field_type`. A buffer smaller than 4
+/// bytes gives `ft_fieldempty`, and the plugin writes nothing.
+///
+/// # Safety
+///
+/// `field_value` must not be null, and must be valid for writes of
+/// `maxlen` bytes. It can be unaligned.
+unsafe fn write_i32(
+    field_value: *mut c_void,
+    maxlen: i32,
+    value: i32,
+    field_type: FieldType,
+) -> i32 {
+    if maxlen < size_of::<i32>() as i32 {
+        return ValueError::FieldEmpty.code();
+    }
+    // SAFETY: the caller guarantees `maxlen` bytes, at least 4. TC gives no
+    // alignment guarantee, so write unaligned.
+    unsafe { field_value.cast::<i32>().write_unaligned(value) };
+    field_type.code()
 }
 
 /// Reads the first 4 bytes of the file, and checks the package file tag.
@@ -253,4 +290,26 @@ fn engine_version(path: &Path) -> io::Result<Option<Value>> {
 /// `5.8.3-58210709+++UE5+Release-5.8`.
 fn full_engine_version(path: &Path) -> io::Result<Option<Value>> {
     text_value(path, |values| values.full_engine_version.clone())
+}
+
+/// Gives a number from the package values. A file that the parser cannot
+/// read has no value.
+fn numeric_value(
+    path: &Path,
+    value: impl FnOnce(&PackageValues) -> i32,
+) -> io::Result<Option<Value>> {
+    let values = package_values(path)?;
+    Ok(values.map(|values| Value::Numeric32(value(&values))))
+}
+
+fn file_version_ue5(path: &Path) -> io::Result<Option<Value>> {
+    numeric_value(path, |values| values.file_version_ue5)
+}
+
+fn file_version_ue4(path: &Path) -> io::Result<Option<Value>> {
+    numeric_value(path, |values| values.file_version_ue4)
+}
+
+fn file_version_licensee(path: &Path) -> io::Result<Option<Value>> {
+    numeric_value(path, |values| values.file_version_licensee)
 }
