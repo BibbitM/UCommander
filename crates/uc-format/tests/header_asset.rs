@@ -25,6 +25,8 @@ const NAMES: &[&str] = &[
     "Other",                         // 11
     "None",                          // 12
     "WidgetBlueprint",               // 13
+    "/Game/Other/BP_Other",          // 14
+    "BP_Other_C",                    // 15
 ];
 
 /// The class imports, as package indexes.
@@ -33,6 +35,8 @@ const GENERATED_CLASS: i32 = -3;
 const WIDGET_GENERATED_CLASS: i32 = -4;
 const STATIC_MESH: i32 = -5;
 const WIDGET_BLUEPRINT: i32 = -6;
+/// A Blueprint generated class in the package `/Game/Other/BP_Other` (-7).
+const OTHER_PACKAGE_CLASS: i32 = -8;
 
 fn class_import(object_name: i32) -> Import {
     Import {
@@ -73,6 +77,22 @@ fn package(exports: Vec<Export>) -> Package {
             class_import(6),
             class_import(7),
             class_import(13),
+            Import {
+                class_package: (0, 0),
+                class_name: (2, 0),
+                outer_index: 0,
+                object_name: (14, 0),
+                package_name: (12, 0),
+                import_optional: 0,
+            },
+            Import {
+                class_package: (1, 0),
+                class_name: (5, 0),
+                outer_index: -7,
+                object_name: (15, 0),
+                package_name: (12, 0),
+                import_optional: 0,
+            },
         ],
         exports,
         ..Package::new(NAMES)
@@ -203,4 +223,58 @@ fn a_package_without_exports_has_no_main_asset() {
 
     assert_eq!(main_asset(&package), None);
     assert_eq!(asset_class(&package), None);
+}
+
+/// The class path, the name and the object path of the main asset.
+fn asset_paths(package: &Package) -> [Option<String>; 3] {
+    let header = read_header(&package.to_bytes()).unwrap().header;
+    [
+        header.asset_class_path(),
+        header.asset_name(),
+        header.asset_object_path(),
+    ]
+}
+
+#[test]
+fn a_top_level_asset_has_a_class_path_a_name_and_an_object_path() {
+    let package = package(vec![
+        export(STATIC_MESH, 0, (11, 0), true),
+        export(BLUEPRINT, 0, (8, 0), true),
+    ]);
+
+    assert_eq!(
+        asset_paths(&package),
+        [
+            Some("/Script/Engine.Blueprint".to_owned()),
+            Some("BP_Test".to_owned()),
+            Some("/Game/Fixtures/BP_Test.BP_Test".to_owned()),
+        ]
+    );
+}
+
+#[test]
+fn the_class_path_of_a_class_from_another_package_is_its_object_path() {
+    let package = package(vec![export(OTHER_PACKAGE_CLASS, 0, (8, 0), true)]);
+
+    assert_eq!(
+        asset_paths(&package)[0].as_deref(),
+        Some("/Game/Other/BP_Other.BP_Other_C")
+    );
+}
+
+#[test]
+fn a_null_class_index_gives_the_class_path_of_class() {
+    let package = package(vec![export(0, 0, (8, 0), true)]);
+
+    assert_eq!(
+        asset_paths(&package)[0].as_deref(),
+        Some("/Script/CoreUObject.Class")
+    );
+}
+
+#[test]
+fn a_package_without_a_main_asset_has_no_asset_paths() {
+    let package = package(vec![export(BLUEPRINT, 0, (8, 0), false)]);
+
+    assert_eq!(asset_paths(&package), [None, None, None]);
 }
