@@ -100,7 +100,7 @@ fn a_damaged_package_has_an_empty_field() {
 
 #[test]
 fn a_missing_file_is_a_file_error() {
-    let path = std::env::temp_dir().join("uc-content-tests-no-such-file.uasset");
+    let path = common::missing_file();
 
     assert_eq!(get_text(&path, 256).0, FT_FILEERROR);
 }

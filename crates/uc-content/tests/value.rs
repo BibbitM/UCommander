@@ -16,13 +16,8 @@ const IS_PACKAGE: i32 = 0;
 /// The package file tag as it is stored in a file.
 const TAG: [u8; 4] = [0xC1, 0x83, 0x2A, 0x9E];
 
-/// Writes `bytes` to a new file in a test folder for this process.
 fn test_file(name: &str, bytes: &[u8]) -> PathBuf {
-    let dir = std::env::temp_dir().join(format!("uc-content-tests-{}", std::process::id()));
-    std::fs::create_dir_all(&dir).unwrap();
-    let path = dir.join(name);
-    std::fs::write(&path, bytes).unwrap();
-    path
+    common::test_file("value", name, bytes)
 }
 
 fn wide(path: &Path) -> Vec<u16> {
@@ -88,7 +83,7 @@ fn a_path_with_non_ascii_characters_is_read() {
 
 #[test]
 fn a_missing_file_is_a_file_error() {
-    let path = std::env::temp_dir().join("uc-content-tests-no-such-file.uasset");
+    let path = common::missing_file();
 
     assert_eq!(get_bool(&path, IS_PACKAGE).0, FT_FILEERROR);
 }

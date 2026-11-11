@@ -59,13 +59,27 @@ pub fn unsupported_packages() -> [(&'static str, Vec<u8>); 2] {
     [("Ue4.uasset", ue4), ("Unversioned.uasset", unversioned)]
 }
 
-/// Writes `bytes` to a new file in the test folder `folder` of this
-/// process. Use a different file name in each test.
+/// The folder for test files: in the Cargo temporary folder of the target
+/// folder, not in the system temporary folder. `cargo clean` removes it.
+fn test_dir() -> PathBuf {
+    PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("uc-content")
+}
+
+/// Writes `bytes` to the file `name` in the test folder `folder`. Use one
+/// folder for each test file, and a different file name in each test. A
+/// new run writes the same file again.
 pub fn test_file(folder: &str, name: &str, bytes: &[u8]) -> PathBuf {
-    let dir = std::env::temp_dir().join(format!("uc-content-{folder}-{}", std::process::id()));
+    let dir = test_dir().join(folder);
     std::fs::create_dir_all(&dir).unwrap();
     let path = dir.join(name);
     std::fs::write(&path, bytes).unwrap();
+    path
+}
+
+/// A path in the test folder with no file.
+pub fn missing_file() -> PathBuf {
+    let path = test_dir().join("no-such-file.uasset");
+    assert!(!path.exists(), "{} must not exist", path.display());
     path
 }
 

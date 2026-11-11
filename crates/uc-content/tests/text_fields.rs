@@ -231,7 +231,7 @@ fn a_damaged_package_has_empty_fields() {
 
 #[test]
 fn a_missing_file_is_a_file_error() {
-    let path = std::env::temp_dir().join("uc-content-text-tests-no-such-file.uasset");
+    let path = common::missing_file();
 
     for field in FIELDS {
         assert_eq!(get_text(&path, field.index, 256).0, FT_FILEERROR);
