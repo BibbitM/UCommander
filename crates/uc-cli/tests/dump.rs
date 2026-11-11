@@ -28,9 +28,14 @@ fn dump(path: &Path) -> Output {
         .unwrap()
 }
 
-/// Writes `bytes` to a new file in the temporary folder.
+/// Writes `bytes` to the file `name` in the Cargo temporary folder of the
+/// target folder, not in the system temporary folder. Use a different
+/// name in each test. A new run writes the same file again, and
+/// `cargo clean` removes it.
 fn temp_file(name: &str, bytes: &[u8]) -> PathBuf {
-    let path = std::env::temp_dir().join(format!("uc-dump-{}-{name}", std::process::id()));
+    let dir = PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("uc-dump");
+    std::fs::create_dir_all(&dir).unwrap();
+    let path = dir.join(name);
     std::fs::write(&path, bytes).unwrap();
     path
 }
