@@ -4,7 +4,8 @@ const DONE: &str = "Done";
 const PLANNED: &str = "Planned";
 
 /// Returns the plan point ID of a `pt/<id>-short-name` branch, as it is in
-/// `docs/PLAN.md`: `pt/p3-x` gives `P3`, and `pt/03-x` gives `3`.
+/// `docs/PLAN.md`: `pt/p3-x` gives `P3`, `pt/03-x` gives `3`, and
+/// `pt/04a-x` gives `4a`.
 fn plan_point_id(branch: &str) -> Option<String> {
     let id = branch.strip_prefix("pt/")?.split('-').next()?;
     Some(match id.strip_prefix('p') {
@@ -13,11 +14,17 @@ fn plan_point_id(branch: &str) -> Option<String> {
     })
 }
 
-/// Splits a table row of a plan point into its ID and its status.
+/// Splits a table row of a plan point into its ID and its status. An ID is
+/// digits, `P` and digits, or digits and one lower-case letter (`4a`).
 fn plan_point_row(line: &str) -> Option<(&str, &str)> {
     let cells: Vec<&str> = line.trim().split('|').map(str::trim).collect();
     let id = *cells.get(1)?;
-    let digits = id.strip_prefix('P').unwrap_or(id);
+    let digits = match id.strip_prefix('P') {
+        Some(digits) => digits,
+        None => id
+            .strip_suffix(|c: char| c.is_ascii_lowercase())
+            .unwrap_or(id),
+    };
     let is_plan_point = !digits.is_empty() && digits.chars().all(|c| c.is_ascii_digit());
     let status = *cells.iter().rev().nth(1)?;
     is_plan_point.then_some((id, status))

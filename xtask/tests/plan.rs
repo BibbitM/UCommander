@@ -9,6 +9,8 @@ const PLAN: &str = "\
 | Pt | Name | IDs | Release | Status |
 |---|---|---|---|---|
 | 3 | Asset class | D1 | v0.2.0 | Done |
+| 4a | Technical debt | — | | Done |
+| 5b | Other fixes | — | | Planned |
 | 13 | External actors | B7 | v0.6.0 | Planned |
 ";
 
@@ -34,6 +36,37 @@ fn a_number_branch_with_a_leading_zero_finds_its_row() {
 fn a_number_branch_does_not_match_a_longer_number() {
     assert!(check_plan_status("pt/13-external-actors", PLAN).is_err());
     assert!(check_plan_status("pt/01-summary", PLAN).is_err());
+}
+
+#[test]
+fn a_branch_with_a_letter_finds_its_row() {
+    assert_eq!(check_plan_status("pt/04a-tech-debt", PLAN), Ok(()));
+    assert_eq!(check_plan_status("pt/4a-tech-debt", PLAN), Ok(()));
+}
+
+#[test]
+fn a_branch_with_a_letter_and_status_planned_fails() {
+    let error = check_plan_status("pt/05b-other-fixes", PLAN).unwrap_err();
+
+    assert!(
+        error.contains("plan point 5b has the status Planned"),
+        "{error}"
+    );
+}
+
+#[test]
+fn a_number_branch_does_not_match_a_row_with_a_letter() {
+    let error = check_plan_status("pt/04-name", PLAN).unwrap_err();
+
+    assert!(error.contains("no plan point 4"));
+}
+
+#[test]
+fn a_row_with_a_letter_and_a_status_that_is_not_valid_is_reported() {
+    assert_eq!(
+        invalid_statuses("| 4a | Debt | — | | In review |\n"),
+        ["4a"]
+    );
 }
 
 #[test]
