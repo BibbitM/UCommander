@@ -6,22 +6,20 @@ use std::os::windows::ffi::OsStrExt;
 use std::path::{Path, PathBuf};
 
 use common::{
-    CANARY, CONTENT_DELAYIFSLOW, FT_FIELDEMPTY, FT_FILEERROR, GetValueW, export, fixture,
-    fixture_bytes, load, unsupported_packages,
+    CANARY, CONTENT_DELAYIFSLOW, ExpectedSummary, FIXTURES, FT_FIELDEMPTY, FT_FILEERROR, GetValueW,
+    expected, export, fixture, fixture_bytes, load, unsupported_packages,
 };
 
 const FT_NUMERIC_32: i32 = 1;
 
-/// The field index and the expected value for each fixture. The values are
-/// the `summary` values of the `.expected.json` files: `file_version_ue5`,
-/// `file_version_ue4` and `file_version_licensee`. All fixtures have the
-/// same values.
-const FIELDS: [(i32, i32); 3] = [(8, 1018), (9, 522), (10, 0)];
+/// The field index, and the function that gives the expected value from
+/// the `summary` of the `.expected.json` file.
+type Field = (i32, fn(&ExpectedSummary) -> i32);
 
-const FIXTURES: [&str; 3] = [
-    "BP_SummaryActor.uasset",
-    "L_SummaryLevel.umap",
-    "M_Summary.uasset",
+const FIELDS: [Field; 3] = [
+    (8, |s| s.file_version_ue5),
+    (9, |s| s.file_version_ue4),
+    (10, |s| s.file_version_licensee),
 ];
 
 /// Package flag `ContainsNoAsset`.
@@ -65,11 +63,12 @@ fn get_i32(path: &Path, field: i32, maxlen: usize) -> (i32, i32) {
 
 #[test]
 fn the_fixtures_give_the_expected_values() {
-    for (index, value) in FIELDS {
-        for name in FIXTURES {
+    for name in FIXTURES {
+        let expected = expected(name).summary;
+        for (index, value) in FIELDS {
             assert_eq!(
                 get_i32(&fixture(name), index, 4),
-                (FT_NUMERIC_32, value),
+                (FT_NUMERIC_32, value(&expected)),
                 "field {index}, {name}"
             );
         }
@@ -90,8 +89,9 @@ fn a_package_without_an_asset_has_the_file_versions() {
     bytes[flags..flags + 4].copy_from_slice(&(value | PKG_CONTAINS_NO_ASSET).to_le_bytes());
     let path = test_file("NoAsset.uasset", &bytes);
 
+    let expected = expected("BP_SummaryActor.uasset").summary;
     for (index, value) in FIELDS {
-        assert_eq!(get_i32(&path, index, 4), (FT_NUMERIC_32, value));
+        assert_eq!(get_i32(&path, index, 4), (FT_NUMERIC_32, value(&expected)));
     }
 }
 

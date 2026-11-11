@@ -5,66 +5,48 @@ mod common;
 use std::path::PathBuf;
 
 use common::{
-    FT_FIELDEMPTY, FT_FILEERROR, FT_STRINGW, fixture, fixture_bytes, get_text, unsupported_packages,
+    Expected, FIXTURES, FT_FIELDEMPTY, FT_FILEERROR, FT_STRINGW, expected, fixture, fixture_bytes,
+    get_text, unsupported_packages,
 };
 
-/// A text field and its expected values.
+/// A text field and its expected value.
 struct Field {
     index: i32,
-    /// The values for the fixtures in [`FIXTURES`] order. They are the
-    /// values of the `.expected.json` files.
-    values: [&'static str; 3],
+    /// Gives the expected value from the `.expected.json` file.
+    value: fn(&Expected) -> String,
     /// `true` when a package without an asset has no value.
     needs_asset: bool,
 }
 
-const FIXTURES: [&str; 3] = [
-    "BP_SummaryActor.uasset",
-    "L_SummaryLevel.umap",
-    "M_Summary.uasset",
-];
-
 const FIELDS: &[Field] = &[
     Field {
         index: 2,
-        values: [
-            "/Script/Engine.Blueprint",
-            "/Script/Engine.World",
-            "/Script/Engine.Material",
-        ],
+        value: |e| e.asset_class_path.clone(),
         needs_asset: true,
     },
     Field {
         index: 3,
-        values: ["BP_SummaryActor", "L_SummaryLevel", "M_Summary"],
+        value: |e| e.asset_name.clone(),
         needs_asset: true,
     },
     Field {
-        index: 4,
-        values: [
-            "/Game/Summary/BP_SummaryActor.BP_SummaryActor",
-            "/Game/Summary/L_SummaryLevel.L_SummaryLevel",
-            "/Game/Summary/M_Summary.M_Summary",
-        ],
+        index: OBJECT_PATH,
+        value: |e| e.object_path.clone(),
         needs_asset: true,
     },
     Field {
-        index: 5,
-        values: [
-            "/Game/Summary/BP_SummaryActor",
-            "/Game/Summary/L_SummaryLevel",
-            "/Game/Summary/M_Summary",
-        ],
+        index: PACKAGE_PATH,
+        value: |e| e.package_path.clone(),
         needs_asset: false,
     },
     Field {
         index: ENGINE_VERSION,
-        values: ["5.8.3"; 3],
+        value: |e| e.summary.short_engine_version(),
         needs_asset: false,
     },
     Field {
         index: FULL_ENGINE_VERSION,
-        values: ["5.8.3-58210709+++UE5+Release-5.8"; 3],
+        value: |e| e.summary.saved_by_engine_version.clone(),
         needs_asset: false,
     },
 ];
@@ -83,11 +65,12 @@ fn test_file(name: &str, bytes: &[u8]) -> PathBuf {
 
 #[test]
 fn the_fixtures_give_the_expected_values() {
-    for field in FIELDS {
-        for (fixture_name, value) in FIXTURES.iter().zip(field.values) {
+    for fixture_name in FIXTURES {
+        let expected = expected(fixture_name);
+        for field in FIELDS {
             assert_eq!(
                 get_text(&fixture(fixture_name), field.index, 256),
-                (FT_STRINGW, value.to_string()),
+                (FT_STRINGW, (field.value)(&expected)),
                 "field {}, {fixture_name}",
                 field.index
             );
@@ -241,10 +224,11 @@ fn a_missing_file_is_a_file_error() {
 #[test]
 fn a_small_buffer_gets_a_truncated_text_and_a_nul() {
     let path = fixture(FIXTURES[0]);
+    let expected = expected(FIXTURES[0]);
 
     for field in FIELDS {
         // 9 bytes hold 4 UTF-16 units: 3 characters and the NUL.
-        let start: String = field.values[0].chars().take(3).collect();
+        let start: String = (field.value)(&expected).chars().take(3).collect();
 
         assert_eq!(get_text(&path, field.index, 9), (FT_STRINGW, start));
         assert_eq!(get_text(&path, field.index, 1).0, FT_FIELDEMPTY);

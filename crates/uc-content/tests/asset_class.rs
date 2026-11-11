@@ -4,7 +4,7 @@ mod common;
 
 use std::path::{Path, PathBuf};
 
-use common::{FT_FIELDEMPTY, FT_FILEERROR, FT_STRINGW, fixture, fixture_bytes};
+use common::{FIXTURES, FT_FIELDEMPTY, FT_FILEERROR, FT_STRINGW, expected, fixture, fixture_bytes};
 
 const ASSET_CLASS: i32 = 1;
 
@@ -22,27 +22,14 @@ fn get_text(path: &Path, maxlen: usize) -> (i32, String) {
 /// The expected values are the `asset_class` values of the
 /// `.expected.json` files of the fixtures.
 #[test]
-fn the_blueprint_fixture_gives_blueprint() {
-    let (result, text) = get_text(&fixture("BP_SummaryActor.uasset"), 256);
-
-    assert_eq!(result, FT_STRINGW);
-    assert_eq!(text, "Blueprint");
-}
-
-#[test]
-fn the_level_fixture_gives_world() {
-    let (result, text) = get_text(&fixture("L_SummaryLevel.umap"), 256);
-
-    assert_eq!(result, FT_STRINGW);
-    assert_eq!(text, "World");
-}
-
-#[test]
-fn the_material_fixture_gives_material() {
-    let (result, text) = get_text(&fixture("M_Summary.uasset"), 256);
-
-    assert_eq!(result, FT_STRINGW);
-    assert_eq!(text, "Material");
+fn the_fixtures_give_the_expected_asset_class() {
+    for name in FIXTURES {
+        assert_eq!(
+            get_text(&fixture(name), 256),
+            (FT_STRINGW, expected(name).asset_class),
+            "{name}"
+        );
+    }
 }
 
 #[test]
@@ -107,10 +94,12 @@ fn a_missing_file_is_a_file_error() {
 
 #[test]
 fn a_small_buffer_gets_a_truncated_text_and_a_nul() {
-    let path = fixture("BP_SummaryActor.uasset");
+    let name = "BP_SummaryActor.uasset";
+    let path = fixture(name);
+    let start: String = expected(name).asset_class.chars().take(3).collect();
 
     // 9 bytes hold 4 UTF-16 units: 3 characters and the NUL.
-    assert_eq!(get_text(&path, 9), (FT_STRINGW, "Blu".to_string()));
+    assert_eq!(get_text(&path, 9), (FT_STRINGW, start));
     assert_eq!(get_text(&path, 2), (FT_STRINGW, String::new()));
 }
 

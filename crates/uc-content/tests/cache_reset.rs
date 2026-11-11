@@ -12,7 +12,9 @@ use std::path::{Path, PathBuf};
 use std::sync::{Mutex, MutexGuard, PoisonError};
 use std::time::{Duration, SystemTime};
 
-use common::{FT_FIELDEMPTY, FT_STRINGW, export, fixture_bytes, get_text, load, test_file};
+use common::{
+    FT_FIELDEMPTY, FT_STRINGW, expected, export, fixture_bytes, get_text, load, test_file,
+};
 
 type PluginUnloading = unsafe extern "system" fn();
 
@@ -36,9 +38,18 @@ fn write_time() -> SystemTime {
     SystemTime::UNIX_EPOCH + Duration::from_secs(1_700_000_000)
 }
 
-/// Writes a package file with a fixed last write time.
+/// The fixture that the tests copy.
+const PACKAGE: &str = "BP_SummaryActor.uasset";
+
+/// The expected result for a copy of [`PACKAGE`]: its `asset_class` value
+/// in the `.expected.json` file.
+fn class_of_package() -> (i32, String) {
+    (FT_STRINGW, expected(PACKAGE).asset_class)
+}
+
+/// Writes a copy of [`PACKAGE`] with a fixed last write time.
 fn package_file(name: &str) -> PathBuf {
-    let path = test_file("reset", name, &fixture_bytes("BP_SummaryActor.uasset"));
+    let path = test_file("reset", name, &fixture_bytes(PACKAGE));
     File::options()
         .write(true)
         .open(&path)
@@ -70,7 +81,7 @@ fn tc_unloading_the_plugin_clears_the_cache() {
     let plugin = load();
     let unloading: PluginUnloading = export(&plugin, "ContentPluginUnloading");
     let path = package_file("Unload.uasset");
-    assert_eq!(asset_class(&path), (FT_STRINGW, "Blueprint".to_owned()));
+    assert_eq!(asset_class(&path), class_of_package());
     rewrite_with_the_same_key(&path);
 
     // SAFETY: the function has no parameters.
@@ -84,7 +95,7 @@ fn the_cache_keeps_at_most_16_files() {
     let _serial = serial();
     let _plugin = load();
     let path = package_file("Oldest.uasset");
-    assert_eq!(asset_class(&path), (FT_STRINGW, "Blueprint".to_owned()));
+    assert_eq!(asset_class(&path), class_of_package());
     rewrite_with_the_same_key(&path);
 
     for index in 0..CACHE_SIZE {

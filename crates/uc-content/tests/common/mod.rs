@@ -6,6 +6,7 @@ use std::ffi::c_char;
 use std::os::windows::ffi::OsStrExt;
 use std::path::{Path, PathBuf};
 
+use serde::Deserialize;
 use uc_test_host::{Plugin, plugin_dll_path};
 
 pub const FT_STRINGW: i32 = 11;
@@ -27,6 +28,50 @@ pub fn load() -> Plugin {
 pub fn export<F: Copy>(plugin: &Plugin, name: &str) -> F {
     // SAFETY: each caller uses the type alias that matches the guide.
     unsafe { plugin.export::<F>(name) }.unwrap_or_else(|| panic!("missing export {name}"))
+}
+
+/// The fixture packages with a `.expected.json` file.
+pub const FIXTURES: [&str; 3] = [
+    "BP_SummaryActor.uasset",
+    "L_SummaryLevel.umap",
+    "M_Summary.uasset",
+];
+
+/// The values of a `.expected.json` file that the content fields show.
+/// The values come from UE, not from the parser. The sources are in the
+/// file.
+#[derive(Debug, Deserialize)]
+pub struct Expected {
+    pub asset_class: String,
+    pub asset_class_path: String,
+    pub asset_name: String,
+    pub object_path: String,
+    pub package_path: String,
+    pub summary: ExpectedSummary,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ExpectedSummary {
+    pub saved_by_engine_version: String,
+    pub file_version_ue5: i32,
+    pub file_version_ue4: i32,
+    pub file_version_licensee: i32,
+}
+
+impl ExpectedSummary {
+    /// The short engine version: the text before the first `-` of the full
+    /// engine version, as UE writes it (`docs/formats/package.md`).
+    pub fn short_engine_version(&self) -> String {
+        let full = &self.saved_by_engine_version;
+        full.split('-').next().unwrap_or(full).to_owned()
+    }
+}
+
+/// Reads the `.expected.json` file of the fixture package `name`.
+pub fn expected(name: &str) -> Expected {
+    let path = fixture(name).with_extension("expected.json");
+    let text = std::fs::read_to_string(&path).unwrap();
+    serde_json::from_str(&text).unwrap_or_else(|e| panic!("{}: {e}", path.display()))
 }
 
 pub fn fixture(name: &str) -> PathBuf {
