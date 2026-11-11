@@ -77,6 +77,7 @@ Status values:
 | D12 | Mesh fields: LOD count, vertex count, material count. | Later |
 | D13 | Dependency count and first dependencies. | Later |
 | D14 | Edit values. | Later |
+| D15 | Sample TC custom column set for UE files: a `wincmd.ini` fragment in the README that the user can paste. | MVP |
 
 ## File system plugin (WFX)
 
@@ -96,7 +97,7 @@ Status values:
 | X3 | Oodle decompression with a DLL that the user supplies. Never in the repository. | Later |
 | X4 | AES keys in local configuration. Never in the repository. | Later |
 | X5 | One local configuration file for the plugins. | Later |
-| X6 | Find the `.uproject` above the current path. Necessary for object paths (D2). | MVP |
+| X6 | Find the `.uproject` above the current path. D2 uses the package name of the summary instead (point 4 owner decision 1). | Later |
 | X7 | Header-only parsing and a cache. The content plugin never blocks. | MVP |
 | X8 | Read-only until a write feature (A12, D14). | MVP |
 | X9 | Win64 only. TC plugin installer ZIPs (`pluginst.inf`). | MVP |

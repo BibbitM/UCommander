@@ -1,5 +1,5 @@
-//! The main asset of a package and its class. The rules are in
-//! `docs/formats/package.md`, "Main asset".
+//! The main asset of a package, its class, its name and its paths. The
+//! rules are in `docs/formats/package.md`, "Main asset" and "Asset paths".
 
 use super::header::{PackageHeader, PackageIndex};
 use super::summary::PKG_FILTER_EDITOR_ONLY;
@@ -48,6 +48,25 @@ impl PackageHeader {
     /// no asset.
     pub fn asset_class(&self) -> Option<String> {
         self.class_name(self.main_asset()?)
+    }
+
+    /// Gives the path of the class of the main asset, for example
+    /// `/Script/Engine.Blueprint`. `None` when the package has no asset.
+    pub fn asset_class_path(&self) -> Option<String> {
+        self.export_class_path(self.main_asset()?)
+    }
+
+    /// Gives the object name of the main asset. `None` when the package
+    /// has no asset.
+    pub fn asset_name(&self) -> Option<String> {
+        self.object_name(self.main_asset()?)
+    }
+
+    /// Gives the object path of the main asset, for example
+    /// `/Game/Summary/BP_SummaryActor.BP_SummaryActor`. `None` when the
+    /// package has no asset.
+    pub fn asset_object_path(&self) -> Option<String> {
+        self.object_path(self.main_asset()?)
     }
 
     /// The asset registry filter. The file has only the class name, so a

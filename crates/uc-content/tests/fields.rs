@@ -5,9 +5,20 @@ use std::ffi::c_char;
 use common::{GetDetectString, GetSupportedField, ansi_text, export, load};
 
 const FT_NOMOREFIELDS: i32 = 0;
+const FT_NUMERIC_32: i32 = 1;
 const FT_BOOLEAN: i32 = 6;
 const FT_STRING: i32 = 8;
 const CANARY: c_char = 0x55;
+
+/// The text fields of point 4: index and name.
+const TEXT_FIELDS: &[(i32, &str)] = &[
+    (2, "Asset class path"),
+    (3, "Asset name"),
+    (4, "Object path"),
+    (5, "Package path"),
+    (6, "Engine version"),
+    (7, "Full engine version"),
+];
 
 fn supported_field(index: i32, maxlen: usize) -> (i32, String, String) {
     let plugin = load();
@@ -43,8 +54,34 @@ fn field_1_is_asset_class_of_type_string_without_units() {
 }
 
 #[test]
-fn there_are_no_more_fields_after_field_1() {
-    assert_eq!(supported_field(2, 256).0, FT_NOMOREFIELDS);
+fn the_text_fields_of_point_4_are_of_type_string_without_units() {
+    for &(index, name) in TEXT_FIELDS {
+        assert_eq!(
+            supported_field(index, 256),
+            (FT_STRING, name.to_string(), String::new()),
+            "field {index}"
+        );
+    }
+}
+
+#[test]
+fn there_are_no_more_fields_after_the_last_field() {
+    assert_eq!(supported_field(11, 256).0, FT_NOMOREFIELDS);
+}
+
+#[test]
+fn the_file_version_fields_are_of_type_numeric_32_without_units() {
+    for (index, name) in [
+        (8, "File version UE5"),
+        (9, "File version UE4"),
+        (10, "File version licensee"),
+    ] {
+        assert_eq!(
+            supported_field(index, 256),
+            (FT_NUMERIC_32, name.to_string(), String::new()),
+            "field {index}"
+        );
+    }
 }
 
 #[test]

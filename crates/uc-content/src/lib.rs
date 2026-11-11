@@ -5,12 +5,15 @@
 
 #![allow(non_snake_case)]
 
+mod cache;
+
 use std::ffi::{c_char, c_void};
 use std::fs::File;
 use std::io::{self, Read};
 use std::path::Path;
 
-use uc_format::package::{ReadError, has_package_file_tag, read_header_from};
+use cache::{PackageValues, package_values};
+use uc_format::package::has_package_file_tag;
 use uc_tc::buffers::{read_wide_path, write_ansi, write_utf16};
 use uc_tc::content::{DefaultParams, FieldType, NO_MORE_FIELDS, ValueError};
 use uc_tc::guard;
@@ -30,6 +33,7 @@ struct Field {
 /// A field value, before the plugin writes it into the TC buffer.
 enum Value {
     Boolean(bool),
+    Numeric32(i32),
     /// Written as UTF-16 (`ft_stringw`). The field declares `ft_string`.
     Text(String),
 }
@@ -46,6 +50,51 @@ const FIELDS: &[Field] = &[
         name: "Asset class",
         field_type: FieldType::String,
         value: asset_class,
+    },
+    Field {
+        name: "Asset class path",
+        field_type: FieldType::String,
+        value: asset_class_path,
+    },
+    Field {
+        name: "Asset name",
+        field_type: FieldType::String,
+        value: asset_name,
+    },
+    Field {
+        name: "Object path",
+        field_type: FieldType::String,
+        value: object_path,
+    },
+    Field {
+        name: "Package path",
+        field_type: FieldType::String,
+        value: package_path,
+    },
+    Field {
+        name: "Engine version",
+        field_type: FieldType::String,
+        value: engine_version,
+    },
+    Field {
+        name: "Full engine version",
+        field_type: FieldType::String,
+        value: full_engine_version,
+    },
+    Field {
+        name: "File version UE5",
+        field_type: FieldType::Numeric32,
+        value: file_version_ue5,
+    },
+    Field {
+        name: "File version UE4",
+        field_type: FieldType::Numeric32,
+        value: file_version_ue4,
+    },
+    Field {
+        name: "File version licensee",
+        field_type: FieldType::Numeric32,
+        value: file_version_licensee,
     },
 ];
 
@@ -98,10 +147,13 @@ pub unsafe extern "system" fn ContentGetDetectString(
 #[unsafe(no_mangle)]
 pub extern "system" fn ContentSetDefaultParams(_params: *const DefaultParams) {}
 
-/// TC calls this function just before it unloads the DLL. There is nothing to
-/// release yet.
+/// TC calls this function just before it unloads the DLL. The plugin
+/// releases the cache: Rust does not drop statics, so the memory would stay
+/// in the TC process.
 #[unsafe(no_mangle)]
-pub extern "system" fn ContentPluginUnloading() {}
+pub extern "system" fn ContentPluginUnloading() {
+    guard((), cache::clear);
+}
 
 /// # Safety
 ///
@@ -147,13 +199,12 @@ pub unsafe extern "system" fn ContentGetValueW(
 unsafe fn write_value(value: &Value, field_value: *mut c_void, maxlen: i32) -> i32 {
     match *value {
         Value::Boolean(value) => {
-            if maxlen < size_of::<i32>() as i32 {
-                return ValueError::FieldEmpty.code();
-            }
-            // SAFETY: the caller guarantees `maxlen` bytes, at least 4. TC
-            // gives no alignment guarantee, so write unaligned.
-            unsafe { field_value.cast::<i32>().write_unaligned(i32::from(value)) };
-            FieldType::Boolean.code()
+            // SAFETY: the caller guarantees `maxlen` writable bytes.
+            unsafe { write_i32(field_value, maxlen, i32::from(value), FieldType::Boolean) }
+        }
+        Value::Numeric32(value) => {
+            // SAFETY: the caller guarantees `maxlen` writable bytes.
+            unsafe { write_i32(field_value, maxlen, value, FieldType::Numeric32) }
         }
         Value::Text(ref text) => {
             // One UTF-16 unit for the NUL at least.
@@ -167,6 +218,28 @@ unsafe fn write_value(value: &Value, field_value: *mut c_void, maxlen: i32) -> i
     }
 }
 
+/// Writes an `i32` value, and gives `field_type`. A buffer smaller than 4
+/// bytes gives `ft_fieldempty`, and the plugin writes nothing.
+///
+/// # Safety
+///
+/// `field_value` must not be null, and must be valid for writes of
+/// `maxlen` bytes. It can be unaligned.
+unsafe fn write_i32(
+    field_value: *mut c_void,
+    maxlen: i32,
+    value: i32,
+    field_type: FieldType,
+) -> i32 {
+    if maxlen < size_of::<i32>() as i32 {
+        return ValueError::FieldEmpty.code();
+    }
+    // SAFETY: the caller guarantees `maxlen` bytes, at least 4. TC gives no
+    // alignment guarantee, so write unaligned.
+    unsafe { field_value.cast::<i32>().write_unaligned(value) };
+    field_type.code()
+}
+
 /// Reads the first 4 bytes of the file, and checks the package file tag.
 fn is_package(path: &Path) -> io::Result<Option<Value>> {
     let mut head = Vec::with_capacity(4);
@@ -174,12 +247,73 @@ fn is_package(path: &Path) -> io::Result<Option<Value>> {
     Ok(Some(Value::Boolean(has_package_file_tag(&head))))
 }
 
-/// Reads the package header, and gives the class of the main asset. A file
-/// that the parser cannot read has no value.
+/// Gives a text value from the package values. A file that the parser
+/// cannot read has no value.
+fn text_value(
+    path: &Path,
+    value: impl FnOnce(&PackageValues) -> Option<String>,
+) -> io::Result<Option<Value>> {
+    let values = package_values(path)?;
+    Ok(values.and_then(|values| value(&values)).map(Value::Text))
+}
+
+/// The short class name of the main asset, for example `Blueprint`.
 fn asset_class(path: &Path) -> io::Result<Option<Value>> {
-    match read_header_from(File::open(path)?) {
-        Ok(read) => Ok(read.header.asset_class().map(Value::Text)),
-        Err(ReadError::Io(error)) => Err(error),
-        Err(_) => Ok(None),
-    }
+    text_value(path, |values| values.asset_class.clone())
+}
+
+/// The class path of the main asset, for example `/Script/Engine.Blueprint`.
+fn asset_class_path(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.asset_class_path.clone())
+}
+
+/// The object name of the main asset, for example `BP_SummaryActor`.
+fn asset_name(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.asset_name.clone())
+}
+
+/// The object path of the main asset, for example
+/// `/Game/Summary/BP_SummaryActor.BP_SummaryActor`.
+fn object_path(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.object_path.clone())
+}
+
+/// The package name of the summary, for example
+/// `/Game/Summary/BP_SummaryActor`. It does not need a main asset. A
+/// package name that is not valid gives no value.
+fn package_path(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.package_path.clone())
+}
+
+/// The saved-by engine version, for example `5.8.3`.
+fn engine_version(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.engine_version.clone())
+}
+
+/// The full saved-by engine version, for example
+/// `5.8.3-58210709+++UE5+Release-5.8`.
+fn full_engine_version(path: &Path) -> io::Result<Option<Value>> {
+    text_value(path, |values| values.full_engine_version.clone())
+}
+
+/// Gives a number from the package values. A file that the parser cannot
+/// read has no value.
+fn numeric_value(
+    path: &Path,
+    value: impl FnOnce(&PackageValues) -> i32,
+) -> io::Result<Option<Value>> {
+    let values = package_values(path)?;
+    Ok(values.map(|values| Value::Numeric32(value(&values))))
+}
+
+fn file_version_ue5(path: &Path) -> io::Result<Option<Value>> {
+    numeric_value(path, |values| values.file_version_ue5)
+}
+
+fn file_version_ue4(path: &Path) -> io::Result<Option<Value>> {
+    numeric_value(path, |values| values.file_version_ue4)
+}
+
+fn file_version_licensee(path: &Path) -> io::Result<Option<Value>> {
+    numeric_value(path, |values| values.file_version_licensee)
 }
