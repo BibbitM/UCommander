@@ -118,11 +118,15 @@ Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
 3. Wait for owner approval of the brief (gate).
 4. Do the increments. Commit after each increment.
 5. Update `CHANGELOG.md` (`## [Unreleased]`) and `README.md` if necessary.
-6. As the last commit, set the status of the plan point to `Done` in
+6. Ask a second agent to review the whole branch. Fix the findings with new
+   commits.
+7. As the last commit, set the status of the plan point to `Done` in
    `docs/PLAN.md`. CI fails the PR without it. Do not write a status in other
    files.
-7. Run all checks. Push and open a PR (gates).
-8. Fix CI failures and review findings with new commits.
+8. Run all checks. Push and open a PR (gates).
+9. Fix CI failures and review findings with new commits. If the last commit
+   sets `Done`, first revert it with `git revert`: the status goes back to
+   `Planned`. After the fixes, set `Done` again in a new last commit.
 
 ### 7.2 Commits
 
@@ -134,7 +138,11 @@ Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
   `Read package summary tag`.
 - Body: the intent. Tell why the change is necessary and what it makes
   possible. Wrap at 72 characters.
-- After a push, do not rewrite history: no amend, no rebase, no force push.
+- Do not rewrite history, also before the first push: no amend of an old
+  commit, no fold, no rebase, no force push. The owner wants to see what was
+  wrong and how it was fixed. Fix an error with a new commit.
+- If an old commit fails a check, keep it. Tell the owner which commit fails
+  and which commit fixes it, and write it in the PR.
 - Exception: Dependabot makes its own commits and PR titles. They do not
   follow the title rules. Do not change them.
 
@@ -209,3 +217,14 @@ These lessons come from mistakes in earlier plan points.
   and what you did not check.
 - A test of an `extern` export must start with its value at a number that the
   code does not write, and assert the exact expected value.
+- A pipe hides the exit code of a check: `cargo xtask check | tail` gives the
+  exit code of `tail`. Use `set -o pipefail`, or do not use a pipe before
+  `&&`.
+- The FFI test helper loads and frees the DLL for each call. When no other
+  reference exists, Windows unloads the DLL, and its static data (for example
+  the cache) is lost. A test of plugin state holds its own `Plugin` for its
+  duration.
+- The tests of one test file run in parallel in one process. A test that
+  clears or fills global plugin state goes into its own test file.
+- Tests write their files to `env!("CARGO_TARGET_TMPDIR")`, with fixed names,
+  not to the system temporary folder.
