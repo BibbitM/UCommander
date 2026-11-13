@@ -115,9 +115,12 @@ Follow the Rust API Guidelines.
    criteria, increments, out of scope, owner actions, open questions.
 
 `<id>` is the plan point ID from `docs/PLAN.md`, in lowercase. Phase 0 uses
-`p0` to `p4`. Phase 1 and later use two digits: point 3 is `03`.
+`p0` to `p4`. Phase 1 and later use two digits: point 3 is `03`. A point
+that is added between two points has a lower-case letter after the digits:
+point 4a is `04a`.
 Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
-`pt/03-content-asset-class` and `docs/steps/03-content-asset-class.md`.
+`pt/03-content-asset-class` and `docs/steps/03-content-asset-class.md`,
+`pt/04a-tech-debt` and `docs/steps/04a-tech-debt.md`.
 3. Wait for owner approval of the brief (gate).
 4. Do the increments. Commit after each increment.
 5. Update `CHANGELOG.md` (`## [Unreleased]`) and `README.md` if necessary.
