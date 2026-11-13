@@ -204,6 +204,11 @@ development only.
    owner accepted when point 4a started.)
 2. The owner approved this brief, the new dev-dependencies, the gates
    of increments 1 and 7, and the proposal of each open question below.
+3. After the TC experiment: TC asks file by file for the fields of the
+   visible columns, and a sort does not call the plugin. A refresh asked
+   for one field of all files. The owner decided: only record the
+   results. The cache size does not change. A larger cache and
+   `ft_delayed` are possible later work.
 
 ## Open questions (answered)
 
