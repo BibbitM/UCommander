@@ -26,6 +26,7 @@ brings the correct status to `main`. CI checks this on each PR.
 | 2 | Name map, import table, export table | — | | Done |
 | 3 | Content: asset class | D1 | v0.2.0 | Done |
 | 4 | Content: name, path, engine version | D2, D7 | | Done |
+| 4a | Technical debt after point 4 | — | | Done |
 | 5 | OFPA actor data parser | — | | Planned |
 | 6 | Content: OFPA label, class, GUID, map | D3–D5, D15 | v0.3.0 | Planned |
 | 7 | Lister skeleton: summary | L1 | | Planned |
@@ -65,7 +66,7 @@ are stable.
 | Language | Rust. |
 | Platform | Windows x64 only. TC 11.0 or later. |
 | License | `MIT OR Apache-2.0`. |
-| Branches | `pt/NN-short-name` from `main`. Merge commit. |
+| Branches | `pt/NN-short-name` from `main` (`pt/NNa-short-name` for a point with a letter, for example 4a). Merge commit. |
 | Review | The agent commits on the branch. The owner reviews the branch at the PR. A second agent reviews each PR first. |
 | Fixtures | Hybrid: fixture UE project in a separate repository, curated fixture files in `tests/fixtures/` (Git LFS), large containers as fixture-repository release files, synthetic fixtures in test code. |
 | Versioning | SemVer. One workspace version. Tag `vX.Y.Z` on `main` starts a release. |

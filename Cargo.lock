@@ -97,6 +97,8 @@ dependencies = [
 name = "uc-content"
 version = "0.2.0"
 dependencies = [
+ "serde",
+ "serde_json",
  "uc-format",
  "uc-tc",
  "uc-test-host",

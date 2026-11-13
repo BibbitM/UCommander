@@ -6,6 +6,7 @@ use std::ffi::c_char;
 use std::os::windows::ffi::OsStrExt;
 use std::path::{Path, PathBuf};
 
+use serde::Deserialize;
 use uc_test_host::{Plugin, plugin_dll_path};
 
 pub const FT_STRINGW: i32 = 11;
@@ -27,6 +28,52 @@ pub fn load() -> Plugin {
 pub fn export<F: Copy>(plugin: &Plugin, name: &str) -> F {
     // SAFETY: each caller uses the type alias that matches the guide.
     unsafe { plugin.export::<F>(name) }.unwrap_or_else(|| panic!("missing export {name}"))
+}
+
+/// The fixture packages with a `.expected.json` file.
+pub const FIXTURES: [&str; 3] = [
+    "BP_SummaryActor.uasset",
+    "L_SummaryLevel.umap",
+    "M_Summary.uasset",
+];
+
+/// The values of a `.expected.json` file that the content fields show.
+/// The values come from UE, not from the parser. The sources are in the
+/// file.
+#[derive(Debug, Deserialize)]
+pub struct Expected {
+    pub asset_class: String,
+    pub asset_class_path: String,
+    pub asset_name: String,
+    pub object_path: String,
+    pub package_path: String,
+    pub summary: ExpectedSummary,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ExpectedSummary {
+    pub saved_by_engine_version: String,
+    pub file_version_ue5: i32,
+    pub file_version_ue4: i32,
+    pub file_version_licensee: i32,
+}
+
+impl ExpectedSummary {
+    /// The short engine version: the text before the first `-` of the full
+    /// engine version, as UE writes it (`docs/formats/package.md`).
+    pub fn short_engine_version(&self) -> String {
+        let full = self.saved_by_engine_version.as_str();
+        full.split_once('-')
+            .map_or(full, |(short, _)| short)
+            .to_owned()
+    }
+}
+
+/// Reads the `.expected.json` file of the fixture package `name`.
+pub fn expected(name: &str) -> Expected {
+    let path = fixture(name).with_extension("expected.json");
+    let text = std::fs::read_to_string(&path).unwrap();
+    serde_json::from_str(&text).unwrap_or_else(|e| panic!("{}: {e}", path.display()))
 }
 
 pub fn fixture(name: &str) -> PathBuf {
@@ -59,13 +106,27 @@ pub fn unsupported_packages() -> [(&'static str, Vec<u8>); 2] {
     [("Ue4.uasset", ue4), ("Unversioned.uasset", unversioned)]
 }
 
-/// Writes `bytes` to a new file in the test folder `folder` of this
-/// process. Use a different file name in each test.
+/// The folder for test files: in the Cargo temporary folder of the target
+/// folder, not in the system temporary folder. `cargo clean` removes it.
+fn test_dir() -> PathBuf {
+    PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("uc-content")
+}
+
+/// Writes `bytes` to the file `name` in the test folder `folder`. Use one
+/// folder for each test file, and a different file name in each test. A
+/// new run writes the same file again.
 pub fn test_file(folder: &str, name: &str, bytes: &[u8]) -> PathBuf {
-    let dir = std::env::temp_dir().join(format!("uc-content-{folder}-{}", std::process::id()));
+    let dir = test_dir().join(folder);
     std::fs::create_dir_all(&dir).unwrap();
     let path = dir.join(name);
     std::fs::write(&path, bytes).unwrap();
+    path
+}
+
+/// A path in the test folder with no file.
+pub fn missing_file() -> PathBuf {
+    let path = test_dir().join("no-such-file.uasset");
+    assert!(!path.exists(), "{} must not exist", path.display());
     path
 }
 

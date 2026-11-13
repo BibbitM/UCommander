@@ -87,10 +87,40 @@ The guide (page `contentgetvalue.htm`, the part about caching) says:
 - More than one TC can run at the same time.
 
 Limit: this part of the page is in the description of full-text fields.
-It is possibly only for full-text fields. We did not check the call
-order of TC for other fields, for example when the user sorts by a field
-column. UCommander uses a small cache that is safe for calls from more
-than one thread (point 4 owner decision 7).
+It is possibly only for full-text fields. The experiment below checks
+the call order for other fields.
+
+#### Experiment (point 4a)
+
+Setup: TC 11.58, 64-bit (file version of `TOTALCMD64.EXE`), the content
+plugin with a temporary log of each `ContentGetValueW` call, a folder
+with 36 packages, on an SSD. The log was not committed.
+
+| Action | Calls | Order | Thread | Flags |
+|---|---|---|---|---|
+| Show a column view with all 11 plugin fields. | 396 (36 files × 11 fields), in 67 ms. | File by file: all fields of a file (in field index order), then the next file. | Main thread | `CONTENT_DELAYIFSLOW` |
+| Refresh the window (that view). | 36: only field 1 (**Asset class**), one call for each file. | One field for all files. | Main thread | 0 |
+| Show a new column view with 4 plugin fields. | 144 (36 files × 4 fields). Only the fields of the view. | File by file. | Main thread | `CONTENT_DELAYIFSLOW` |
+| Sort by different columns of that view. | None. | — | — | — |
+
+Results:
+
+- TC asks only for the fields of the visible columns, file by file. So
+  a cache of one entry is enough for one pass: TC reads each header one
+  time for all fields.
+- TC sorts with the values that it already has. A sort does not call
+  the plugin.
+- TC asked for the files in the same order in all three passes
+  (observed in the log). So a pass over a folder with more files than
+  the cache has finds no file in the cache (calculated from the cache
+  code, not measured).
+- All calls came from the main thread. UCommander never gives
+  `ft_delayed`, so TC waits for each call. About 1.9 ms for each file
+  with warm file caches.
+- We do not know why the refresh asked for field 1 only.
+
+UCommander uses a cache of 16 entries that is safe for calls from more
+than one thread (point 4 owner decision 7, point 4a: no change).
 
 ### `ContentDefaultParamStruct`
 

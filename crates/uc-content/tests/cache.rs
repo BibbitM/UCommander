@@ -10,7 +10,10 @@ use std::fs::File;
 use std::path::Path;
 use std::time::{Duration, SystemTime};
 
-use common::{FT_FIELDEMPTY, FT_STRINGW, fixture, fixture_bytes, get_text, load, test_file};
+use common::{
+    FIXTURES, FT_FIELDEMPTY, FT_STRINGW, expected, fixture, fixture_bytes, get_text, load,
+    test_file,
+};
 use uc_test_host::Plugin;
 
 const ASSET_CLASS: i32 = 1;
@@ -26,8 +29,13 @@ fn keep_loaded() -> Plugin {
     load()
 }
 
-fn text(value: &str) -> (i32, String) {
-    (FT_STRINGW, value.to_owned())
+const BLUEPRINT: &str = "BP_SummaryActor.uasset";
+const MATERIAL: &str = "M_Summary.uasset";
+
+/// The expected result for the fixture `name`: its `asset_class` value in
+/// the `.expected.json` file.
+fn class_of(name: &str) -> (i32, String) {
+    (FT_STRINGW, expected(name).asset_class)
 }
 
 /// A last write time that the tests set. It is not the current time, so
@@ -59,25 +67,21 @@ fn rewrite(path: &Path, bytes: &[u8], time: SystemTime) {
 #[test]
 fn a_file_with_another_size_gives_the_new_value() {
     let _plugin = keep_loaded();
-    let path = test_file(
-        "cache",
-        "OtherSize.uasset",
-        &fixture_bytes("BP_SummaryActor.uasset"),
-    );
-    assert_eq!(asset_class(&path), text("Blueprint"));
+    let path = test_file("cache", "OtherSize.uasset", &fixture_bytes(BLUEPRINT));
+    assert_eq!(asset_class(&path), class_of(BLUEPRINT));
 
-    std::fs::write(&path, fixture_bytes("M_Summary.uasset")).unwrap();
+    std::fs::write(&path, fixture_bytes(MATERIAL)).unwrap();
 
-    assert_eq!(asset_class(&path), text("Material"));
+    assert_eq!(asset_class(&path), class_of(MATERIAL));
 }
 
 #[test]
 fn a_file_with_another_write_time_gives_the_new_value() {
     let _plugin = keep_loaded();
-    let bytes = fixture_bytes("BP_SummaryActor.uasset");
+    let bytes = fixture_bytes(BLUEPRINT);
     let path = test_file("cache", "OtherTime.uasset", &bytes);
     set_write_time(&path, write_time(0));
-    assert_eq!(asset_class(&path), text("Blueprint"));
+    assert_eq!(asset_class(&path), class_of(BLUEPRINT));
 
     // The same size, but not a package.
     rewrite(&path, &vec![0; bytes.len()], write_time(1));
@@ -90,32 +94,28 @@ fn a_file_with_another_write_time_gives_the_new_value() {
 #[test]
 fn a_file_with_the_same_size_and_times_gives_the_cached_value() {
     let _plugin = keep_loaded();
-    let bytes = fixture_bytes("BP_SummaryActor.uasset");
+    let bytes = fixture_bytes(BLUEPRINT);
     let path = test_file("cache", "SameTime.uasset", &bytes);
     set_write_time(&path, write_time(0));
-    assert_eq!(asset_class(&path), text("Blueprint"));
+    assert_eq!(asset_class(&path), class_of(BLUEPRINT));
 
     rewrite(&path, &vec![0; bytes.len()], write_time(0));
 
-    assert_eq!(asset_class(&path), text("Blueprint"));
+    assert_eq!(asset_class(&path), class_of(BLUEPRINT));
 }
 
 #[test]
 fn calls_from_many_threads_give_the_correct_values() {
     let _plugin = keep_loaded();
-    let cases = [
-        ("BP_SummaryActor.uasset", "Blueprint"),
-        ("L_SummaryLevel.umap", "World"),
-        ("M_Summary.uasset", "Material"),
-    ];
+    let cases = &FIXTURES.map(|name| (name, class_of(name)));
 
     std::thread::scope(|scope| {
         for thread in 0..8 {
             scope.spawn(move || {
                 for call in 0..30 {
-                    let (name, class) = cases[(thread + call) % cases.len()];
+                    let (name, class) = &cases[(thread + call) % cases.len()];
 
-                    assert_eq!(asset_class(&fixture(name)), text(class), "{name}");
+                    assert_eq!(&asset_class(&fixture(name)), class, "{name}");
                 }
             });
         }
