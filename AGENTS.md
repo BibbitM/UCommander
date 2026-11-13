@@ -102,6 +102,9 @@ Follow the Rust API Guidelines.
 - Expected values come from the UE editor, not from our parser output.
   Snapshot tests of parser output are only for display text (CLI, lister).
 - Do not change an existing expected value without owner approval.
+- Tests write their files to `env!("CARGO_TARGET_TMPDIR")`, with fixed
+  names, not to the system temporary folder. Then a new run writes the same
+  files again, and `cargo clean` removes them.
 
 ## 7. Workflow
 
@@ -131,18 +134,21 @@ Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
 ### 7.2 Commits
 
 - One intent in each commit. Do not mix a refactor and a feature.
-- Each commit builds and passes all checks.
+- Each commit builds and passes all checks. Exception: if you find an old
+  commit that fails a check, do not change it. See the history rules below.
 - Target size: less than about 200 changed lines, excluding fixtures.
 - Tests and code go in the same commit.
 - Title: imperative, 50 characters or less, no period. Example:
   `Read package summary tag`.
 - Body: the intent. Tell why the change is necessary and what it makes
   possible. Wrap at 72 characters.
-- Do not rewrite history, also before the first push: no amend of an old
-  commit, no fold, no rebase, no force push. The owner wants to see what was
-  wrong and how it was fixed. Fix an error with a new commit.
-- If an old commit fails a check, keep it. Tell the owner which commit fails
-  and which commit fixes it, and write it in the PR.
+- Do not rewrite history: no amend, no fixup or squash, no rebase, no force
+  push. This applies to all commits, also before the first push. The owner
+  wants to see what was wrong and how it was fixed. Fix an error with a new
+  commit.
+- If an old commit fails a check, keep it. Fix the error with a new commit.
+  Tell the owner which commit fails and which commit fixes it, and write it
+  in the PR.
 - Exception: Dependabot makes its own commits and PR titles. They do not
   follow the title rules. Do not change them.
 
@@ -210,7 +216,8 @@ These lessons come from mistakes in earlier plan points.
 - Before you conclude how Cargo builds something, check it in a new, empty
   target folder. A warm `target/` can hide the real behavior.
 - Check each commit of a branch in a clean worktree, with all checks, before
-  you push. Put the worktree in `target/`, because long paths fail.
+  you push. Put the worktree in `target/`, because long paths fail. If a
+  commit fails, follow the history rules of §7.2.
 - `cargo test` builds a plugin DLL in `target/<profile>/deps/`. Only
   `cargo build` copies it to `target/<profile>/`.
 - Do not state a cause as fact before a test proves it. Say what you checked,
@@ -218,13 +225,13 @@ These lessons come from mistakes in earlier plan points.
 - A test of an `extern` export must start with its value at a number that the
   code does not write, and assert the exact expected value.
 - A pipe hides the exit code of a check: `cargo xtask check | tail` gives the
-  exit code of `tail`. Use `set -o pipefail`, or do not use a pipe before
-  `&&`.
+  exit code of `tail`. In Bash, use `set -o pipefail`. In other shells, do
+  not use a pipe before `&&`.
 - The FFI test helper loads and frees the DLL for each call. When no other
   reference exists, Windows unloads the DLL, and its static data (for example
   the cache) is lost. A test of plugin state holds its own `Plugin` for its
   duration.
 - The tests of one test file run in parallel in one process. A test that
-  clears or fills global plugin state goes into its own test file.
-- Tests write their files to `env!("CARGO_TARGET_TMPDIR")`, with fixed names,
-  not to the system temporary folder.
+  clears or fills global plugin state goes into a test file with no other
+  tests of that state. If one file has more such tests, they take one shared
+  lock.
