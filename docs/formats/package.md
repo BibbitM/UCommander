@@ -647,7 +647,7 @@ the point 1 and point 2 briefs.
 | Main asset: no export with the main name. | The first asset in export table order. UE uses the order in memory, which the file does not record. The results are different only when two or more assets are candidates (point 3 owner decision 2). |
 | Main asset: the "is asset" flag is not in the file (UE4 before `COOKED_ASSETS_IN_EDITOR_SUPPORT`). | Not an asset. |
 | Package path field. | The package name of the summary, as for the main asset. The `.uproject` file is not used (point 4 owner decision 1). |
-| Package name that does not start with `/` (for example empty, from a UE build without editor-only data, or `None` from another tool). | Not a valid long package name. No package path, and no object path for an export path that needs the package name. UCommander checks only the first character, not the other UE rules. |
+| Package name that does not start with `/` (for example empty, from a UE build without editor-only data, or `None`, which UE 5.8.3 does not write). | Not a valid long package name. No package path, and no object path for an export path that needs the package name. UCommander checks only the first character, not the other UE rules. |
 | Asset class path: null class index. | `/Script/CoreUObject.Class`. A main asset never has this class, because a `Class` object is never an asset (see "Is asset": UE583 `Class.h`). |
 | Engine version fields: empty engine version. | No value (point 4 owner decision 5, with the UE rule for "empty"). |
 | Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |

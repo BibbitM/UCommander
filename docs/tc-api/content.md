@@ -92,10 +92,9 @@ the call order for other fields.
 
 #### Experiment (point 4a)
 
-Setup: the 64-bit TC of the owner, the content plugin with a temporary
-log of each
-`ContentGetValueW` call, a folder with 36 packages, on an SSD. The log
-was not committed.
+Setup: TC 11.58, 64-bit (file version of `TOTALCMD64.EXE`), the content
+plugin with a temporary log of each `ContentGetValueW` call, a folder
+with 36 packages, on an SSD. The log was not committed.
 
 | Action | Calls | Order | Thread | Flags |
 |---|---|---|---|---|
@@ -111,9 +110,10 @@ Results:
   time for all fields.
 - TC sorts with the values that it already has. A sort does not call
   the plugin.
-- A pass over a folder with more files than the cache has finds no file
-  in the cache, because TC asks for the files in the same order each
-  time (calculated from the cache code, not measured).
+- TC asked for the files in the same order in all three passes
+  (observed in the log). So a pass over a folder with more files than
+  the cache has finds no file in the cache (calculated from the cache
+  code, not measured).
 - All calls came from the main thread. UCommander never gives
   `ft_delayed`, so TC waits for each call. About 1.9 ms for each file
   with warm file caches.
