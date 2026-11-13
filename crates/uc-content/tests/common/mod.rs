@@ -62,8 +62,10 @@ impl ExpectedSummary {
     /// The short engine version: the text before the first `-` of the full
     /// engine version, as UE writes it (`docs/formats/package.md`).
     pub fn short_engine_version(&self) -> String {
-        let full = &self.saved_by_engine_version;
-        full.split('-').next().unwrap_or(full).to_owned()
+        let full = self.saved_by_engine_version.as_str();
+        full.split_once('-')
+            .map_or(full, |(short, _)| short)
+            .to_owned()
     }
 }
 
