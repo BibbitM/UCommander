@@ -70,6 +70,31 @@ fn a_row_with_a_letter_and_a_status_that_is_not_valid_is_reported() {
 }
 
 #[test]
+fn a_point_and_its_letter_point_find_their_own_rows() {
+    let plan = "| 4 | Name | D2 | | Planned |\n| 4a | Debt | — | | Done |\n";
+
+    assert!(check_plan_status("pt/04-name", plan).is_err());
+    assert_eq!(check_plan_status("pt/04a-debt", plan), Ok(()));
+}
+
+#[test]
+fn a_branch_with_two_letters_or_a_letter_after_p_has_no_row() {
+    let plan = "| 4a | Debt | — | | Done |\n| P3 | Package | Text. | — | Done |\n";
+
+    for branch in ["pt/04ab-x", "pt/p3a-x"] {
+        let error = check_plan_status(branch, plan).unwrap_err();
+
+        assert!(error.contains("has no plan point"), "{branch}: {error}");
+    }
+}
+
+#[test]
+fn a_row_with_two_letters_or_an_upper_case_letter_is_not_a_plan_point() {
+    assert!(invalid_statuses("| 4ab | Debt | — | | In review |\n").is_empty());
+    assert!(invalid_statuses("| 4A | Debt | — | | In review |\n").is_empty());
+}
+
+#[test]
 fn a_plan_point_branch_without_a_row_fails() {
     let error = check_plan_status("pt/99-unknown", PLAN).unwrap_err();
 
