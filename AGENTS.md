@@ -154,6 +154,10 @@ Examples: `pt/p2-content-skeleton` and `docs/steps/p2-content-skeleton.md`,
   in the PR.
 - Exception: Dependabot makes its own commits and PR titles. They do not
   follow the title rules. Do not change them.
+- Exception: You can use rebase to merge a Dependabot PR if its changed
+  files do not overlap with files changed on the target branch since the
+  PR branch was created. This keeps the history linear without combining
+  changes to the same file.
 
 ### 7.3 Gates
 
