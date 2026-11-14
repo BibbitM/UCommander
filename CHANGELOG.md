@@ -9,6 +9,9 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ### Added
 
+- Read the label, classes, actor GUID and outer map of an OFPA actor
+  in `uc-format`. Resolve the immediate parent from the Blueprint package.
+
 - Content fields **Asset class path**, **Asset name**, **Object path**
   and **Package path** for the main asset of a package.
 - Content fields **Engine version** (`5.8.3`) and **Full engine version**
