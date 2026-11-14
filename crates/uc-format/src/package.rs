@@ -13,7 +13,7 @@ pub use header::{
     PackageIndex, read_header,
 };
 pub use objects::{IndexTarget, MAX_OBJECT_PATH_LENGTH};
-pub use ofpa::{ActorMetadata, read_actor_metadata};
+pub use ofpa::{ActorMetadata, OfpaActor, OfpaWarning, read_actor_metadata, read_ofpa_actor};
 pub use read::{MAX_HEADER_READ_SIZE, ReadError, read_header_from};
 pub use summary::{
     CustomVersion, EngineVersion, Generation, PackageSummary, SummaryRead, Table, Warning,

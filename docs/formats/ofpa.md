@@ -44,8 +44,8 @@ the two tags also occur on Blueprint assets.
 Sources: UE 5.8.3
 `Engine/Private/Level.cpp`, `ULevel::GetExternalActorsPath`, and
 `CoreUObject/Private/Misc/PackagePath.cpp`,
-`FPackagePath::GetExternalActorsFolderName`. Validate the package paths
-with the external actor fixtures.
+`FPackagePath::GetExternalActorsFolderName`. The two packages listed in
+`tests/fixtures/ofpa/actors.expected.json` confirm this layout.
 
 ## Read the descriptor
 
@@ -73,8 +73,23 @@ Sources: UE 5.8.3
 described in [Package format](package.md);
 `BP_SummaryActor.pkginfo.txt`.
 
-UE reads the actor path from the asset registry record when it creates
-the descriptor. Confirm the stored path in the external actor fixtures
-before using it to obtain the outer map package path. Confirm the
-descriptor fields, custom version values and label encoding with those
-fixtures before completing the decoder.
+Both fixtures store the full actor object path in the asset registry
+record. Take the package path before the first dot to obtain the outer
+map path. The same record gives the actor class and the `ActorLabel`
+tag. UE adds that tag for an external actor with a label when it is
+not a child actor. Source: UE 5.8.3 `Engine/Private/Actor.cpp`,
+`AActor::GetAssetRegistryTags`.
+
+The descriptor's custom version count is an `i32`. Each entry has a
+GUID followed by an `i32` version. The three gates for the supported
+prefix are UE5 Main 88, Fortnite Season 5, and Fortnite Main 88.
+The fixtures use 123, 15, and 268, respectively. The payload begins with
+a `u32` default descriptor flag. Two class paths follow, each with
+two FStrings for the package and class name. For an actor instance,
+the GUID follows these paths. Stop at this GUID for point 5.
+
+Sources: UE 5.7.4 and 5.8.3
+`Core/Public/UObject/*ObjectVersions.inl` for the three version gates,
+`Core/Private/UObject/DevObjectVersion.cpp` for their GUIDs, and
+`WorldPartitionActorDescArchive.cpp` and `WorldPartitionActorDesc.cpp`
+for the prefix. Both fixture GUIDs match the editor evidence.

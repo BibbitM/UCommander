@@ -1,0 +1,32 @@
+{
+  "editor_version": "5.8.3-58210709+++UE5+Release-5.8",
+  "map_file": "OFPAFixture/WP_ActorFixture.umap",
+  "world_partition": true,
+  "one_file_per_actor": true,
+  "actors": [
+    {
+      "label": "Fixture Inherited Actor",
+      "object_name": "BP_FixtureChild_C_UAID_10FFE033EECBEC1403_1976072488",
+      "actor_object_path": "/Game/OFPAFixture/WP_ActorFixture.WP_ActorFixture:PersistentLevel.BP_FixtureChild_C_UAID_10FFE033EECBEC1403_1976072488",
+      "class_path": "/Game/OFPAFixture/BP_FixtureChild.BP_FixtureChild_C",
+      "native_base_class_path": "/Script/Engine.Actor",
+      "blueprint_parent_class_path": "/Game/OFPAFixture/BP_FixtureParent.BP_FixtureParent_C",
+      "actor_guid": "06773AD0-41EE-AD0A-CDB0-F99D13F87D96",
+      "outer_map_package_path": "/Game/OFPAFixture/WP_ActorFixture",
+      "external_actor_package_path": "/Game/__ExternalActors__/OFPAFixture/WP_ActorFixture/7/1I/PQG3CRZ88HF7R39LFZKBUS",
+      "external_actor_file": "__ExternalActors__/OFPAFixture/WP_ActorFixture/7/1I/PQG3CRZ88HF7R39LFZKBUS.uasset"
+    },
+    {
+      "label": "Fixture Point Light",
+      "object_name": "PointLight_UAID_10FFE033EECBEC1403_1976069487",
+      "actor_object_path": "/Game/OFPAFixture/WP_ActorFixture.WP_ActorFixture:PersistentLevel.PointLight_UAID_10FFE033EECBEC1403_1976069487",
+      "class_path": "/Script/Engine.PointLight",
+      "native_base_class_path": "/Script/Engine.PointLight",
+      "blueprint_parent_class_path": null,
+      "actor_guid": "230758CD-427E-204E-92A6-4FAA0E7E4B5A",
+      "outer_map_package_path": "/Game/OFPAFixture/WP_ActorFixture",
+      "external_actor_package_path": "/Game/__ExternalActors__/OFPAFixture/WP_ActorFixture/8/BW/MG2U1C9S4GLAY74FUVAYFL",
+      "external_actor_file": "__ExternalActors__/OFPAFixture/WP_ActorFixture/8/BW/MG2U1C9S4GLAY74FUVAYFL.uasset"
+    }
+  ]
+}
