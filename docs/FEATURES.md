@@ -68,7 +68,7 @@ Status values:
 | D3 | OFPA: actor label. | MVP |
 | D4 | OFPA: actor class, native base class, Blueprint parent class. | MVP |
 | D5 | OFPA: actor GUID and outer map path. | MVP |
-| D6 | OFPA: data layers, runtime grid, spatially loaded flag, bounds. | Later |
+| D6 | OFPA: data layers, runtime grid, spatially loaded flag, bounds. | MVP |
 | D7 | Engine version and package file version. | MVP |
 | D8 | Cooked or editor, unversioned properties, editor-only data. | Later |
 | D9 | Thumbnail present. | Later |
