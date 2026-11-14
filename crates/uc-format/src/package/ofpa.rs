@@ -1,7 +1,26 @@
-use super::read_summary;
 use super::summary::PKG_FILTER_EDITOR_ONLY;
+use super::{PackageHeader, read_summary};
 use crate::Error;
 use crate::reader::Reader;
+
+impl PackageHeader {
+    /// Gives the immediate super class of a top-level generated class.
+    ///
+    /// Call this on the Blueprint package with the actor's class path.
+    pub fn blueprint_parent_class(&self, actor_class_path: &str) -> Option<String> {
+        let (package, class) = actor_class_path.split_once('.')?;
+        if !self.long_package_name()?.eq_ignore_ascii_case(package) {
+            return None;
+        }
+        let export = self.exports.iter().find(|export| {
+            export.outer_index.0 == 0
+                && self
+                    .name_text(export.object_name)
+                    .is_some_and(|name| name.eq_ignore_ascii_case(class))
+        })?;
+        self.object_path(export.super_index)
+    }
+}
 
 /// The actor asset registry record and its encoded descriptor.
 #[derive(Debug, PartialEq, Eq)]

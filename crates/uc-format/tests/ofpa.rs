@@ -4,7 +4,7 @@ mod common;
 
 use common::{Str, Summary};
 use uc_format::Error;
-use uc_format::package::read_actor_metadata;
+use uc_format::package::{read_actor_metadata, read_header};
 
 fn string(bytes: &mut Vec<u8>, value: &str) {
     bytes.extend_from_slice(&(i32::try_from(value.len()).unwrap() + 1).to_le_bytes());
@@ -55,6 +55,22 @@ fn reads_actor_metadata_without_dependency_data() {
 fn the_blueprint_fixture_has_no_external_actor() {
     let bytes = include_bytes!("../../../tests/fixtures/editor/BP_SummaryActor.uasset");
     assert_eq!(read_actor_metadata(bytes).unwrap(), None);
+}
+
+#[test]
+fn reads_the_direct_parent_of_the_blueprint_generated_class() {
+    let bytes = include_bytes!("../../../tests/fixtures/editor/BP_SummaryActor.uasset");
+    let header = read_header(bytes).unwrap().header;
+    assert_eq!(
+        header
+            .blueprint_parent_class("/Game/Summary/BP_SummaryActor.BP_SummaryActor_C")
+            .as_deref(),
+        Some("/Script/Engine.Actor"),
+    );
+    assert_eq!(
+        header.blueprint_parent_class("/Game/Other/BP_SummaryActor.BP_SummaryActor_C"),
+        None,
+    );
 }
 
 #[test]

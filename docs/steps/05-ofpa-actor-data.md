@@ -41,6 +41,13 @@ tests only. Record differences found in Preview tests for later work.
    tests for damaged data and version handling.
 7. `cargo xtask check` passes.
 
+## Blueprint parent class
+
+Read the immediate parent class from the Blueprint package. The external
+actor package gives the actor class and its native base class. The caller
+may supply the Blueprint package bytes for the parent lookup. Read the
+remaining actor fields even when those bytes are unavailable.
+
 ## Fixture request
 
 Use the stock UE 5.8 engine and the fixtures project. Make a small World
@@ -49,7 +56,8 @@ a Point Light. Make a Blueprint derived from Actor and a child Blueprint
 derived from it. Place and save an instance of the child Blueprint. Give
 both actors distinct labels that differ from their object names.
 
-Supply the map and the two external actor packages. Keep their paths
+Supply the map, the two external actor packages and the child Blueprint
+package. Keep their paths
 relative to the project Content folder. Supply the UE editor version and
 editor evidence for each actor's label, class path, native base class path,
 Blueprint parent class path when present, actor GUID, and outer map package
