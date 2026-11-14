@@ -486,6 +486,9 @@ pub struct Package {
     pub exports: Vec<Export>,
     /// When set, the export count is this value, not the list length.
     pub export_count: Option<i32>,
+    /// When set, these bytes come after the export table, and the asset
+    /// registry data offset of the summary points to them.
+    pub asset_registry: Option<Vec<u8>>,
 }
 
 impl Package {
@@ -499,6 +502,7 @@ impl Package {
             import_count: None,
             exports: Vec::new(),
             export_count: None,
+            asset_registry: None,
         }
     }
 
@@ -583,6 +587,10 @@ impl Package {
         }
 
         let mut summary = self.summary.clone();
+        if let Some(section) = &self.asset_registry {
+            summary.asset_registry_data_offset = (start + tables.0.len()) as i32;
+            tables.bytes(section);
+        }
         summary.name_count = self.name_count.unwrap_or(self.names.len() as i32);
         summary.name_offset = self.name_offset.unwrap_or(start as i32);
         summary.import_count = self.import_count.unwrap_or(self.imports.len() as i32);

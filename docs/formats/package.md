@@ -710,6 +710,7 @@ the point 1 and point 2 briefs.
 | Asset class path: null class index. | `/Script/CoreUObject.Class`. A main asset never has this class, because a `Class` object is never an asset (see "Is asset": UE583 `Class.h`). |
 | Engine version fields: empty engine version. | No value (point 4 owner decision 5, with the UE rule for "empty"). |
 | Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |
+| Asset registry data offset of 0 or less. | No asset registry data. Not an error. UE does not read the section for this offset (UE583 `PackageReader.cpp`, the function that starts a section). |
 | Asset registry data: a count less than 0, or larger than the remaining bytes of the header. | Error: bad value or truncated. As UE, but the limit is the header bytes, not the file size. |
 | Asset registry data: a tag with an empty key or an empty value. | Keep it. UCommander shows the data as in the file. |
 | Asset registry data: relative object path. | Keep the path as in the file. A caller that needs the full path adds the package name and `.`. |

@@ -4,6 +4,7 @@ mod asset;
 mod header;
 mod objects;
 mod read;
+mod registry;
 mod summary;
 mod version;
 
@@ -13,6 +14,7 @@ pub use header::{
 };
 pub use objects::{IndexTarget, MAX_OBJECT_PATH_LENGTH};
 pub use read::{MAX_HEADER_READ_SIZE, ReadError, read_header_from};
+pub use registry::{AssetRegistryData, AssetRegistryObject, AssetRegistryTag, read_asset_registry};
 pub use summary::{
     CustomVersion, EngineVersion, Generation, PackageSummary, SummaryRead, Table, Warning,
     read_summary,

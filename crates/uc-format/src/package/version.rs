@@ -21,6 +21,7 @@ pub(crate) mod ue4 {
     pub(crate) const ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID: i32 = 516;
     pub(crate) const ADDED_PACKAGE_OWNER: i32 = 518;
     pub(crate) const NON_OUTER_PACKAGE_IMPORT: i32 = 520;
+    pub(crate) const ASSETREGISTRY_DEPENDENCYFLAGS: i32 = 521;
     pub(crate) const NEWEST: i32 = 522;
 }
 
