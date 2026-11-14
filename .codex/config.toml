@@ -1,0 +1,15 @@
+# Project defaults for Codex.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+developer_instructions = """
+Follow AGENTS.md. Keep all owner approval gates in section 7.3.
+For work already authorized by the owner, do routine local Git operations
+without asking for an additional conversational approval.
+Use the project command rules when sandbox escalation is necessary.
+Do not change the Git author identity. For each commit that Codex creates
+with its own contribution, add this trailer once:
+Co-authored-by: Codex <noreply@openai.com>
+Do not add this trailer to commits created only by the owner or another agent.
+Do not rewrite existing commits to add attribution.
+"""
