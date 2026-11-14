@@ -153,7 +153,10 @@ Notes:
 - A descriptor with "is default descriptor" 1 is a class descriptor. It
   has no GUID, no transform and no bounds, and other rules apply.
   Source: UE583 `ActorDesc.cpp`. An external actor package contains an
-  actor, not a class descriptor.
+  actor, not a class descriptor. The Blueprint package of an actor class
+  also has the `ActorMetaData` tag, with a class descriptor, on an
+  object with a relative object path (observed in fixture F1,
+  `BP_SummaryActor.uasset`).
 - After the label come the HLOD fields, the actor folder, the parent
   actor, the folder GUID, the property map, the content bundle GUID and
   other fields, then the component descriptors. Then the data of a

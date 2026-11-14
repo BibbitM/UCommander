@@ -171,8 +171,8 @@ records the layout in a new file `docs/formats/world-partition.md`.
   not give it. For the label, the result is "no label" (fact 4). For the
   skipped fields, the value is not necessary.
 - A descriptor with the "default descriptor" flag set is a class
-  descriptor, not an actor. It gives an error. An external actor
-  package does not contain one.
+  descriptor, not an actor. `read_actor_desc` gives an error for it.
+  A Blueprint package of an actor class contains one (observed in F1).
 
 ### OFPA actor data of a package
 
@@ -184,9 +184,20 @@ records the layout in a new file `docs/formats/world-partition.md`.
 | Values of criterion 2 | The decoded descriptor. |
 
 A package is an external actor package when its asset registry data has
-an object with the `ActorMetaData` tag. If more than one object has the
-tag, the parser uses the first one and gives a warning. The `PkgInfo`
-output of F5 and F6 shows if UE writes one object only.
+an object with these properties (owner decision 8):
+
+- Its object path is a full path: it starts with `/`.
+- It has the `ActorMetaData` tag.
+- Its descriptor is not a class descriptor.
+
+F1 (a Blueprint of an actor class) also has the `ActorMetaData` tag, on
+an object with a relative path, and its descriptor is a class
+descriptor. So the tag alone does not identify an external actor
+package. A class descriptor gives no actor data. This is not an error.
+
+If more than one object agrees with the rule, the parser uses the first
+one and gives a warning. The `PkgInfo` output of F5 and F6 shows if UE
+writes one object only.
 
 Type names may change a little during the work. I write the final names
 in the PR.
@@ -333,6 +344,10 @@ None. The Base64 decoder is our own code (owner decision 2).
 7. D6 (OFPA data layers, runtime grid, spatially loaded flag, bounds)
    changes from `Later` to `MVP`. It is a new plan point 6a after point
    6. The release v0.3.0 moves from point 6 to point 6a.
+8. An external actor package has an asset registry object with a full
+   object path, the `ActorMetaData` tag and a descriptor that is not a
+   class descriptor (see "OFPA actor data of a package"). The owner
+   accepted this rule after the F1 finding during the work.
 
 ## Open questions (answered)
 
