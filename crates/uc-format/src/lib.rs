@@ -1,5 +1,6 @@
 //! Parser for Unreal Engine package and container files.
 
+pub mod base64;
 mod error;
 pub mod package;
 mod reader;
