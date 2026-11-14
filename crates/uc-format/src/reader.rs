@@ -95,6 +95,15 @@ impl<'a> Reader<'a> {
             .collect())
     }
 
+    /// Skips the next `len` bytes.
+    pub(crate) fn skip(&mut self, len: usize) -> Result<(), Error> {
+        self.slice(len).map(|_| ())
+    }
+
+    pub(crate) fn u8(&mut self) -> Result<u8, Error> {
+        self.take().map(u8::from_le_bytes)
+    }
+
     pub(crate) fn u32(&mut self) -> Result<u32, Error> {
         self.take().map(u32::from_le_bytes)
     }
