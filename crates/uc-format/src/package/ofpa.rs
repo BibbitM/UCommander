@@ -33,6 +33,7 @@ pub struct ActorMetadata {
     pub label: Option<String>,
     pub warnings: Vec<Warning>,
     object_path_offset: usize,
+    descriptor_offset: usize,
 }
 
 /// A condition that does not prevent reading the asset registry fields.
@@ -59,8 +60,8 @@ pub struct OfpaActor {
 /// Use the actor class path with [`PackageHeader::blueprint_parent_class`]
 /// on the Blueprint package to obtain its immediate parent.
 ///
-/// Registry errors use package offsets. Base64 errors use offsets in the
-/// encoded tag. Errors in descriptor fields use decoded descriptor offsets.
+/// Errors use package offsets. A damaged descriptor is reported at the
+/// start of its tag value.
 pub fn read_ofpa_actor(bytes: &[u8]) -> Result<Option<OfpaActor>, Error> {
     let Some(metadata) = read_actor_metadata(bytes)? else {
         return Ok(None);
@@ -73,13 +74,22 @@ pub fn read_ofpa_actor(bytes: &[u8]) -> Result<Option<OfpaActor>, Error> {
             offset: metadata.object_path_offset,
             field: "external actor object path",
         })?;
-    let descriptor = decode_base64(&metadata.descriptor_base64)?;
+    let descriptor = decode_base64(&metadata.descriptor_base64).ok_or(Error::BadValue {
+        offset: metadata.descriptor_offset,
+        field: "actor descriptor Base64",
+    })?;
     let mut warnings: Vec<_> = metadata
         .warnings
         .into_iter()
         .map(OfpaWarning::Package)
         .collect();
-    let guid = descriptor_guid(&descriptor, &mut warnings)?;
+    let guid = descriptor_guid(&descriptor, &mut warnings).map_err(|error| Error::BadValue {
+        offset: metadata.descriptor_offset,
+        field: match error {
+            Error::BadValue { field, .. } => field,
+            _ => "actor descriptor",
+        },
+    })?;
     Ok(Some(OfpaActor {
         label: metadata.label,
         class_path: metadata.class_path,
@@ -167,25 +177,20 @@ fn descriptor_guid(bytes: &[u8], warnings: &mut Vec<OfpaWarning>) -> Result<Opti
     reader.guid().map(Some)
 }
 
-fn decode_base64(text: &str) -> Result<Vec<u8>, Error> {
+fn decode_base64(text: &str) -> Option<Vec<u8>> {
     let (groups, rest) = text.as_bytes().as_chunks::<4>();
-    let error = |offset| Error::BadValue {
-        offset,
-        field: "actor descriptor Base64",
-    };
     if !rest.is_empty() {
-        return Err(error(groups.len() * 4));
+        return None;
     }
     let mut bytes = Vec::with_capacity(groups.len() * 3);
     for (index, &[a, b, c, d]) in groups.iter().enumerate() {
-        let offset = index * 4;
         let digit = |value| match value {
-            b'A'..=b'Z' => Ok(value - b'A'),
-            b'a'..=b'z' => Ok(value - b'a' + 26),
-            b'0'..=b'9' => Ok(value - b'0' + 52),
-            b'+' => Ok(62),
-            b'/' => Ok(63),
-            _ => Err(error(offset)),
+            b'A'..=b'Z' => Some(value - b'A'),
+            b'a'..=b'z' => Some(value - b'a' + 26),
+            b'0'..=b'9' => Some(value - b'0' + 52),
+            b'+' => Some(62),
+            b'/' => Some(63),
+            _ => None,
         };
         let (a, b) = (digit(a)?, digit(b)?);
         bytes.push(a << 2 | b >> 4);
@@ -199,7 +204,7 @@ fn decode_base64(text: &str) -> Result<Vec<u8>, Error> {
         }
         bytes.push(c << 6 | digit(d)?);
     }
-    Ok(bytes)
+    Some(bytes)
 }
 
 /// Finds actor metadata in a standard external actor package.
@@ -249,16 +254,17 @@ pub fn read_actor_metadata(bytes: &[u8]) -> Result<Option<ActorMetadata>, Error>
         let mut label = None;
         for _ in 0..tag_count {
             let key = reader.string("asset registry tag key")?;
+            let value_offset = reader.offset();
             let value = reader.string("asset registry tag value")?;
             if key.eq_ignore_ascii_case("ActorMetaDataClass") {
                 native_class_path = Some(value);
             } else if key.eq_ignore_ascii_case("ActorMetaData") {
-                descriptor_base64 = Some(value);
+                descriptor_base64 = Some((value, value_offset));
             } else if key.eq_ignore_ascii_case("ActorLabel") {
                 label = Some(value);
             }
         }
-        if let (Some(native_class_path), Some(descriptor_base64)) =
+        if let (Some(native_class_path), Some((descriptor_base64, descriptor_offset))) =
             (native_class_path, descriptor_base64)
         {
             if actor.is_some() {
@@ -275,8 +281,15 @@ pub fn read_actor_metadata(bytes: &[u8]) -> Result<Option<ActorMetadata>, Error>
                 label,
                 warnings: Vec::new(),
                 object_path_offset,
+                descriptor_offset,
             });
         }
+    }
+    if reader.offset() != end {
+        return Err(Error::BadValue {
+            offset: start + 8,
+            field: "asset registry record count",
+        });
     }
     if let Some(actor) = &mut actor {
         actor.warnings = read.warnings;

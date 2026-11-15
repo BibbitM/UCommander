@@ -4,7 +4,9 @@ mod common;
 
 use common::{Str, Summary};
 use uc_format::Error;
-use uc_format::package::{OfpaWarning, read_actor_metadata, read_header, read_ofpa_actor};
+use uc_format::package::{
+    OfpaWarning, read_actor_metadata, read_header, read_ofpa_actor, read_summary,
+};
 
 fn string(bytes: &mut Vec<u8>, value: &str) {
     bytes.extend_from_slice(&(i32::try_from(value.len()).unwrap() + 1).to_le_bytes());
@@ -60,7 +62,10 @@ fn a_damaged_descriptor_gives_an_error() {
     let bytes = external_actor_package();
     assert!(matches!(
         read_ofpa_actor(&bytes),
-        Err(Error::Truncated { .. })
+        Err(Error::BadValue {
+            field: "actor descriptor",
+            offset,
+        }) if offset == bytes.len() - 9
     ));
 }
 
@@ -112,6 +117,21 @@ fn each_truncation_of_the_actor_package_gives_an_error() {
             "length {end}",
         );
     }
+}
+
+#[test]
+fn a_record_count_that_leaves_unread_registry_bytes_gives_an_error() {
+    let mut bytes = external_actor_package();
+    let summary = read_summary(&bytes).unwrap().summary;
+    let count_offset = usize::try_from(summary.asset_registry_data_offset).unwrap() + 8;
+    bytes[count_offset..count_offset + 4].copy_from_slice(&0_i32.to_le_bytes());
+    assert!(matches!(
+        read_actor_metadata(&bytes),
+        Err(Error::BadValue {
+            field: "asset registry record count",
+            ..
+        })
+    ));
 }
 
 #[test]
