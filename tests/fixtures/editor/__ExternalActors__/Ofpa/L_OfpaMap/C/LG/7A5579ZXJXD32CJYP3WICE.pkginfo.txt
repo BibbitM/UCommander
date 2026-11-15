@@ -1,0 +1,255 @@
+﻿********************************************
+Package '/Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/__ExternalActors__/Ofpa/L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 4040
+	        NameCount: 49
+	       NameOffset: 565
+	      ImportCount: 10
+	     ImportOffset: 1794
+	      ExportCount: 3
+	     ExportOffset: 2194
+	Compression Flags: 0
+	       Total Size: 4375
+	  Custom Versions:
+		Key=12f88b9f-8875-4afc-a67c-d90c383abd29 Version = 49 Friendly Name = Dev-Rendering
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=cffc743f-43b0-4480-9391-14df171d2073 Version = 37 Friendly Name = Dev-Framework
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+		Key=e7086368-6b23-4c58-8439-1b7016265e91 Version = 20 Friendly Name = FortniteRelease
+
+	        SavedHash: d7398ca8f65ea055c43ba74e6eebcc64c33d6257
+	   PersistentGuid: BE8FE93948FE9D21D0985DAEBF72D1A7
+	      Generations:
+			0) ExportCount=3, NameCount=49 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Engine/EditorResources/LightIcons/S_LightError' Comparison Index 954722 Display Index 954722 [Internal: /Engine/EditorResources/LightIcons/S_LightError, 0]
+	1: Name '/Game/Ofpa/DL_OfpaFixture' Comparison Index 1039070 Display Index 1039070 [Internal: /Game/Ofpa/DL_OfpaFixture, 0]
+	2: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	3: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	4: Name 'ActorGuid' Comparison Index 270759 Display Index 270759 [Internal: ActorGuid, 0]
+	5: Name 'ActorLabel' Comparison Index 308356 Display Index 308356 [Internal: ActorLabel, 0]
+	6: Name 'ArrayProperty' Comparison Index 26 Display Index 26 [Internal: ArrayProperty, 0]
+	7: Name 'ArrowComponent' Comparison Index 119640 Display Index 119640 [Internal: ArrowComponent, 0]
+	8: Name 'AttachParent' Comparison Index 345387 Display Index 345387 [Internal: AttachParent, 0]
+	9: Name 'ByteProperty' Comparison Index 2 Display Index 2 [Internal: ByteProperty, 0]
+	10: Name 'DataLayerAssets' Comparison Index 451697 Display Index 451697 [Internal: DataLayerAssets, 0]
+	11: Name 'DL_OfpaFixture' Comparison Index 1044946 Display Index 1044946 [Internal: DL_OfpaFixture, 0]
+	12: Name 'ELightUnits' Comparison Index 141557 Display Index 141557 [Internal: ELightUnits, 0]
+	13: Name 'ELightUnits::Candelas' Comparison Index 412585 Display Index 412585 [Internal: ELightUnits::Candelas, 0]
+	14: Name 'EnumProperty' Comparison Index 93 Display Index 93 [Internal: EnumProperty, 0]
+	15: Name 'FloatProperty' Comparison Index 11 Display Index 11 [Internal: FloatProperty, 0]
+	16: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	17: Name 'Intensity' Comparison Index 255471 Display Index 255471 [Internal: Intensity, 0]
+	18: Name 'IntensityUnits' Comparison Index 496634 Display Index 496634 [Internal: IntensityUnits, 0]
+	19: Name 'IntProperty' Comparison Index 5 Display Index 5 [Internal: IntProperty, 0]
+	20: Name 'LightComponent' Comparison Index 120705 Display Index 120705 [Internal: LightComponent, 0]
+	21: Name 'LightGuid' Comparison Index 456530 Display Index 456530 [Internal: LightGuid, 0]
+	22: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	23: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+	24: Name 'OriginalLightGuid' Comparison Index 456532 Display Index 456532 [Internal: OriginalLightGuid, 0]
+	25: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	26: Name 'PreviewShadowMapChannel' Comparison Index 456526 Display Index 456526 [Internal: PreviewShadowMapChannel, 0]
+	27: Name 'RelativeLocation' Comparison Index 53611 Display Index 53611 [Internal: RelativeLocation, 0]
+	28: Name 'RelativeRotation' Comparison Index 53614 Display Index 53614 [Internal: RelativeRotation, 0]
+	29: Name 'RootComponent' Comparison Index 451717 Display Index 451717 [Internal: RootComponent, 0]
+	30: Name 'Rotator' Comparison Index 142 Display Index 142 [Internal: Rotator, 0]
+	31: Name 'S_LightError' Comparison Index 956477 Display Index 956477 [Internal: S_LightError, 0]
+	32: Name 'SoftObjectProperty' Comparison Index 54 Display Index 54 [Internal: SoftObjectProperty, 0]
+	33: Name 'SpotLightComponent' Comparison Index 121621 Display Index 121621 [Internal: SpotLightComponent, 0]
+	34: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	35: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	36: Name 'Vector' Comparison Index 140 Display Index 140 [Internal: Vector, 0]
+	37: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 522391 Display Index 522391 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	38: Name 'ArrowComponent0' Comparison Index 516271 Display Index 516271 [Internal: ArrowComponent0, 0]
+	39: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	40: Name 'Default__SpotLight' Comparison Index 144080 Display Index 144080 [Internal: Default__SpotLight, 0]
+	41: Name 'L_OfpaMap' Comparison Index 522389 Display Index 522389 [Internal: L_OfpaMap, 0]
+	42: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	43: Name 'LightComponent0' Comparison Index 516292 Display Index 516292 [Internal: LightComponent0, 0]
+	44: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	45: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	46: Name 'SpotLight' Comparison Index 144078 Display Index 144078 [Internal: SpotLight, 0]
+	47: Name 'SpotLight_UAID_10FFE033EECBF01403' Comparison Index 1039061 Display Index 1039061 [Internal: SpotLight_UAID_10FFE033EECBF01403, 0]
+	48: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'ArrowComponent0'
+		       Outer: '/Script/Engine.Default__SpotLight' (-8)
+		     Package: '/Script/Engine'
+		       Class: 'ArrowComponent'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'ArrowComponent'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 2: 'SpotLight'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 3: 'SpotLightComponent'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 4: 'PersistentLevel'
+		       Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap' (-10)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'Level'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Level /Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+	*************************
+	Import 5: '/Game/Ofpa/L_OfpaMap'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 6: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 7: 'Default__SpotLight'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'SpotLight'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 8: 'LightComponent0'
+		       Outer: '/Script/Engine.Default__SpotLight' (-8)
+		     Package: '/Script/Engine'
+		       Class: 'SpotLightComponent'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 9: 'L_OfpaMap'
+		       Outer: '/Game/Ofpa/L_OfpaMap' (-6)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'World'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) World /Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap
+--------------------------------------------
+	Packages referenced by /Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+		2) /Game/Ofpa/L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'ArrowComponent0'
+		         Class: 'ArrowComponent' (-2)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.SpotLight_UAID_10FFE033EECBF01403_2130179194' (2)
+		   ObjectFlags: 0x00040008
+		    Total Size: 46
+		        Offset: 3569
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 1
+		 bNotForServer: 1
+		  DependsMap:
+			0) ArrowComponent /Script/Engine.Default__SpotLight:ArrowComponent0 (-1)
+			1) SpotLightComponent /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.SpotLight_UAID_10FFE033EECBF01403_2130179194.LightComponent0 (3)
+		  All Depends:
+	*************************
+	Export 1: 'SpotLight_UAID_10FFE033EECBF01403_2130179194'
+		         Class: 'SpotLight' (-3)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (-5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 288
+		        Offset: 3615
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 2: 'LightComponent0'
+		         Class: 'SpotLightComponent' (-4)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.SpotLight_UAID_10FFE033EECBF01403_2130179194' (2)
+		   ObjectFlags: 0x00040008
+		    Total Size: 420
+		        Offset: 3903
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        995
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.SpotLight'/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.SpotLight_UAID_10FFE033EECBF01403_2130179194' (3 Tags)
+			"ActorMetaDataClass": "/Script/Engine.SpotLight"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAAAAAAUAAABOb25lAAUAAABOb25lAA8AAAAvU2NyaXB0L0VuZ2luZQAKAAAAU3BvdExpZ2h0APz6/PuXDXhDt493Rsz6s2UAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAADwPwAAAAAAAIlAAAAAAAAAAAAAAAAAAABpQAAAAAAAAPA/AAAAAAAA8D8AAAAAAADwP25z6JmnuIVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/bnPomae4hUBuc+iZp7iFQG5z6JmnuIVAAQAAAG5z6JmnuIVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/bnPomae4hUBuc+iZp7iFQG5z6JmnuIVAAQAAAAAAAAAAAAAAAAAAAAABAQAAACkAAAAvR2FtZS9PZnBhL0RMX09mcGFGaXh0dXJlLkRMX09mcGFGaXh0dXJlAAABEAAAAERhdGEgTGF5ZXIgU3BvdAAAAAUAAABOb25lAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"ActorLabel": "Data Layer Spot"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

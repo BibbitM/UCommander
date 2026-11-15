@@ -1,0 +1,146 @@
+﻿********************************************
+Package '/Temp/__ExternalActors__/Ofpa/L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/__ExternalActors__/Ofpa/L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 4040
+	        NameCount: 18
+	       NameOffset: 505
+	      ImportCount: 5
+	     ImportOffset: 965
+	      ExportCount: 1
+	     ExportOffset: 1165
+	Compression Flags: 0
+	       Total Size: 2471
+	  Custom Versions:
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+
+	        SavedHash: b1e5ef4b5a051372b2828eb916388c85b2b6e88b
+	   PersistentGuid: 1D260CFF47C24142C5A7ED80A2CD91B3
+	      Generations:
+			0) ExportCount=1, NameCount=18 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	1: Name 'ActorGuid' Comparison Index 270762 Display Index 270762 [Internal: ActorGuid, 0]
+	2: Name 'ActorLabel' Comparison Index 308359 Display Index 308359 [Internal: ActorLabel, 0]
+	3: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	4: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	5: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	6: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	7: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	8: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 522396 Display Index 522396 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	9: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	10: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	11: Name 'L_OfpaMap' Comparison Index 522394 Display Index 522394 [Internal: L_OfpaMap, 0]
+	12: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	13: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	14: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	15: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+	16: Name 'WorldPartitionMiniMap' Comparison Index 150668 Display Index 150668 [Internal: WorldPartitionMiniMap, 0]
+	17: Name 'WorldPartitionMiniMap_UAID_10FFE033EECBF01403' Comparison Index 1039291 Display Index 1039291 [Internal: WorldPartitionMiniMap_UAID_10FFE033EECBF01403, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'WorldPartitionMiniMap'
+		       Outer: '/Script/Engine' (-4)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'PersistentLevel'
+		       Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap' (-5)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'Level'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Level /Temp/__ExternalActors__/Ofpa/L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+	*************************
+	Import 2: '/Game/Ofpa/L_OfpaMap'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 3: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 4: 'L_OfpaMap'
+		       Outer: '/Game/Ofpa/L_OfpaMap' (-3)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'World'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) World /Temp/__ExternalActors__/Ofpa/L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap
+--------------------------------------------
+	Packages referenced by /Temp/__ExternalActors__/Ofpa/L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+		2) /Game/Ofpa/L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'WorldPartitionMiniMap_UAID_10FFE033EECBF01403_2129769191'
+		         Class: 'WorldPartitionMiniMap' (-1)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (-2)
+		   ObjectFlags: 0x00000008
+		    Total Size: 133
+		        Offset: 2286
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) Level /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel (-2)
+		  All Depends:
+			0) Level /Temp/__ExternalActors__/Ofpa/L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel (4)
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        993
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.WorldPartitionMiniMap'/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldPartitionMiniMap_UAID_10FFE033EECBF01403_2129769191' (3 Tags)
+			"ActorMetaDataClass": "/Script/Engine.WorldPartitionMiniMap"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAAAAAAUAAABOb25lAAUAAABOb25lAA8AAAAvU2NyaXB0L0VuZ2luZQAWAAAAV29ybGRQYXJ0aXRpb25NaW5pTWFwAGjC/vAY+stBpktwkVfKm8sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEWAAAAV29ybGRQYXJ0aXRpb25NaW5pTWFwAAAABQAAAE5vbmUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+			"ActorLabel": "WorldPartitionMiniMap"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

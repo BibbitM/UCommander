@@ -27,8 +27,8 @@ brings the correct status to `main`. CI checks this on each PR.
 | 3 | Content: asset class | D1 | v0.2.0 | Done |
 | 4 | Content: name, path, engine version | D2, D7 | | Done |
 | 4a | Technical debt after point 4 | — | | Done |
-| 5 | OFPA actor data parser | — | | Planned |
-| 6 | Content: OFPA label, class, GUID, map | D3–D5, D15 | v0.3.0 | Planned |
+| 5 | OFPA actor data parser | — | | Done |
+| 6 | Content: OFPA actor fields | D3–D6, D15 | v0.3.0 | Planned |
 | 7 | Lister skeleton: summary | L1 | | Planned |
 | 8 | Lister: tables view | L4 | v0.4.0 | Planned |
 | 9 | Thumbnail in the lister | L2 | | Planned |
@@ -50,7 +50,7 @@ The order can change.
    (A7, A8, A9, L12).
 4. Asset registry tags, text-only view, property tree (L5, L8, L7).
 5. Texture decode and object export (L6, B4, B5).
-6. Extended content fields and map grouping (D6, D8–D13, B8).
+6. Extended content fields and map grouping (D8–D13, B8).
 7. Write features (A12, D14).
 8. Merged container view, WFX, mesh and sound preview, reference graph
    (A11, F1–F4, L10, L11, L9).

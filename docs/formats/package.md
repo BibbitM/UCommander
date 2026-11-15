@@ -47,6 +47,8 @@ The UE58 and UE583 files, with paths relative to `Engine/Source/Runtime/`:
 | `PackageName.cpp` | `CoreUObject/Private/Misc/PackageName.cpp` |
 | `LinkerSave.cpp` | `CoreUObject/Private/UObject/LinkerSave.cpp` |
 | `GenericPlatformStricmp.cpp` | `Core/Private/GenericPlatform/GenericPlatformStricmp.cpp` |
+| `PackageReader.cpp` | `AssetRegistry/Private/PackageReader.cpp` |
+| `SavePackageUtilities.cpp` | `CoreUObject/Private/UObject/SavePackage/SavePackageUtilities.cpp` |
 
 ## Package file tag
 
@@ -509,6 +511,62 @@ index means the class `Class`, whose path is `/Script/CoreUObject.Class`.
 Observed in fixture `BP_SummaryActor.uasset`: the `PkgInfo` output shows
 the tag `ParentClass` with the class `/Script/CoreUObject.Class`.
 
+## Asset registry data
+
+The asset registry data of a package lists the assets of the package,
+with their tags. The editor reads it without a load of the package.
+Source for the layout: UE583 `PackageReader.cpp`, the functions that
+read the main package data, and `SavePackageUtilities.cpp`, the function
+that writes the package data.
+
+The section starts at the asset registry data offset of the summary
+(row 48 of "Summary fields").
+
+| # | Field | Type | Condition |
+|---|---|---|---|
+| 1 | Dependency data offset | `i64` | UE4 ≥ `ASSETREGISTRY_DEPENDENCYFLAGS`, and package flag `FilterEditorOnly` not set. Without the field, UE uses -1. |
+| 2 | Object count | `i32` | Always. |
+| 3 | Objects | "Object count" times an object | Always. |
+
+Object:
+
+| # | Field | Type |
+|---|---|---|
+| 1 | Object path | String |
+| 2 | Object class name | String |
+| 3 | Tag count | `i32` |
+| 4 | Tags | "Tag count" times: key (string), then value (string) |
+
+Notes:
+
+- UE gives an error for an object count or a tag count less than 0, or
+  larger than the remaining bytes of the file (minimum 1 byte for each
+  object or tag). Source: UE583 `PackageReader.cpp`.
+- UE ignores a tag with an empty key or an empty value when it reads.
+- The editor writes the tags in lexical order of the key. Source: UE583
+  `SavePackageUtilities.cpp`. Observed in fixture F2: the first tag is
+  `ActorsMetaData`. The `PkgInfo` output shows the tags in another order.
+- The object path is relative to the package: the path name of the
+  object with the package as the root. For a top-level object it is the
+  object name (`L_SummaryLevel`). An object whose outer chain goes to
+  another package (an OFPA actor) has a full path that starts with `/`.
+  UE makes the full path from a relative path with the package name and
+  `.`. Source: UE583 `PackageReader.cpp`, the main read function.
+- A cooked save writes no objects (count 0) and no dependency data
+  offset. Source: UE583 `SavePackageUtilities.cpp`.
+- The dependency data starts directly after the objects. The editor
+  writes a placeholder offset first. After the objects, it writes the
+  current file position into the placeholder. Source: UE583
+  `SavePackageUtilities.cpp`, the function that writes the asset
+  registry data. Point 5 does not read the dependency data.
+- Observed in fixture F2 (`L_SummaryLevel.umap`): asset registry data
+  offset 4878, dependency data offset 5910, 1 object (`L_SummaryLevel`,
+  class `/Script/Engine.World`, 6 tags), total header size 5930. So the
+  section is the last part of the package header. The `PkgInfo` output
+  gives the size 1052 (4878 + 1052 = 5930).
+- The World Partition tags (`ActorMetaData`, `ActorsMetaData`) are in
+  [world-partition.md](world-partition.md).
+
 ## Package flags
 
 | Flag | Value | Source |
@@ -610,7 +668,12 @@ Only the versions that the summary and the tables use. The newest UE4 version in
 | `ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID` | 516 |
 | `ADDED_PACKAGE_OWNER` | 518 |
 | `NON_OUTER_PACKAGE_IMPORT` | 520 |
+| `ASSETREGISTRY_DEPENDENCYFLAGS` | 521 |
 | `CORRECT_LICENSEE_FLAG` | 522 |
+
+Point 5 added 521. Source: UE583 `ObjectVersion.h`, the enum entry
+between `NON_OUTER_PACKAGE_IMPORT` (520) and `CORRECT_LICENSEE_FLAG`
+(522).
 
 ## UCommander rules
 
@@ -651,3 +714,9 @@ the point 1 and point 2 briefs.
 | Asset class path: null class index. | `/Script/CoreUObject.Class`. A main asset never has this class, because a `Class` object is never an asset (see "Is asset": UE583 `Class.h`). |
 | Engine version fields: empty engine version. | No value (point 4 owner decision 5, with the UE rule for "empty"). |
 | Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |
+| Asset registry data offset of 0 or less. | No asset registry data. Not an error. UE does not read the section for this offset (UE583 `PackageReader.cpp`, the function that starts a section). |
+| Asset registry data: a count less than 0, or larger than the remaining bytes of the header. | Error: bad value or truncated. As UE, but the limit is the header bytes, not the file size. |
+| Asset registry data: the objects do not end at the dependency data offset. | Error: bad value at the start of the section. A damaged count can give a list that ends too early. The UE reader does not check this (UE583 `PackageReader.cpp`). |
+| Asset registry data: a tag with an empty key or an empty value. | Keep it. UCommander shows the data as in the file. |
+| Asset registry data: relative object path. | Keep the path as in the file. A caller that needs the full path adds the package name and `.`. |
+| Asset registry data: an error in the section. | The error is only for the asset registry data. The summary and the tables stay valid (point 5, criterion 5). |

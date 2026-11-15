@@ -1,0 +1,145 @@
+﻿********************************************
+Package '/Temp/__ExternalObjects__/Ofpa/L_OfpaMap/6/F4/WX7Q02ROY466F4EAK3HYSA' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/__ExternalObjects__/Ofpa/L_OfpaMap/6/F4/WX7Q02ROY466F4EAK3HYSA.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 4040
+	        NameCount: 19
+	       NameOffset: 446
+	      ImportCount: 5
+	     ImportOffset: 929
+	      ExportCount: 1
+	     ExportOffset: 1129
+	Compression Flags: 0
+	       Total Size: 1887
+	  Custom Versions:
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+
+	        SavedHash: 60d6b21683362f0b99a759f7fee6514118a328db
+	   PersistentGuid: A139A1784ED71556519DD2A7910DF5B4
+	      Generations:
+			0) ExportCount=1, NameCount=19 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	1: Name 'FolderGuid' Comparison Index 113100 Display Index 113100 [Internal: FolderGuid, 0]
+	2: Name 'FolderLabel' Comparison Index 113105 Display Index 113105 [Internal: FolderLabel, 0]
+	3: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	4: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	5: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	6: Name 'ParentFolderGuid' Comparison Index 113102 Display Index 113102 [Internal: ParentFolderGuid, 0]
+	7: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	8: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	9: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 522391 Display Index 522391 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	10: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	11: Name 'ActorFolder' Comparison Index 113093 Display Index 113093 [Internal: ActorFolder, 0]
+	12: Name 'ActorFolder_UID_2ECC35B9-4E2D8F84-D1CD10BB-FEF5BD21' Comparison Index 1039159 Display Index 1039159 [Internal: ActorFolder_UID_2ECC35B9-4E2D8F84-D1CD10BB-FEF5BD21, 0]
+	13: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	14: Name 'L_OfpaMap' Comparison Index 522389 Display Index 522389 [Internal: L_OfpaMap, 0]
+	15: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	16: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	17: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	18: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'ActorFolder'
+		       Outer: '/Script/Engine' (-4)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'PersistentLevel'
+		       Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap' (-5)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'Level'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Level /Temp/__ExternalObjects__/Ofpa/L_OfpaMap/6/F4/WX7Q02ROY466F4EAK3HYSA_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+	*************************
+	Import 2: '/Game/Ofpa/L_OfpaMap'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 3: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 4: 'L_OfpaMap'
+		       Outer: '/Game/Ofpa/L_OfpaMap' (-3)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'World'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) World /Temp/__ExternalObjects__/Ofpa/L_OfpaMap/6/F4/WX7Q02ROY466F4EAK3HYSA_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap
+--------------------------------------------
+	Packages referenced by /Temp/__ExternalObjects__/Ofpa/L_OfpaMap/6/F4/WX7Q02ROY466F4EAK3HYSA:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+		2) /Game/Ofpa/L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'ActorFolder_UID_2ECC35B9-4E2D8F84-D1CD10BB-FEF5BD21'
+		         Class: 'ActorFolder' (-1)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (-2)
+		   ObjectFlags: 0x00000008
+		    Total Size: 176
+		        Offset: 1659
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        406
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.ActorFolder'/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.ActorFolder_UID_2ECC35B9-4E2D8F84-D1CD10BB-FEF5BD21' (6 Tags)
+			"FolderGuid": "2ECC35B94E2D8F84D1CD10BBFEF5BD21"
+			"ParentFolderGuid": "9DB903684E0810253DF4F7A9AE719564"
+			"FolderLabel": "Sub"
+			"FolderInitiallyExpanded": "1"
+			"FolderIsDeleted": "0"
+			"OuterPackageName": "/Game/Ofpa/L_OfpaMap"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

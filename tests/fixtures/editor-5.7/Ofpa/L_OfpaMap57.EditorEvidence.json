@@ -1,0 +1,64 @@
+{
+  "editor_version": "5.7.4-51494982+++UE5+Release-5.7",
+  "map_file": "Ofpa/L_OfpaMap57.umap",
+  "map_template": "Empty Open World (LevelEditorSubsystem.NewLevel with bIsPartitionedWorld=true)",
+  "world_partition": true,
+  "one_file_per_actor": true,
+  "dump_actor_descs_csv": "Ofpa/L_OfpaMap57.DumpActorDescs.csv",
+  "notes": [
+    "The DumpActorDescs CSV is written with TCHAR_TO_ANSI (UE 5.7 WorldPartition.cpp, UWorldPartition::DumpActorDescs), so the label shows as Lampa ???ta there. The labels in this file come from WorldPartitionBlueprintLibrary.GetActorDescs in the same editor session."
+  ],
+  "actors": [
+    {
+      "fixture": "F7",
+      "label": "Lampa żółta",
+      "object_name": "PointLight_UAID_10FFE033EECBF11403_1325251368",
+      "actor_object_path": "/Game/Ofpa/L_OfpaMap57.L_OfpaMap57:PersistentLevel.PointLight_UAID_10FFE033EECBF11403_1325251368",
+      "class_path": "/Script/Engine.PointLight",
+      "native_base_class_path": "/Script/Engine.PointLight",
+      "blueprint_class_path": null,
+      "actor_guid": "00853CC7-47E1-6054-5AA1-6E9E84C2E128",
+      "outer_map_package_path": "/Game/Ofpa/L_OfpaMap57",
+      "external_actor_package_path": "/Game/__ExternalActors__/Ofpa/L_OfpaMap57/B/I4/4LDIAYPOR4RGIIJ2QNMPSY",
+      "external_actor_file": "__ExternalActors__/Ofpa/L_OfpaMap57/B/I4/4LDIAYPOR4RGIIJ2QNMPSY.uasset",
+      "folder_path": null,
+      "runtime_grid": null,
+      "is_spatially_loaded": true,
+      "data_layer_assets": []
+    },
+    {
+      "fixture": "template",
+      "label": "WorldDataLayers",
+      "object_name": "WorldDataLayers",
+      "actor_object_path": "/Game/Ofpa/L_OfpaMap57.L_OfpaMap57:PersistentLevel.WorldDataLayers",
+      "class_path": "/Script/Engine.WorldDataLayers",
+      "native_base_class_path": "/Script/Engine.WorldDataLayers",
+      "blueprint_class_path": null,
+      "actor_guid": "4378543A-4F71-07F6-241D-9B978779A60A",
+      "outer_map_package_path": "/Game/Ofpa/L_OfpaMap57",
+      "external_actor_package_path": "/Game/__ExternalActors__/Ofpa/L_OfpaMap57/3/5F/UY7CAHIHPCHXPYHP6UAZC4",
+      "external_actor_file": "__ExternalActors__/Ofpa/L_OfpaMap57/3/5F/UY7CAHIHPCHXPYHP6UAZC4.uasset",
+      "folder_path": null,
+      "runtime_grid": null,
+      "is_spatially_loaded": false,
+      "data_layer_assets": []
+    },
+    {
+      "fixture": "template",
+      "label": "WorldPartitionMiniMap",
+      "object_name": "WorldPartitionMiniMap_UAID_10FFE033EECBF11403_1325078367",
+      "actor_object_path": "/Game/Ofpa/L_OfpaMap57.L_OfpaMap57:PersistentLevel.WorldPartitionMiniMap_UAID_10FFE033EECBF11403_1325078367",
+      "class_path": "/Script/Engine.WorldPartitionMiniMap",
+      "native_base_class_path": "/Script/Engine.WorldPartitionMiniMap",
+      "blueprint_class_path": null,
+      "actor_guid": "9CBB0D8E-4C6C-ADEF-F52E-3AA4492D1062",
+      "outer_map_package_path": "/Game/Ofpa/L_OfpaMap57",
+      "external_actor_package_path": "/Game/__ExternalActors__/Ofpa/L_OfpaMap57/5/2D/65F9D6M5A1KPQ0QFCEMT5H",
+      "external_actor_file": "__ExternalActors__/Ofpa/L_OfpaMap57/5/2D/65F9D6M5A1KPQ0QFCEMT5H.uasset",
+      "folder_path": null,
+      "runtime_grid": null,
+      "is_spatially_loaded": false,
+      "data_layer_assets": []
+    }
+  ]
+}

@@ -1,0 +1,239 @@
+﻿********************************************
+Package '/Temp/__ExternalActors__/Ofpa/L_OfpaMap/4/TV/YHL37N60V5A37O1U3ASTQ7' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/__ExternalActors__/Ofpa/L_OfpaMap/4/TV/YHL37N60V5A37O1U3ASTQ7.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 4040
+	        NameCount: 33
+	       NameOffset: 565
+	      ImportCount: 10
+	     ImportOffset: 1357
+	      ExportCount: 3
+	     ExportOffset: 1757
+	Compression Flags: 0
+	       Total Size: 3535
+	  Custom Versions:
+		Key=12f88b9f-8875-4afc-a67c-d90c383abd29 Version = 49 Friendly Name = Dev-Rendering
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=cffc743f-43b0-4480-9391-14df171d2073 Version = 37 Friendly Name = Dev-Framework
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+		Key=e7086368-6b23-4c58-8439-1b7016265e91 Version = 20 Friendly Name = FortniteRelease
+
+	        SavedHash: 7c16a02cb6cccfc51e6a3f72091b7fade67f11ef
+	   PersistentGuid: 2D1D15314FD5AF0382B3D6A6504DCB65
+	      Generations:
+			0) ExportCount=3, NameCount=33 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	1: Name 'ActorGuid' Comparison Index 270760 Display Index 270760 [Internal: ActorGuid, 0]
+	2: Name 'ActorLabel' Comparison Index 308357 Display Index 308357 [Internal: ActorLabel, 0]
+	3: Name 'AttachParent' Comparison Index 345387 Display Index 345387 [Internal: AttachParent, 0]
+	4: Name 'FixtureGrid' Comparison Index 1359196 Display Index 1359196 [Internal: FixtureGrid, 0]
+	5: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	6: Name 'NameProperty' Comparison Index 17 Display Index 17 [Internal: NameProperty, 0]
+	7: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	8: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+	9: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	10: Name 'RelativeLocation' Comparison Index 53611 Display Index 53611 [Internal: RelativeLocation, 0]
+	11: Name 'RootComponent' Comparison Index 451717 Display Index 451717 [Internal: RootComponent, 0]
+	12: Name 'RuntimeGrid' Comparison Index 451801 Display Index 451801 [Internal: RuntimeGrid, 0]
+	13: Name 'SpriteComponent' Comparison Index 254807 Display Index 254807 [Internal: SpriteComponent, 0]
+	14: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	15: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	16: Name 'TextRender' Comparison Index 493592 Display Index 493592 [Internal: TextRender, 0]
+	17: Name 'Vector' Comparison Index 140 Display Index 140 [Internal: Vector, 0]
+	18: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 522391 Display Index 522391 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	19: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	20: Name 'BillboardComponent' Comparison Index 119701 Display Index 119701 [Internal: BillboardComponent, 0]
+	21: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	22: Name 'Default__TextRenderActor' Comparison Index 112491 Display Index 112491 [Internal: Default__TextRenderActor, 0]
+	23: Name 'L_OfpaMap' Comparison Index 522389 Display Index 522389 [Internal: L_OfpaMap, 0]
+	24: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	25: Name 'NewTextRenderComponent' Comparison Index 515920 Display Index 515920 [Internal: NewTextRenderComponent, 0]
+	26: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	27: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	28: Name 'Sprite' Comparison Index 495382 Display Index 495382 [Internal: Sprite, 0]
+	29: Name 'TextRenderActor' Comparison Index 112488 Display Index 112488 [Internal: TextRenderActor, 0]
+	30: Name 'TextRenderActor_UAID_10FFE033EECBF01403' Comparison Index 1039102 Display Index 1039102 [Internal: TextRenderActor_UAID_10FFE033EECBF01403, 0]
+	31: Name 'TextRenderComponent' Comparison Index 121816 Display Index 121816 [Internal: TextRenderComponent, 0]
+	32: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'Sprite'
+		       Outer: '/Script/Engine.Default__TextRenderActor' (-8)
+		     Package: '/Script/Engine'
+		       Class: 'BillboardComponent'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'BillboardComponent'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 2: 'TextRenderActor'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 3: 'TextRenderComponent'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 4: 'PersistentLevel'
+		       Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap' (-10)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'Level'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Level /Temp/__ExternalActors__/Ofpa/L_OfpaMap/4/TV/YHL37N60V5A37O1U3ASTQ7_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+	*************************
+	Import 5: '/Game/Ofpa/L_OfpaMap'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 6: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 7: 'Default__TextRenderActor'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'TextRenderActor'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 8: 'NewTextRenderComponent'
+		       Outer: '/Script/Engine.Default__TextRenderActor' (-8)
+		     Package: '/Script/Engine'
+		       Class: 'TextRenderComponent'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 9: 'L_OfpaMap'
+		       Outer: '/Game/Ofpa/L_OfpaMap' (-6)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'World'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) World /Temp/__ExternalActors__/Ofpa/L_OfpaMap/4/TV/YHL37N60V5A37O1U3ASTQ7_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap
+--------------------------------------------
+	Packages referenced by /Temp/__ExternalActors__/Ofpa/L_OfpaMap/4/TV/YHL37N60V5A37O1U3ASTQ7:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+		2) /Game/Ofpa/L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'Sprite'
+		         Class: 'BillboardComponent' (-2)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.TextRenderActor_UAID_10FFE033EECBF01403_2130185196' (2)
+		   ObjectFlags: 0x00040008
+		    Total Size: 46
+		        Offset: 3099
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 1
+		 bNotForServer: 1
+		  DependsMap:
+			0) BillboardComponent /Script/Engine.Default__TextRenderActor:Sprite (-1)
+			1) TextRenderComponent /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.TextRenderActor_UAID_10FFE033EECBF01403_2130185196.NewTextRenderComponent (3)
+		  All Depends:
+	*************************
+	Export 1: 'TextRenderActor_UAID_10FFE033EECBF01403_2130185196'
+		         Class: 'TextRenderActor' (-3)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (-5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 248
+		        Offset: 3145
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 2: 'NewTextRenderComponent'
+		         Class: 'TextRenderComponent' (-4)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.TextRenderActor_UAID_10FFE033EECBF01403_2130185196' (2)
+		   ObjectFlags: 0x00040008
+		    Total Size: 90
+		        Offset: 3393
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 1
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        978
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.TextRenderActor'/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.TextRenderActor_UAID_10FFE033EECBF01403_2130185196' (3 Tags)
+			"ActorMetaDataClass": "/Script/Engine.TextRenderActor"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAAAAAAUAAABOb25lAAUAAABOb25lAA8AAAAvU2NyaXB0L0VuZ2luZQAQAAAAVGV4dFJlbmRlckFjdG9yABWOI0240cZOlUXT1Sa/jloAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAAAAAAAJlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAAAAAAAAAACANcAAAAAAAAAqQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAIA1QAAAAAAAACpAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAYEAAAAAAAABgQAAAAAAAAGBAAQAAAAABDAAAAEZpeHR1cmVHcmlkAAAAAAAAAAAAAAAAAAABEQAAAEN1c3RvbSBHcmlkIFRleHQAAAAFAAAATm9uZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+			"ActorLabel": "Custom Grid Text"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

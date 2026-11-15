@@ -18,6 +18,11 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
   version licensee**, as numbers.
 - The content plugin keeps the values of the last 16 files in a cache, so
   that it reads a package header one time for all fields.
+- `uc dump` shows the asset registry data of a package: the objects and
+  their tags.
+- `uc dump` shows the OFPA actor data of an external actor package (UE
+  5.6 to 5.8): actor path, map, GUID, label, native class and Blueprint
+  class.
 
 ### Fixed
 

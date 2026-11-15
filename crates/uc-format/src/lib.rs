@@ -1,9 +1,11 @@
 //! Parser for Unreal Engine package and container files.
 
+pub mod base64;
 mod error;
 pub mod package;
 mod reader;
 mod types;
+pub mod world_partition;
 
 pub use error::Error;
 pub use types::{Guid, IoHash};

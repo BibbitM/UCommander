@@ -1,0 +1,224 @@
+﻿********************************************
+Package '/Temp/__ExternalActors__/Ofpa/L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/__ExternalActors__/Ofpa/L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 4040
+	        NameCount: 40
+	       NameOffset: 585
+	      ImportCount: 9
+	     ImportOffset: 1643
+	      ExportCount: 2
+	     ExportOffset: 2003
+	Compression Flags: 0
+	       Total Size: 3878
+	  Custom Versions:
+		Key=12f88b9f-8875-4afc-a67c-d90c383abd29 Version = 49 Friendly Name = Dev-Rendering
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=5b4c06b7-2463-4af8-805b-bf70cdf5d0dd Version = 15 Friendly Name = FortniteSeason
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=cffc743f-43b0-4480-9391-14df171d2073 Version = 37 Friendly Name = Dev-Framework
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+		Key=e7086368-6b23-4c58-8439-1b7016265e91 Version = 20 Friendly Name = FortniteRelease
+
+	        SavedHash: 78b7791be2e5f53f8fb0633d32d1d268cb856f1b
+	   PersistentGuid: B77027D2451733935107849F5146C599
+	      Generations:
+			0) ExportCount=2, NameCount=40 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	1: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	2: Name 'ActorGuid' Comparison Index 270763 Display Index 270763 [Internal: ActorGuid, 0]
+	3: Name 'ActorLabel' Comparison Index 308360 Display Index 308360 [Internal: ActorLabel, 0]
+	4: Name 'ArrayProperty' Comparison Index 26 Display Index 26 [Internal: ArrayProperty, 0]
+	5: Name 'BlueprintCreatedComponents' Comparison Index 451648 Display Index 451648 [Internal: BlueprintCreatedComponents, 0]
+	6: Name 'bNetAddressable' Comparison Index 298941 Display Index 298941 [Internal: bNetAddressable, 0]
+	7: Name 'BoolProperty' Comparison Index 8 Display Index 8 [Internal: BoolProperty, 0]
+	8: Name 'ByteProperty' Comparison Index 2 Display Index 2 [Internal: ByteProperty, 0]
+	9: Name 'CreationMethod' Comparison Index 298810 Display Index 298810 [Internal: CreationMethod, 0]
+	10: Name 'EComponentCreationMethod' Comparison Index 119433 Display Index 119433 [Internal: EComponentCreationMethod, 0]
+	11: Name 'EComponentCreationMethod::SimpleConstructionScript' Comparison Index 298818 Display Index 298818 [Internal: EComponentCreationMethod::SimpleConstructionScript, 0]
+	12: Name 'EnumProperty' Comparison Index 93 Display Index 93 [Internal: EnumProperty, 0]
+	13: Name 'FolderGuid' Comparison Index 113100 Display Index 113100 [Internal: FolderGuid, 0]
+	14: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	15: Name 'IntProperty' Comparison Index 5 Display Index 5 [Internal: IntProperty, 0]
+	16: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	17: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+	18: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	19: Name 'RelativeLocation' Comparison Index 53611 Display Index 53611 [Internal: RelativeLocation, 0]
+	20: Name 'RootComponent' Comparison Index 451722 Display Index 451722 [Internal: RootComponent, 0]
+	21: Name 'StaticMesh' Comparison Index 777 Display Index 777 [Internal: StaticMesh, 0]
+	22: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	23: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	24: Name 'UCSSerializationIndex' Comparison Index 298944 Display Index 298944 [Internal: UCSSerializationIndex, 0]
+	25: Name 'Vector' Comparison Index 140 Display Index 140 [Internal: Vector, 0]
+	26: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 522396 Display Index 522396 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	27: Name '/Game/Summary/BP_SummaryActorRenamed' Comparison Index 954637 Display Index 954637 [Internal: /Game/Summary/BP_SummaryActorRenamed, 0]
+	28: Name 'BlueprintGeneratedClass' Comparison Index 7234 Display Index 7234 [Internal: BlueprintGeneratedClass, 0]
+	29: Name 'BP_SummaryActorRenamed_C' Comparison Index 954647 Display Index 954647 [Internal: BP_SummaryActorRenamed_C, 0]
+	30: Name 'BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403' Comparison Index 1038875 Display Index 1038875 [Internal: BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403, 0]
+	31: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	32: Name 'L_OfpaMap' Comparison Index 522394 Display Index 522394 [Internal: L_OfpaMap, 0]
+	33: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	34: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	35: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	36: Name 'SceneComponent' Comparison Index 121203 Display Index 121203 [Internal: SceneComponent, 0]
+	37: Name 'StaticMesh_GEN_VARIABLE' Comparison Index 1358957 Display Index 1358957 [Internal: StaticMesh_GEN_VARIABLE, 0]
+	38: Name 'StaticMeshComponent' Comparison Index 121633 Display Index 121633 [Internal: StaticMeshComponent, 0]
+	39: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'BP_SummaryActorRenamed_C'
+		       Outer: '/Game/Summary/BP_SummaryActorRenamed' (-6)
+		     Package: '/Game/Summary/BP_SummaryActorRenamed'
+		       Class: 'BlueprintGeneratedClass'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) BlueprintGeneratedClass /Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C
+	*************************
+	Import 1: 'SceneComponent'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 2: 'StaticMeshComponent'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 3: 'PersistentLevel'
+		       Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap' (-9)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'Level'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Level /Temp/__ExternalActors__/Ofpa/L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+	*************************
+	Import 4: '/Game/Ofpa/L_OfpaMap'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 5: '/Game/Summary/BP_SummaryActorRenamed'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 6: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 7: 'StaticMesh_GEN_VARIABLE'
+		       Outer: '/Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C' (-1)
+		     Package: '/Game/Summary/BP_SummaryActorRenamed'
+		       Class: 'StaticMeshComponent'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) StaticMeshComponent /Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C:StaticMesh_GEN_VARIABLE
+	*************************
+	Import 8: 'L_OfpaMap'
+		       Outer: '/Game/Ofpa/L_OfpaMap' (-5)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'World'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) World /Temp/__ExternalActors__/Ofpa/L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap
+--------------------------------------------
+	Packages referenced by /Temp/__ExternalActors__/Ofpa/L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8:
+		0) /Game/Summary/BP_SummaryActorRenamed
+		1) /Script/Engine
+		2) /Script/CoreUObject
+		3) /Game/Ofpa/L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193'
+		         Class: 'BP_SummaryActorRenamed_C' (-1)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (-4)
+		   ObjectFlags: 0x00000008
+		    Total Size: 293
+		        Offset: 3284
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 1: 'StaticMesh'
+		         Class: 'StaticMeshComponent' (-3)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193' (1)
+		   ObjectFlags: 0x00000000
+		    Total Size: 249
+		        Offset: 3577
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:       1041
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C'/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193' (3 Tags)
+			"ActorMetaDataClass": "/Script/Engine.Actor"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAAAAACUAAAAvR2FtZS9TdW1tYXJ5L0JQX1N1bW1hcnlBY3RvclJlbmFtZWQAGQAAAEJQX1N1bW1hcnlBY3RvclJlbmFtZWRfQwAPAAAAL1NjcmlwdC9FbmdpbmUABgAAAEFjdG9yAHbmpBzel8BLuJyZiGf9HocAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAAAAAAAHlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAEOAAAAU3VtbWFyeSBBY3RvcgAAAAoAAABHcm91cC9TdWIAAAAAAAAAAAAAAAAAAAAAALk1zC6Ejy1OuxDN0SG99f4AAAAAAAAAAAAAAAA="
+			"ActorLabel": "Summary Actor"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

@@ -4,9 +4,13 @@ mod common;
 
 use std::io::{self, Cursor, Read};
 
-use common::{Export, Package};
+use common::registry::{self, Object, section};
+use common::{Export, Package, Str};
 use uc_format::Error;
-use uc_format::package::{MAX_HEADER_READ_SIZE, ReadError, read_header, read_header_from};
+use uc_format::package::{
+    MAX_HEADER_READ_SIZE, ReadError, read_asset_registry, read_header, read_header_bytes_from,
+    read_header_from,
+};
 
 fn package() -> Package {
     Package {
@@ -126,6 +130,90 @@ fn an_io_error_is_given_to_the_caller() {
         Err(ReadError::Io(error)) => assert_eq!(error.to_string(), "disk error"),
         other => panic!("{other:?}"),
     }
+}
+
+/// A package with an asset registry section that ends after 64 KiB: one
+/// object with a tag value of 100 000 characters.
+fn package_with_a_large_registry() -> Vec<u8> {
+    let value: &'static str = "V".repeat(100_000).leak();
+    let objects = [Object {
+        path: Str::Ansi("Root"),
+        class: Str::Ansi("/Script/Engine.Actor"),
+        tags: vec![(Str::Ansi("Key"), Str::Ansi(value))],
+    }];
+    registry::package(section(Some(registry::SECTION_END), &objects)).to_bytes()
+}
+
+#[test]
+fn header_bytes_end_at_the_total_header_size() {
+    let mut bytes = package_with_a_large_registry();
+    let total = bytes.len();
+    // Data after the header, which the function must not read.
+    bytes.resize(1024 * 1024, 0xAB);
+
+    let read = read_header_bytes_from(Cursor::new(&bytes)).unwrap();
+
+    assert_eq!(read.bytes.len(), total);
+    assert_eq!(read.read, read_header(&bytes).unwrap());
+    let data = read_asset_registry(&read.bytes, &read.read.header.summary).unwrap();
+    assert_eq!(data.objects[0].tags[0].value.len(), 100_000);
+}
+
+#[test]
+fn header_bytes_of_a_file_that_ends_before_the_total_header_size() {
+    let bytes = package_with_a_large_registry();
+    let file = &bytes[..bytes.len() - 10];
+
+    let read = read_header_bytes_from(Cursor::new(file)).unwrap();
+
+    assert_eq!(read.bytes, file);
+    assert!(matches!(
+        read_asset_registry(&read.bytes, &read.read.header.summary),
+        Err(Error::Truncated { .. })
+    ));
+}
+
+#[test]
+fn header_bytes_with_a_damaged_total_header_size() {
+    let bytes = package_with_a_large_registry();
+    // The total header size follows the tag, five versions and the hash.
+    const OFFSET: usize = 44;
+    let total = read_header(&bytes)
+        .unwrap()
+        .header
+        .summary
+        .total_header_size;
+    assert_eq!(bytes[OFFSET..OFFSET + 4], total.to_le_bytes());
+
+    // Negative: no more bytes than the header tables need.
+    let mut damaged = bytes.clone();
+    damaged[OFFSET..OFFSET + 4].copy_from_slice(&(-1i32).to_le_bytes());
+    let read = read_header_bytes_from(Cursor::new(&damaged)).unwrap();
+    assert_eq!(read.bytes.len(), 64 * 1024);
+
+    // Too large, with a reader that never ends: stop at the read limit.
+    damaged[OFFSET..OFFSET + 4].copy_from_slice(&i32::MAX.to_le_bytes());
+    let mut reader = Counting {
+        inner: Cursor::new(&damaged).chain(io::repeat(0)),
+        count: 0,
+    };
+    let read = read_header_bytes_from(&mut reader).unwrap();
+    assert_eq!(read.bytes.len(), MAX_HEADER_READ_SIZE);
+    assert_eq!(reader.count, MAX_HEADER_READ_SIZE);
+
+    // Larger than the file: all the bytes of the file.
+    let read = read_header_bytes_from(Cursor::new(&damaged)).unwrap();
+    assert_eq!(read.bytes, damaged);
+}
+
+#[test]
+fn header_bytes_give_the_errors_of_read_header_from() {
+    let result = read_header_bytes_from(Cursor::new(b"This is not a package."));
+
+    assert!(
+        matches!(result, Err(ReadError::Parse(Error::NotAPackage))),
+        "{result:?}"
+    );
 }
 
 #[test]

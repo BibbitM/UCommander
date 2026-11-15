@@ -23,6 +23,9 @@ pub enum Error {
     Compressed,
     /// A value that cannot be correct, at `offset`.
     BadValue { offset: usize, field: &'static str },
+    /// The World Partition descriptor is a class descriptor, not the
+    /// descriptor of an actor.
+    ClassDescriptor,
 }
 
 impl fmt::Display for Error {
@@ -38,6 +41,9 @@ impl fmt::Display for Error {
             Self::Compressed => f.write_str("compressed package (not supported)"),
             Self::BadValue { offset, field } => {
                 write!(f, "bad value of {field} at offset {offset}")
+            }
+            Self::ClassDescriptor => {
+                f.write_str("class descriptor, not the descriptor of an actor")
             }
         }
     }

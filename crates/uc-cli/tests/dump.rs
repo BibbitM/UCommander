@@ -6,6 +6,8 @@ mod common;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
 
+use common::desc::{Desc, base64};
+use common::registry::{Object, SECTION_END, section};
 use common::{Export, Import, Package, Str};
 
 /// Compares `actual` with the stored file `tests/snapshots/<name>`. Set the
@@ -45,9 +47,16 @@ fn text(bytes: &[u8]) -> String {
 }
 
 /// A package with 6 names, 2 imports (`/Script/Engine` and its class
-/// `Actor`), and 2 exports (`BP_Test`, and `BP_Test:Root_0`).
+/// `Actor`), 2 exports (`BP_Test`, and `BP_Test:Root_0`), and asset
+/// registry data with one object and one tag.
 fn package() -> Package {
+    let objects = [Object {
+        path: Str::Ansi("BP_Test"),
+        class: Str::Ansi("/Script/Engine.Blueprint"),
+        tags: vec![(Str::Ansi("ParentClass"), Str::Ansi("/Script/Engine.Actor"))],
+    }];
     Package {
+        asset_registry: Some(section(Some(SECTION_END), &objects)),
         imports: vec![
             Import {
                 class_package: (0, 0),
@@ -214,7 +223,10 @@ fn a_file_that_is_not_a_package_gives_an_error_and_exit_code_1() {
 
 #[test]
 fn a_truncated_package_gives_an_error_and_exit_code_1() {
-    let bytes = package().to_bytes();
+    // No asset registry section: the export table is the end of the file.
+    let mut input = package();
+    input.asset_registry = None;
+    let bytes = input.to_bytes();
     let path = temp_file("truncated.uasset", &bytes[..bytes.len() - 1]);
 
     let output = dump(&path);
@@ -278,6 +290,84 @@ fn dump_of_the_blueprint_fixture_matches_the_snapshot() {
 
     assert!(output.status.success(), "{}", text(&output.stderr));
     assert_snapshot(&text(&output.stdout), "dump_bp_summary_actor.txt");
+}
+
+#[test]
+fn dump_prints_the_ofpa_actor_data() {
+    let desc = Desc {
+        label: Some(Str::Utf16("Lampa żółta")),
+        ..Desc::default()
+    };
+    let metadata = base64(&desc.to_bytes());
+    let length = metadata.len();
+    let objects = [Object {
+        path: Str::Ansi("/Game/Ofpa/L_Map.L_Map:PersistentLevel.PointLight_UAID_1"),
+        class: Str::Ansi("/Script/Engine.PointLight"),
+        tags: vec![(Str::Ansi("ActorMetaData"), Str::Ansi(metadata.leak()))],
+    }];
+    let mut input = package();
+    input.asset_registry = Some(section(Some(SECTION_END), &objects));
+    let path = temp_file("ofpa-actor.uasset", &input.to_bytes());
+
+    let output = dump(&path);
+
+    assert!(output.status.success(), "{}", text(&output.stderr));
+    let stdout = text(&output.stdout);
+    for line in [
+        format!("Asset registry object 0 tag ActorMetaData: ({length} characters)"),
+        "Actor path: /Game/Ofpa/L_Map.L_Map:PersistentLevel.PointLight_UAID_1".to_owned(),
+        "Actor map: /Game/Ofpa/L_Map".to_owned(),
+        "Actor GUID: 6413279F-42A6D887-DF5B61B2-5DEB3B08".to_owned(),
+        "Actor label: Lampa żółta".to_owned(),
+        "Actor native class: /Script/Engine.PointLight".to_owned(),
+        "Actor Blueprint class: (none)".to_owned(),
+    ] {
+        assert!(stdout.contains(&format!("{line}\n")), "{line}\n{stdout}");
+    }
+}
+
+#[test]
+fn a_damaged_asset_registry_section_gives_an_error_line_and_the_header() {
+    let mut input = package();
+    // An object count that cannot fit in the file.
+    input.asset_registry = Some([0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0x0F].to_vec());
+    let path = temp_file("bad-registry.uasset", &input.to_bytes());
+
+    let output = dump(&path);
+
+    assert!(output.status.success(), "{}", text(&output.stderr));
+    let stdout = text(&output.stdout);
+    assert!(
+        stdout.contains("Export 1 object name: Root_0\n"),
+        "{stdout}"
+    );
+    assert!(
+        stdout.contains("Asset registry error: truncated at offset "),
+        "{stdout}"
+    );
+    assert!(!stdout.contains("OFPA actor:"), "{stdout}");
+    assert!(!stdout.contains("Actor path:"), "{stdout}");
+}
+
+#[test]
+fn dump_of_ofpa_actor_fixtures_matches_the_snapshots() {
+    let fixtures = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../tests/fixtures/editor/__ExternalActors__/Ofpa/L_OfpaMap");
+    for (package, snapshot) in [
+        (
+            "9/UY/KPHXLC180ULM321RTVNKBI.uasset",
+            "dump_f5_point_light.txt",
+        ),
+        (
+            "6/VM/S206VJ57URX2IZEGIAFTJ8.uasset",
+            "dump_f6_summary_actor.txt",
+        ),
+    ] {
+        let output = dump(&fixtures.join(package));
+
+        assert!(output.status.success(), "{}", text(&output.stderr));
+        assert_snapshot(&text(&output.stdout), snapshot);
+    }
 }
 
 #[test]

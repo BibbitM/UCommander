@@ -1,0 +1,793 @@
+﻿********************************************
+Package '/Temp/Ofpa/L_OfpaMap' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/Ofpa/L_OfpaMap.umap
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 20000
+	        NameCount: 110
+	       NameOffset: 598
+	      ImportCount: 29
+	     ImportOffset: 3551
+	      ExportCount: 22
+	     ExportOffset: 4711
+	Compression Flags: 0
+	       Total Size: 14517
+	  Custom Versions:
+		Key=12f88b9f-8875-4afc-a67c-d90c383abd29 Version = 49 Friendly Name = Dev-Rendering
+		Key=1ed048f4-2f2e-4c68-89d0-53a4f18f102d Version = 1 Friendly Name = WorldSettingVer
+		Key=29e575dd-e0a3-4627-9d10-d276232cdcea Version = 17 Friendly Name = Dev-AnimPhys
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=9c54d522-a826-4fbe-9421-074661b482d0 Version = 44 Friendly Name = Release
+		Key=9dffbcd6-494f-0158-e221-12823c92a888 Version = 11 Friendly Name = Dev-Enterprise
+		Key=cffc743f-43b0-4480-9391-14df171d2073 Version = 37 Friendly Name = Dev-Framework
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+		Key=e7086368-6b23-4c58-8439-1b7016265e91 Version = 20 Friendly Name = FortniteRelease
+
+	        SavedHash: 0b1a47179b30ad657b234dfc55e3d81fbd7efb23
+	   PersistentGuid: 6CA583B242EEF1D11413DFBF45E96141
+	      Generations:
+			0) ExportCount=22, NameCount=110 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	1: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	2: Name '/Script/NavigationSystem' Comparison Index 50659 Display Index 50659 [Internal: /Script/NavigationSystem, 0]
+	3: Name 'ActorGuid' Comparison Index 270878 Display Index 270878 [Internal: ActorGuid, 0]
+	4: Name 'ActorLabel' Comparison Index 308475 Display Index 308475 [Internal: ActorLabel, 0]
+	5: Name 'ArrayProperty' Comparison Index 26 Display Index 26 [Internal: ArrayProperty, 0]
+	6: Name 'bAutoSpawnMissingNavData' Comparison Index 472950 Display Index 472950 [Internal: bAutoSpawnMissingNavData, 0]
+	7: Name 'bClientOnlyVisible' Comparison Index 461834 Display Index 461834 [Internal: bClientOnlyVisible, 0]
+	8: Name 'bForceNoPrecomputedLighting' Comparison Index 505910 Display Index 505910 [Internal: bForceNoPrecomputedLighting, 0]
+	9: Name 'bHidden' Comparison Index 442208 Display Index 442208 [Internal: bHidden, 0]
+	10: Name 'bIncludeGridSizeInNameForFoliageActors' Comparison Index 505873 Display Index 505873 [Internal: bIncludeGridSizeInNameForFoliageActors, 0]
+	11: Name 'bIncludeGridSizeInNameForPartitionedActors' Comparison Index 505867 Display Index 505867 [Internal: bIncludeGridSizeInNameForPartitionedActors, 0]
+	12: Name 'bIs2D' Comparison Index 505338 Display Index 505338 [Internal: bIs2D, 0]
+	13: Name 'bIsPartitioned' Comparison Index 490644 Display Index 490644 [Internal: bIsPartitioned, 0]
+	14: Name 'bIsSpatiallyLoaded' Comparison Index 451774 Display Index 451774 [Internal: bIsSpatiallyLoaded, 0]
+	15: Name 'bNotForClientOrServer' Comparison Index 473133 Display Index 473133 [Internal: bNotForClientOrServer, 0]
+	16: Name 'BookmarkArray' Comparison Index 505724 Display Index 505724 [Internal: BookmarkArray, 0]
+	17: Name 'BoolProperty' Comparison Index 8 Display Index 8 [Internal: BoolProperty, 0]
+	18: Name 'BoundsMethod' Comparison Index 505332 Display Index 505332 [Internal: BoundsMethod, 0]
+	19: Name 'Brush' Comparison Index 57924 Display Index 57924 [Internal: Brush, 0]
+	20: Name 'BrushComponent' Comparison Index 119735 Display Index 119735 [Internal: BrushComponent, 0]
+	21: Name 'bUseActorFolders' Comparison Index 490628 Display Index 490628 [Internal: bUseActorFolders, 0]
+	22: Name 'bUseExternalActors' Comparison Index 490730 Display Index 490730 [Internal: bUseExternalActors, 0]
+	23: Name 'ByteProperty' Comparison Index 2 Display Index 2 [Internal: ByteProperty, 0]
+	24: Name 'CamOrthoZoom' Comparison Index 452406 Display Index 452406 [Internal: CamOrthoZoom, 0]
+	25: Name 'CamPosition' Comparison Index 452412 Display Index 452412 [Internal: CamPosition, 0]
+	26: Name 'CamRotation' Comparison Index 452409 Display Index 452409 [Internal: CamRotation, 0]
+	27: Name 'CamUpdated' Comparison Index 452404 Display Index 452404 [Internal: CamUpdated, 0]
+	28: Name 'CellSize' Comparison Index 157293 Display Index 157293 [Internal: CellSize, 0]
+	29: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	30: Name 'ContentBundleManager' Comparison Index 149430 Display Index 149430 [Internal: ContentBundleManager, 0]
+	31: Name 'DebugColor' Comparison Index 461839 Display Index 461839 [Internal: DebugColor, 0]
+	32: Name 'DefaultHLODLayer' Comparison Index 505444 Display Index 505444 [Internal: DefaultHLODLayer, 0]
+	33: Name 'EditorHash' Comparison Index 505495 Display Index 505495 [Internal: EditorHash, 0]
+	34: Name 'EditorViews' Comparison Index 207405 Display Index 207405 [Internal: EditorViews, 0]
+	35: Name 'EnumProperty' Comparison Index 93 Display Index 93 [Internal: EnumProperty, 0]
+	36: Name 'ERuntimePartitionCellBoundsMethod' Comparison Index 150370 Display Index 150370 [Internal: ERuntimePartitionCellBoundsMethod, 0]
+	37: Name 'ERuntimePartitionCellBoundsMethod::UseContent' Comparison Index 417353 Display Index 417353 [Internal: ERuntimePartitionCellBoundsMethod::UseContent, 0]
+	38: Name 'ESpawnActorCollisionHandlingMethod' Comparison Index 124158 Display Index 124158 [Internal: ESpawnActorCollisionHandlingMethod, 0]
+	39: Name 'ESpawnActorCollisionHandlingMethod::AlwaysSpawn' Comparison Index 403913 Display Index 403913 [Internal: ESpawnActorCollisionHandlingMethod::AlwaysSpawn, 0]
+	40: Name 'FixtureGrid' Comparison Index 1145641 Display Index 1145641 [Internal: FixtureGrid, 0]
+	41: Name 'FloatProperty' Comparison Index 11 Display Index 11 [Internal: FloatProperty, 0]
+	42: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	43: Name 'HLODIndex' Comparison Index 505330 Display Index 505330 [Internal: HLODIndex, 0]
+	44: Name 'HLODLayer_Instanced' Comparison Index 1024540 Display Index 1024540 [Internal: HLODLayer_Instanced, 0]
+	45: Name 'HLODLayer_Merged' Comparison Index 1024544 Display Index 1024544 [Internal: HLODLayer_Merged, 0]
+	46: Name 'HLODLayers' Comparison Index 461671 Display Index 461671 [Internal: HLODLayers, 0]
+	47: Name 'HLODSetups' Comparison Index 461673 Display Index 461673 [Internal: HLODSetups, 0]
+	48: Name 'IntProperty' Comparison Index 5 Display Index 5 [Internal: IntProperty, 0]
+	49: Name 'LevelBuildDataId' Comparison Index 490670 Display Index 490670 [Internal: LevelBuildDataId, 0]
+	50: Name 'LevelViewportInfo' Comparison Index 149147 Display Index 149147 [Internal: LevelViewportInfo, 0]
+	51: Name 'LightmassSettings' Comparison Index 469199 Display Index 469199 [Internal: LightmassSettings, 0]
+	52: Name 'LightmassWorldInfoSettings' Comparison Index 151313 Display Index 151313 [Internal: LightmassWorldInfoSettings, 0]
+	53: Name 'LinearColor' Comparison Index 152 Display Index 152 [Internal: LinearColor, 0]
+	54: Name 'LoadingRange' Comparison Index 461685 Display Index 461685 [Internal: LoadingRange, 0]
+	55: Name 'MainLayer' Comparison Index 461675 Display Index 461675 [Internal: MainLayer, 0]
+	56: Name 'MainPartition' Comparison Index 1145644 Display Index 1145644 [Internal: MainPartition, 0]
+	57: Name 'Model' Comparison Index 129809 Display Index 129809 [Internal: Model, 0]
+	58: Name 'Name' Comparison Index 138 Display Index 138 [Internal: Name, 0]
+	59: Name 'NameProperty' Comparison Index 17 Display Index 17 [Internal: NameProperty, 0]
+	60: Name 'NavigationSystemClass' Comparison Index 472946 Display Index 472946 [Internal: NavigationSystemClass, 0]
+	61: Name 'NavigationSystemConfig' Comparison Index 113197 Display Index 113197 [Internal: NavigationSystemConfig, 0]
+	62: Name 'NavigationSystemV1' Comparison Index 51004 Display Index 51004 [Internal: NavigationSystemV1, 0]
+	63: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	64: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+	65: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	66: Name 'PartitionLayer' Comparison Index 461665 Display Index 461665 [Internal: PartitionLayer, 0]
+	67: Name 'PIEDuplicateHelper' Comparison Index 505029 Display Index 505029 [Internal: PIEDuplicateHelper, 0]
+	68: Name 'RootComponent' Comparison Index 451835 Display Index 451835 [Internal: RootComponent, 0]
+	69: Name 'Rotator' Comparison Index 142 Display Index 142 [Internal: Rotator, 0]
+	70: Name 'RuntimeHash' Comparison Index 505483 Display Index 505483 [Internal: RuntimeHash, 0]
+	71: Name 'RuntimePartitionDesc' Comparison Index 150477 Display Index 150477 [Internal: RuntimePartitionDesc, 0]
+	72: Name 'RuntimePartitionHLODSetup' Comparison Index 150473 Display Index 150473 [Internal: RuntimePartitionHLODSetup, 0]
+	73: Name 'RuntimePartitions' Comparison Index 505415 Display Index 505415 [Internal: RuntimePartitions, 0]
+	74: Name 'SoftClassPath' Comparison Index 9264 Display Index 9264 [Internal: SoftClassPath, 0]
+	75: Name 'SpawnCollisionHandlingMethod' Comparison Index 451860 Display Index 451860 [Internal: SpawnCollisionHandlingMethod, 0]
+	76: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	77: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	78: Name 'ThumbnailInfo' Comparison Index 123326 Display Index 123326 [Internal: ThumbnailInfo, 0]
+	79: Name 'UInt32Property' Comparison Index 72 Display Index 72 [Internal: UInt32Property, 0]
+	80: Name 'Vector' Comparison Index 140 Display Index 140 [Internal: Vector, 0]
+	81: Name 'WorldDataLayers' Comparison Index 149705 Display Index 149705 [Internal: WorldDataLayers, 0]
+	82: Name 'WorldPartition' Comparison Index 150516 Display Index 150516 [Internal: WorldPartition, 0]
+	83: Name 'WorldSettings' Comparison Index 151306 Display Index 151306 [Internal: WorldSettings, 0]
+	84: Name '/Engine/EngineMaterials/WorldGridMaterial' Comparison Index 516027 Display Index 516027 [Internal: /Engine/EngineMaterials/WorldGridMaterial, 0]
+	85: Name '/Game/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA' Comparison Index 954915 Display Index 954915 [Internal: /Game/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA, 0]
+	86: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 518367 Display Index 518367 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	87: Name '/Game/Ofpa/L_OfpaMap_HLODLayer_Instanced' Comparison Index 954903 Display Index 954903 [Internal: /Game/Ofpa/L_OfpaMap_HLODLayer_Instanced, 0]
+	88: Name '/Game/Ofpa/L_OfpaMap_HLODLayer_Merged' Comparison Index 954909 Display Index 954909 [Internal: /Game/Ofpa/L_OfpaMap_HLODLayer_Merged, 0]
+	89: Name '/Script/UnrealEd' Comparison Index 7226 Display Index 7226 [Internal: /Script/UnrealEd, 0]
+	90: Name 'BrushComponent0' Comparison Index 516304 Display Index 516304 [Internal: BrushComponent0, 0]
+	91: Name 'ContentBundleDuplicateForPIEHelper' Comparison Index 149445 Display Index 149445 [Internal: ContentBundleDuplicateForPIEHelper, 0]
+	92: Name 'Default__Brush' Comparison Index 118259 Display Index 118259 [Internal: Default__Brush, 0]
+	93: Name 'HLODLayer' Comparison Index 150005 Display Index 150005 [Internal: HLODLayer, 0]
+	94: Name 'L_OfpaMap' Comparison Index 518365 Display Index 518365 [Internal: L_OfpaMap, 0]
+	95: Name 'L_OfpaMap_HLODLayer_Instanced' Comparison Index 954925 Display Index 954925 [Internal: L_OfpaMap_HLODLayer_Instanced, 0]
+	96: Name 'L_OfpaMap_HLODLayer_Merged' Comparison Index 954943 Display Index 954943 [Internal: L_OfpaMap_HLODLayer_Merged, 0]
+	97: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	98: Name 'Material' Comparison Index 34508 Display Index 34508 [Internal: Material, 0]
+	99: Name 'NavigationSystemModuleConfig' Comparison Index 51017 Display Index 51017 [Internal: NavigationSystemModuleConfig, 0]
+	100: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	101: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	102: Name 'Polys' Comparison Index 111909 Display Index 111909 [Internal: Polys, 0]
+	103: Name 'RuntimePartitionLHGrid' Comparison Index 150395 Display Index 150395 [Internal: RuntimePartitionLHGrid, 0]
+	104: Name 'RuntimePartitionPersistent' Comparison Index 150409 Display Index 150409 [Internal: RuntimePartitionPersistent, 0]
+	105: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+	106: Name 'WorldGridMaterial' Comparison Index 516033 Display Index 516033 [Internal: WorldGridMaterial, 0]
+	107: Name 'WorldPartitionEditorSpatialHash' Comparison Index 150613 Display Index 150613 [Internal: WorldPartitionEditorSpatialHash, 0]
+	108: Name 'WorldPartitionRuntimeHashSet' Comparison Index 150462 Display Index 150462 [Internal: WorldPartitionRuntimeHashSet, 0]
+	109: Name 'WorldThumbnailInfo' Comparison Index 94069 Display Index 94069 [Internal: WorldThumbnailInfo, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'Default__Brush'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Brush'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'BrushComponent0'
+		       Outer: '/Script/Engine.Default__Brush' (-1)
+		     Package: '/Script/Engine'
+		       Class: 'BrushComponent'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 2: 'Brush'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 3: 'BrushComponent'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 4: 'ContentBundleDuplicateForPIEHelper'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 5: 'ContentBundleManager'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 6: 'Level'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 7: 'Model'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 8: 'Polys'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 9: 'RuntimePartitionLHGrid'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 10: 'RuntimePartitionPersistent'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 11: 'World'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 12: 'WorldPartition'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 13: 'WorldPartitionEditorSpatialHash'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 14: 'WorldPartitionRuntimeHashSet'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 15: 'WorldSettings'
+		       Outer: '/Script/Engine' (-26)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 16: 'NavigationSystemModuleConfig'
+		       Outer: '/Script/NavigationSystem' (-27)
+		     Package: '/Script/NavigationSystem'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 17: 'WorldThumbnailInfo'
+		       Outer: '/Script/UnrealEd' (-28)
+		     Package: '/Script/UnrealEd'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 18: 'L_OfpaMap_HLODLayer_Instanced'
+		       Outer: '/Game/Ofpa/L_OfpaMap_HLODLayer_Instanced' (-24)
+		     Package: '/Game/Ofpa/L_OfpaMap_HLODLayer_Instanced'
+		       Class: 'HLODLayer'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) HLODLayer /Game/Ofpa/L_OfpaMap_HLODLayer_Instanced.L_OfpaMap_HLODLayer_Instanced
+	*************************
+	Import 19: 'L_OfpaMap_HLODLayer_Merged'
+		       Outer: '/Game/Ofpa/L_OfpaMap_HLODLayer_Merged' (-25)
+		     Package: '/Game/Ofpa/L_OfpaMap_HLODLayer_Merged'
+		       Class: 'HLODLayer'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) HLODLayer /Game/Ofpa/L_OfpaMap_HLODLayer_Merged.L_OfpaMap_HLODLayer_Merged
+	*************************
+	Import 20: 'WorldGridMaterial'
+		       Outer: '/Engine/EngineMaterials/WorldGridMaterial' (-22)
+		     Package: '/Engine/EngineMaterials/WorldGridMaterial'
+		       Class: 'Material'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Material /Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial
+	*************************
+	Import 21: '/Engine/EngineMaterials/WorldGridMaterial'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 22: '/Game/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 23: '/Game/Ofpa/L_OfpaMap_HLODLayer_Instanced'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 24: '/Game/Ofpa/L_OfpaMap_HLODLayer_Merged'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 25: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 26: '/Script/NavigationSystem'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 27: '/Script/UnrealEd'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 28: 'WorldDataLayers'
+		       Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (5)
+		     Package: 'L_OfpaMap'
+		       Class: 'WorldDataLayers'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) WorldDataLayers /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldDataLayers
+--------------------------------------------
+	Packages referenced by /Temp/Ofpa/L_OfpaMap:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+		2) /Script/NavigationSystem
+		3) /Script/UnrealEd
+		4) /Game/Ofpa/L_OfpaMap_HLODLayer_Instanced
+		5) /Game/Ofpa/L_OfpaMap_HLODLayer_Merged
+		6) /Engine/EngineMaterials/WorldGridMaterial
+		7) /Game/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA
+		8) L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'Brush_0'
+		         Class: 'Brush' (-3)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 324
+		        Offset: 7700
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 1
+		 bNotForServer: 1
+		  DependsMap:
+			0) Model /Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.Brush (6)
+			1) BrushComponent /Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.Brush_0.BrushComponent0 (2)
+		  All Depends:
+	*************************
+	Export 1: 'BrushComponent0'
+		         Class: 'BrushComponent' (-4)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.Brush_0' (1)
+		   ObjectFlags: 0x00040008
+		    Total Size: 46
+		        Offset: 8024
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 1
+		 bNotForServer: 1
+		  DependsMap:
+			0) BrushComponent /Script/Engine.Default__Brush:BrushComponent0 (-2)
+			1) Model /Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.Brush (6)
+		  All Depends:
+	*************************
+	Export 2: 'ContentBundleDuplicateForPIEHelper_1'
+		         Class: 'ContentBundleDuplicateForPIEHelper' (-5)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:ContentBundleManager_0' (4)
+		   ObjectFlags: 0x00000000
+		    Total Size: 13
+		        Offset: 8070
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 3: 'ContentBundleManager_0'
+		         Class: 'ContentBundleManager' (-6)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap' (17)
+		   ObjectFlags: 0x00000000
+		    Total Size: 42
+		        Offset: 8083
+		        Object: VALID
+		      HashNext: 2
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 4: 'PersistentLevel'
+		         Class: 'Level' (-7)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap' (17)
+		   ObjectFlags: 0x00000008
+		    Total Size: 453
+		        Offset: 8125
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 5: 'Brush'
+		         Class: 'Model' (-8)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 167
+		        Offset: 8578
+		        Object: VALID
+		      HashNext: 0
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) Polys /Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.Polys_1 (10)
+		  All Depends:
+	*************************
+	Export 6: 'Model_0'
+		         Class: 'Model' (-8)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 167
+		        Offset: 8745
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 7: 'NavigationSystemModuleConfig_0'
+		         Class: 'NavigationSystemModuleConfig' (-17)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings' (21)
+		   ObjectFlags: 0x00000000
+		    Total Size: 91
+		        Offset: 8912
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 8: 'Polys_0'
+		         Class: 'Polys' (-9)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 17
+		        Offset: 9003
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 9: 'Polys_1'
+		         Class: 'Polys' (-9)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 1073
+		        Offset: 9020
+		        Object: VALID
+		      HashNext: 8
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+			0) Material /Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial (-21)
+		  All Depends:
+			0) Material /Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial (0)
+	*************************
+	Export 10: 'RuntimePartitionLHGrid_0'
+		         Class: 'RuntimePartitionLHGrid' (-10)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0.WorldPartitionRuntimeHashSet_0' (20)
+		   ObjectFlags: 0x00000000
+		    Total Size: 234
+		        Offset: 10093
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 11: 'RuntimePartitionLHGrid_1'
+		         Class: 'RuntimePartitionLHGrid' (-10)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0.WorldPartitionRuntimeHashSet_0' (20)
+		   ObjectFlags: 0x00000000
+		    Total Size: 219
+		        Offset: 10327
+		        Object: VALID
+		      HashNext: 10
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 12: 'RuntimePartitionLHGrid_2'
+		         Class: 'RuntimePartitionLHGrid' (-10)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0.WorldPartitionRuntimeHashSet_0' (20)
+		   ObjectFlags: 0x00000000
+		    Total Size: 248
+		        Offset: 10546
+		        Object: VALID
+		      HashNext: 11
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 13: 'RuntimePartitionLHGrid_3'
+		         Class: 'RuntimePartitionLHGrid' (-10)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0.WorldPartitionRuntimeHashSet_0' (20)
+		   ObjectFlags: 0x00000008
+		    Total Size: 111
+		        Offset: 10794
+		        Object: VALID
+		      HashNext: 12
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 14: 'RuntimePartitionPersistent_0'
+		         Class: 'RuntimePartitionPersistent' (-11)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0.WorldPartitionRuntimeHashSet_0' (20)
+		   ObjectFlags: 0x00000000
+		    Total Size: 132
+		        Offset: 10905
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 15: 'RuntimePartitionPersistent_2'
+		         Class: 'RuntimePartitionPersistent' (-11)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0.WorldPartitionRuntimeHashSet_0' (20)
+		   ObjectFlags: 0x00000000
+		    Total Size: 132
+		        Offset: 11037
+		        Object: VALID
+		      HashNext: 14
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 16: 'L_OfpaMap'
+		         Class: 'World' (-12)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '' (0)
+		   ObjectFlags: 0x0000000B
+		    Total Size: 1812
+		        Offset: 11169
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 17: 'WorldPartition_0'
+		         Class: 'WorldPartition' (-13)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings' (21)
+		   ObjectFlags: 0x00000008
+		    Total Size: 104
+		        Offset: 12981
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 18: 'WorldPartitionEditorSpatialHash_0'
+		         Class: 'WorldPartitionEditorSpatialHash' (-14)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0' (18)
+		   ObjectFlags: 0x00000000
+		    Total Size: 13
+		        Offset: 13085
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 19: 'WorldPartitionRuntimeHashSet_0'
+		         Class: 'WorldPartitionRuntimeHashSet' (-15)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldSettings.WorldPartition_0' (18)
+		   ObjectFlags: 0x00000008
+		    Total Size: 958
+		        Offset: 13098
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 20: 'WorldSettings'
+		         Class: 'WorldSettings' (-16)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (5)
+		   ObjectFlags: 0x00000008
+		    Total Size: 396
+		        Offset: 14056
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 21: 'WorldThumbnailInfo_0'
+		         Class: 'WorldThumbnailInfo' (-18)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Temp/Ofpa/L_OfpaMap.L_OfpaMap' (17)
+		   ObjectFlags: 0x00000008
+		    Total Size: 13
+		        Offset: 14452
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        353
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.World'/Temp/Ofpa/L_OfpaMap.L_OfpaMap' (7 Tags)
+			"PrimaryAssetType": "Map"
+			"PrimaryAssetName": "/Game/Ofpa/L_OfpaMap"
+			"DateModified": "2026.11.15-14.49.56"
+			"LevelIsPartitioned": "1"
+			"LevelIsUsingActorFolders": "1"
+			"LevelIsUsingExternalActors": "1"
+			"WorldExternalActorsReferences": "r76eDEv3uM25JTC6LskJrg"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

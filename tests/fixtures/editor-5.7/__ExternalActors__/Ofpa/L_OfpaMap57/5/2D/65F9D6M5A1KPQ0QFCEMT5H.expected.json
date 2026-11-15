@@ -1,0 +1,12 @@
+{
+  "source": "Stock UE 5.7.4-51494982+++UE5+Release-5.7. actor_guid, actor_native_class_path, actor_blueprint_class_path, actor_path and package_path: L_OfpaMap57.DumpActorDescs.csv (wp.Editor.DumpActorDescs). actor_label: WorldPartitionBlueprintLibrary.GetActorDescs in L_OfpaMap57.EditorEvidence.json, and the ActorLabel tag in the PkgInfo output (the CSV loses non-ASCII letters). map_path: the outer map package path in the EditorEvidence file. asset_class and asset_class_path: the asset registry section of the PkgInfo output.",
+  "actor_guid": "9CBB0D8E4C6CADEFF52E3AA4492D1062",
+  "actor_label": "WorldPartitionMiniMap",
+  "actor_native_class_path": "/Script/Engine.WorldPartitionMiniMap",
+  "actor_blueprint_class_path": null,
+  "actor_path": "/Game/Ofpa/L_OfpaMap57.L_OfpaMap57:PersistentLevel.WorldPartitionMiniMap_UAID_10FFE033EECBF11403_1325078367",
+  "map_path": "/Game/Ofpa/L_OfpaMap57",
+  "asset_class": "WorldPartitionMiniMap",
+  "asset_class_path": "/Script/Engine.WorldPartitionMiniMap",
+  "package_path": "/Game/__ExternalActors__/Ofpa/L_OfpaMap57/5/2D/65F9D6M5A1KPQ0QFCEMT5H"
+}

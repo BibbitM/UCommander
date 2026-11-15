@@ -5,6 +5,9 @@
 
 #![allow(dead_code)]
 
+pub mod desc;
+pub mod registry;
+
 /// The package file tag, little-endian.
 pub const TAG: u32 = 0x9E2A83C1;
 /// The byte-swapped package file tag.
@@ -486,6 +489,9 @@ pub struct Package {
     pub exports: Vec<Export>,
     /// When set, the export count is this value, not the list length.
     pub export_count: Option<i32>,
+    /// When set, these bytes come after the export table, and the asset
+    /// registry data offset of the summary points to them.
+    pub asset_registry: Option<Vec<u8>>,
 }
 
 impl Package {
@@ -499,6 +505,7 @@ impl Package {
             import_count: None,
             exports: Vec::new(),
             export_count: None,
+            asset_registry: None,
         }
     }
 
@@ -583,6 +590,16 @@ impl Package {
         }
 
         let mut summary = self.summary.clone();
+        if let Some(section) = &self.asset_registry {
+            let offset = start + tables.0.len();
+            summary.asset_registry_data_offset = offset as i32;
+            let mut section = section.clone();
+            if section.get(..8) == Some(&registry::SECTION_END.to_le_bytes()) {
+                let end = (offset + section.len()) as i64;
+                section[..8].copy_from_slice(&end.to_le_bytes());
+            }
+            tables.bytes(&section);
+        }
         summary.name_count = self.name_count.unwrap_or(self.names.len() as i32);
         summary.name_offset = self.name_offset.unwrap_or(start as i32);
         summary.import_count = self.import_count.unwrap_or(self.imports.len() as i32);
