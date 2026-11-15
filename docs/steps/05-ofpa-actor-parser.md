@@ -362,6 +362,7 @@ Each feature increment follows the TDD sequence in `AGENTS.md` §6.
 | Test descriptor fields with flag 1, Test a damaged total header size, Record class redirects and actor error rules | Findings of the branch review. |
 | Move D15 to point 6a | Owner decision 10, after the PR was opened. |
 | Merge the points 6 and 6a | Owner decision 11, after the PR was opened. |
+| Check the asset registry section end, Read the direct Blueprint parent class, Add the Blueprint fixture of the F10 actor, Test each truncation of OFPA actor data | Good parts of the PR #18 branch (the other implementation of point 5), after a comparison of the two PRs. |
 
 Open item for point 6: `read_asset_registry` has no limit on the object
 and tag count, other than the header size. A damaged 16 MiB header with
