@@ -4,9 +4,13 @@ mod common;
 
 use std::io::{self, Cursor, Read};
 
-use common::{Export, Package};
+use common::registry::{self, Object, section};
+use common::{Export, Package, Str};
 use uc_format::Error;
-use uc_format::package::{MAX_HEADER_READ_SIZE, ReadError, read_header, read_header_from};
+use uc_format::package::{
+    MAX_HEADER_READ_SIZE, ReadError, read_asset_registry, read_header, read_header_bytes_from,
+    read_header_from,
+};
 
 fn package() -> Package {
     Package {
@@ -126,6 +130,57 @@ fn an_io_error_is_given_to_the_caller() {
         Err(ReadError::Io(error)) => assert_eq!(error.to_string(), "disk error"),
         other => panic!("{other:?}"),
     }
+}
+
+/// A package with an asset registry section that ends after 64 KiB: one
+/// object with a tag value of 100 000 characters.
+fn package_with_a_large_registry() -> Vec<u8> {
+    let value: &'static str = "V".repeat(100_000).leak();
+    let objects = [Object {
+        path: Str::Ansi("Root"),
+        class: Str::Ansi("/Script/Engine.Actor"),
+        tags: vec![(Str::Ansi("Key"), Str::Ansi(value))],
+    }];
+    registry::package(section(Some(0), &objects)).to_bytes()
+}
+
+#[test]
+fn header_bytes_end_at_the_total_header_size() {
+    let mut bytes = package_with_a_large_registry();
+    let total = bytes.len();
+    // Data after the header, which the function must not read.
+    bytes.resize(1024 * 1024, 0xAB);
+
+    let read = read_header_bytes_from(Cursor::new(&bytes)).unwrap();
+
+    assert_eq!(read.bytes.len(), total);
+    assert_eq!(read.read, read_header(&bytes).unwrap());
+    let data = read_asset_registry(&read.bytes, &read.read.header.summary).unwrap();
+    assert_eq!(data.objects[0].tags[0].value.len(), 100_000);
+}
+
+#[test]
+fn header_bytes_of_a_file_that_ends_before_the_total_header_size() {
+    let bytes = package_with_a_large_registry();
+    let file = &bytes[..bytes.len() - 10];
+
+    let read = read_header_bytes_from(Cursor::new(file)).unwrap();
+
+    assert_eq!(read.bytes, file);
+    assert!(matches!(
+        read_asset_registry(&read.bytes, &read.read.header.summary),
+        Err(Error::Truncated { .. })
+    ));
+}
+
+#[test]
+fn header_bytes_give_the_errors_of_read_header_from() {
+    let result = read_header_bytes_from(Cursor::new(b"This is not a package."));
+
+    assert!(
+        matches!(result, Err(ReadError::Parse(Error::NotAPackage))),
+        "{result:?}"
+    );
 }
 
 #[test]
