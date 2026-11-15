@@ -356,6 +356,7 @@ Each feature increment follows the TDD sequence in `AGENTS.md` §6.
 | Add OFPA actor fixture tests | The fixture part of increment 7, in its own commit. |
 | Read the header bytes for later sections | New `read_header_bytes_from`, for `uc dump` (increment 8) and the content plugin (point 6). |
 | Test descriptor fields with flag 1, Test a damaged total header size, Record class redirects and actor error rules | Findings of the branch review. |
+| Move D15 to point 6a | Owner decision 10, after the PR was opened. |
 
 Open item for point 6: `read_asset_registry` has no limit on the object
 and tag count, other than the header size. A damaged 16 MiB header with
@@ -421,6 +422,9 @@ None. The Base64 decoder is our own code (owner decision 2).
    UCommander does not read (subclass data, fields after the label), so
    a warning gives no useful information. The owner accepted this after
    the branch review.
+10. D15 (sample TC custom column set) moves from point 6 to point 6a.
+    The column set then shows all OFPA fields, also the D6 fields. The
+    owner decided this after the PR was opened.
 
 ## Open questions (answered)
 
