@@ -17,9 +17,10 @@ struct PkgInfoObject {
     tags: BTreeMap<String, String>,
 }
 
+/// A fixture file. `name` is relative to `tests/fixtures`.
 fn fixture(name: &str) -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../tests/fixtures/editor")
+        .join("../../tests/fixtures")
         .join(name)
 }
 
@@ -58,7 +59,10 @@ fn pkginfo_objects(text: &str) -> Vec<PkgInfoObject> {
     objects
 }
 
-fn check(package: &str, pkginfo: &str) {
+/// Checks a package with the asset registry section of its `PkgInfo`
+/// output, which has the same name and the extension `.pkginfo.txt`.
+fn check(package: &str) {
+    let pkginfo = PathBuf::from(package).with_extension("pkginfo.txt");
     let bytes = std::fs::read(fixture(package)).unwrap();
     // A Git LFS pointer file is small text, not a package.
     assert!(
@@ -66,16 +70,21 @@ fn check(package: &str, pkginfo: &str) {
         "{package} is a Git LFS pointer: run `git lfs pull`"
     );
     let header = read_header(&bytes).unwrap().header;
-    let text = std::fs::read_to_string(fixture(pkginfo)).unwrap();
+    let text = std::fs::read_to_string(fixture(pkginfo.to_str().unwrap())).unwrap();
     let expected = pkginfo_objects(&text);
 
     let data = read_asset_registry(&bytes, &header.summary).unwrap();
 
     assert_eq!(data.objects.len(), expected.len());
     for (object, expected) in data.objects.iter().zip(&expected) {
-        // The file has a path relative to the package. `PkgInfo` shows
-        // the full path, with the temporary mount point `/Temp`.
-        let full_path = format!("{}.{}", header.summary.package_name, object.object_path);
+        // The file has a path relative to the package, or a full path (an
+        // external actor). `PkgInfo` shows the full path, with the
+        // temporary mount point `/Temp` for a relative path.
+        let full_path = if object.object_path.starts_with('/') {
+            object.object_path.clone()
+        } else {
+            format!("{}.{}", header.summary.package_name, object.object_path)
+        };
         let expected_path = expected.object_path.replacen("/Temp/", "/Game/", 1);
         assert_eq!(full_path, expected_path);
         assert_eq!(object.class_name, expected.class_path);
@@ -93,15 +102,53 @@ fn check(package: &str, pkginfo: &str) {
 
 #[test]
 fn bp_summary_actor_asset_registry() {
-    check("BP_SummaryActor.uasset", "BP_SummaryActor.pkginfo.txt");
+    check("editor/BP_SummaryActor.uasset");
 }
 
 #[test]
 fn l_summary_level_asset_registry() {
-    check("L_SummaryLevel.umap", "L_SummaryLevel.pkginfo.txt");
+    check("editor/L_SummaryLevel.umap");
 }
 
 #[test]
 fn m_summary_asset_registry() {
-    check("M_Summary.uasset", "M_Summary.pkginfo.txt");
+    check("editor/M_Summary.uasset");
 }
+
+#[test]
+fn ofpa_map_asset_registry() {
+    check("editor/Ofpa/L_OfpaMap.umap");
+}
+
+#[test]
+fn data_layer_asset_registry() {
+    check("editor/Ofpa/DL_OfpaFixture.uasset");
+}
+
+#[test]
+fn external_actors_asset_registry() {
+    for package in OFPA_ACTORS {
+        check(package);
+    }
+}
+
+#[test]
+fn external_objects_asset_registry() {
+    check("editor/__ExternalObjects__/Ofpa/L_OfpaMap/6/F4/WX7Q02ROY466F4EAK3HYSA.uasset");
+    check("editor/__ExternalObjects__/Ofpa/L_OfpaMap/7/BO/WCOVYDCVHSOAQI6426EICH.uasset");
+}
+
+/// The external actor packages of the OFPA fixtures (UE 5.8 and UE 5.7).
+const OFPA_ACTORS: [&str; 11] = [
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/1/5X/LDR80LGXHNUA4U4CBHWYNV.uasset",
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/4/TV/YHL37N60V5A37O1U3ASTQ7.uasset",
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8.uasset",
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/7/GM/CD2EGZM9LI8RXFXKWX2IC8.uasset",
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI.uasset",
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24.uasset",
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE.uasset",
+    "editor/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA.uasset",
+    "editor-5.7/__ExternalActors__/Ofpa/L_OfpaMap57/3/5F/UY7CAHIHPCHXPYHP6UAZC4.uasset",
+    "editor-5.7/__ExternalActors__/Ofpa/L_OfpaMap57/5/2D/65F9D6M5A1KPQ0QFCEMT5H.uasset",
+    "editor-5.7/__ExternalActors__/Ofpa/L_OfpaMap57/B/I4/4LDIAYPOR4RGIIJ2QNMPSY.uasset",
+];
