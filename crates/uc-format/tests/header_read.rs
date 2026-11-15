@@ -174,6 +174,39 @@ fn header_bytes_of_a_file_that_ends_before_the_total_header_size() {
 }
 
 #[test]
+fn header_bytes_with_a_damaged_total_header_size() {
+    let bytes = package_with_a_large_registry();
+    // The total header size follows the tag, five versions and the hash.
+    const OFFSET: usize = 44;
+    let total = read_header(&bytes)
+        .unwrap()
+        .header
+        .summary
+        .total_header_size;
+    assert_eq!(bytes[OFFSET..OFFSET + 4], total.to_le_bytes());
+
+    // Negative: no more bytes than the header tables need.
+    let mut damaged = bytes.clone();
+    damaged[OFFSET..OFFSET + 4].copy_from_slice(&(-1i32).to_le_bytes());
+    let read = read_header_bytes_from(Cursor::new(&damaged)).unwrap();
+    assert_eq!(read.bytes.len(), 64 * 1024);
+
+    // Too large, with a reader that never ends: stop at the read limit.
+    damaged[OFFSET..OFFSET + 4].copy_from_slice(&i32::MAX.to_le_bytes());
+    let mut reader = Counting {
+        inner: Cursor::new(&damaged).chain(io::repeat(0)),
+        count: 0,
+    };
+    let read = read_header_bytes_from(&mut reader).unwrap();
+    assert_eq!(read.bytes.len(), MAX_HEADER_READ_SIZE);
+    assert_eq!(reader.count, MAX_HEADER_READ_SIZE);
+
+    // Larger than the file: all the bytes of the file.
+    let read = read_header_bytes_from(Cursor::new(&damaged)).unwrap();
+    assert_eq!(read.bytes, damaged);
+}
+
+#[test]
 fn header_bytes_give_the_errors_of_read_header_from() {
     let result = read_header_bytes_from(Cursor::new(b"This is not a package."));
 
