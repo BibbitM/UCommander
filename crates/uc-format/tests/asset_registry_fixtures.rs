@@ -106,6 +106,11 @@ fn bp_summary_actor_asset_registry() {
 }
 
 #[test]
+fn bp_fixture_child_asset_registry() {
+    check("editor/OFPAFixture/BP_FixtureChild.uasset");
+}
+
+#[test]
 fn l_summary_level_asset_registry() {
     check("editor/L_SummaryLevel.umap");
 }

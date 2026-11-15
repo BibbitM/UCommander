@@ -306,6 +306,7 @@ an `EditorEvidence.json` file with the editor values of each actor.
 | F7 | `L_OfpaMap57/B/I4/4LDIAYPOR4RGIIJ2QNMPSY` (UE 5.7) | Point Light `Lampa żółta` |
 | F14 | `L_OfpaMap57/3/5F/UY7CAHIHPCHXPYHP6UAZC4` (UE 5.7) | `WorldDataLayers` (template) |
 | F15 | `L_OfpaMap57/5/2D/65F9D6M5A1KPQ0QFCEMT5H` (UE 5.7) | `WorldPartitionMiniMap` (template) |
+| F16 | `tests/fixtures/editor/OFPAFixture/BP_FixtureChild` | The Blueprint of F10 (parent `BP_FixtureParent_C`). From the PR #18 branch. |
 
 Differences from the request:
 
@@ -320,8 +321,10 @@ Differences from the request:
 3. The asset registry object path of an actor in the `PkgInfo` output
    starts with `/Game`, not `/Temp`. The `/Temp` replacement of owner
    decision 5 is not necessary.
-4. The HLOD layer assets of the template, the map of F7 and the actor
-   Blueprints of F10 are not in the repository. No test uses them.
+4. The HLOD layer assets of the template, the map of F7 and the parent
+   Blueprint of F10 are not in the repository. No test uses them. The
+   Blueprint of F10 (F16) came later, from the fixtures of the PR #18
+   branch, for the Blueprint parent class.
 
 A script compared the three sources (CSV, `EditorEvidence.json`,
 `PkgInfo`) for each actor, and wrote the `.expected.json` files. All

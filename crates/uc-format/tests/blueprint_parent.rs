@@ -7,7 +7,8 @@ use std::path::PathBuf;
 
 use common::{Export, Import, Package};
 use uc_format::Error;
-use uc_format::package::{PackageHeader, read_header};
+use uc_format::package::{PackageHeader, read_asset_registry, read_header};
+use uc_format::world_partition::read_ofpa_actor;
 
 const CLASS_PATH: &str = "/Game/Fixtures/BP_Test.BP_Test_C";
 
@@ -165,4 +166,38 @@ fn bp_summary_actor_parent_class() {
         "/Game/Summary/BP_SummaryActor.BP_SummaryActor_C",
     )
     .unwrap();
+}
+
+#[test]
+fn bp_fixture_child_parent_class() {
+    check(
+        "editor/OFPAFixture/BP_FixtureChild.uasset",
+        "/Game/OFPAFixture/BP_FixtureChild.BP_FixtureChild_C",
+    )
+    .unwrap();
+}
+
+/// Fixture F10: the OFPA actor of `BP_FixtureChild_C`. The Blueprint
+/// class of its descriptor gives the parent in the Blueprint package, as
+/// point 6 does for D4.
+#[test]
+fn the_parent_of_the_blueprint_class_of_an_ofpa_actor() {
+    let actor = std::fs::read(fixture(
+        "editor/__ExternalActors__/Ofpa/L_OfpaMap/7/GM/CD2EGZM9LI8RXFXKWX2IC8.uasset",
+    ))
+    .unwrap();
+    let header = read_header(&actor).unwrap().header;
+    let data = read_asset_registry(&actor, &header.summary).unwrap();
+    let actor = read_ofpa_actor(&data).unwrap().actor.unwrap();
+    let class_path = actor.desc.base_class_path.unwrap();
+    let blueprint = std::fs::read(fixture("editor/OFPAFixture/BP_FixtureChild.uasset")).unwrap();
+    let blueprint = read_header(&blueprint).unwrap().header;
+
+    // The value of `PkgInfo` and of the editor (the PR #18 fixture data).
+    assert_eq!(
+        blueprint
+            .blueprint_parent_class_path(&class_path)
+            .as_deref(),
+        Some("/Game/OFPAFixture/BP_FixtureParent.BP_FixtureParent_C")
+    );
 }
