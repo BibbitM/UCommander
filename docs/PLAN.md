@@ -28,8 +28,7 @@ brings the correct status to `main`. CI checks this on each PR.
 | 4 | Content: name, path, engine version | D2, D7 | | Done |
 | 4a | Technical debt after point 4 | — | | Done |
 | 5 | OFPA actor data parser | — | | Planned |
-| 6 | Content: OFPA label, class, GUID, map | D3–D5, D15 | | Planned |
-| 6a | Content: OFPA data layers, runtime grid, spatially loaded flag, bounds | D6 | v0.3.0 | Planned |
+| 6 | Content: OFPA label, class, GUID, map, data layers, runtime grid, spatially loaded flag, bounds and sample column set | D3–D6, D15 | v0.3.0 | Planned |
 | 7 | Lister skeleton: summary | L1 | | Planned |
 | 8 | Lister: tables view | L4 | v0.4.0 | Planned |
 | 9 | Thumbnail in the lister | L2 | | Planned |

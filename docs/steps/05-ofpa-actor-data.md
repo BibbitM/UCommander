@@ -82,7 +82,7 @@ Follow the TDD sequence in `AGENTS.md` §6 for parser changes.
 
 - Total Commander fields and the sample column set (point 6).
 - Listing external actors from a map (point 13).
-- Data layers, runtime grid, spatially loaded flag and bounds (D6, point 6a).
+- Data layers, runtime grid, spatially loaded flag and bounds (D6, point 6).
 - General asset registry tag display (L5), cooked packages and package writes.
 
 ## Owner actions
