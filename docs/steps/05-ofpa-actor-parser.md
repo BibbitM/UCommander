@@ -4,7 +4,8 @@ Branch: `pt/05-ofpa-actor-parser` (from `main`)
 
 Features: none directly. Point 5 makes the parser for D3–D5 (point 6)
 and B7 (point 13). It also moves D6 to the MVP (owner decision 7).
-Release after this point: none (v0.3.0 comes after point 6a).
+Release after this point: none (v0.3.0 comes after point 6, owner
+decision 11).
 
 ## Goal
 
@@ -160,8 +161,8 @@ records the layout in a new file `docs/formats/world-partition.md`.
   each subclass writes its extra data after the base fields.
 - The parser keeps only the values of criterion 2 (owner decision 1).
   It reads and skips the other fields on the way (transform, bounds,
-  grid, data layers). They are D6, which comes in point 6a (owner
-  decision 7).
+  grid, data layers). They are D6, which comes in point 6 (owner
+  decisions 7 and 11).
 - Supported layouts: one layout for UE 5.6, 5.7 and 5.8 (fact 8). The
   parser implements only the branches of the UE 5.8.3 read code that
   apply to this layout. Increment 1 records the minimum value of each of
@@ -251,7 +252,7 @@ The owner makes these assets in the fixtures project with stock UE
      kind and the label of each. Useful cases: an actor in a data layer,
      an actor that is not spatially loaded, a non-default runtime grid,
      and a Blueprint actor whose Blueprint has a Blueprint parent. They
-     also help point 6a (D6).
+     also help D6 (point 6, owner decision 11).
 3. Copy into the repository (Git LFS), with the folder structure of
    `Content`:
    - `tests/fixtures/editor/Ofpa/L_OfpaMap.umap` (F4, for point 13),
@@ -357,6 +358,7 @@ Each feature increment follows the TDD sequence in `AGENTS.md` §6.
 | Read the header bytes for later sections | New `read_header_bytes_from`, for `uc dump` (increment 8) and the content plugin (point 6). |
 | Test descriptor fields with flag 1, Test a damaged total header size, Record class redirects and actor error rules | Findings of the branch review. |
 | Move D15 to point 6a | Owner decision 10, after the PR was opened. |
+| Merge the points 6 and 6a | Owner decision 11, after the PR was opened. |
 
 Open item for point 6: `read_asset_registry` has no limit on the object
 and tag count, other than the header size. A damaged 16 MiB header with
@@ -382,8 +384,8 @@ None. The Base64 decoder is our own code (owner decision 2).
   adds the map fixture F4 only.
 - The `ActorsMetaData` tag of a level that is not OFPA (point 12).
 - D6 values (data layers, runtime grid, spatially loaded flag, bounds).
-  Point 6a adds them to the parser and to the content plugin (owner
-  decision 7).
+  Point 6 adds them to the parser and to the content plugin (owner
+  decisions 7 and 11).
 - The actor folder, the parent actor and the descriptor fields after
   the label.
 - Descriptor subclass data (level instance, landscape, HLOD).
@@ -424,6 +426,12 @@ None. The Base64 decoder is our own code (owner decision 2).
    the branch review.
 10. D15 (sample TC custom column set) moves from point 6 to point 6a.
     The column set then shows all OFPA fields, also the D6 fields. The
+    owner decided this after the PR was opened.
+11. The points 6 and 6a become one point 6, "Content: OFPA actor
+    fields", with D3 to D6, D15 and the release v0.3.0. The D6 fields
+    come from the same descriptor, before the label, and the fixtures
+    and the editor evidence already have their values. This replaces
+    the new point 6a of decision 7 and the move of decision 10. The
     owner decided this after the PR was opened.
 
 ## Open questions (answered)
