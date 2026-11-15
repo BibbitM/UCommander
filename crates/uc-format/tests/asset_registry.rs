@@ -2,47 +2,10 @@
 
 mod common;
 
-use common::{Export, PKG_FILTER_EDITOR_ONLY, Package, Str, Writer};
+use common::registry::{Object, package, section};
+use common::{PKG_FILTER_EDITOR_ONLY, Package, Str, Writer};
 use uc_format::Error;
 use uc_format::package::{AssetRegistryData, read_asset_registry, read_header};
-
-/// One object of the section, as it is stored in the file.
-struct Object {
-    path: Str,
-    class: Str,
-    tags: Vec<(Str, Str)>,
-}
-
-/// Writes the section: the dependency data offset (when present), the
-/// object count, then the objects.
-fn section(dependency_data_offset: Option<i64>, objects: &[Object]) -> Vec<u8> {
-    let mut w = Writer::default();
-    if let Some(offset) = dependency_data_offset {
-        w.i64(offset);
-    }
-    w.i32(objects.len() as i32);
-    for object in objects {
-        w.string(&object.path);
-        w.string(&object.class);
-        w.i32(object.tags.len() as i32);
-        for (key, value) in &object.tags {
-            w.string(key);
-            w.string(value);
-        }
-    }
-    w.0
-}
-
-fn package(section: Vec<u8>) -> Package {
-    Package {
-        exports: vec![Export {
-            object_name: (1, 0),
-            ..Export::default()
-        }],
-        asset_registry: Some(section),
-        ..Package::new(&["/Script/Engine", "Root"])
-    }
-}
 
 fn read(package: &Package) -> Result<AssetRegistryData, Error> {
     let bytes = package.to_bytes();

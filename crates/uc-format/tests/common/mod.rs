@@ -5,6 +5,9 @@
 
 #![allow(dead_code)]
 
+pub mod desc;
+pub mod registry;
+
 /// The package file tag, little-endian.
 pub const TAG: u32 = 0x9E2A83C1;
 /// The byte-swapped package file tag.
