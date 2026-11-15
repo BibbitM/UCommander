@@ -415,6 +415,12 @@ None. The Base64 decoder is our own code (owner decision 2).
    object path, the `ActorMetaData` tag and a descriptor that is not a
    class descriptor (see "OFPA actor data of a package"). The owner
    accepted this rule after the F1 finding during the work.
+9. The descriptor reader ignores the custom versions that are not one of
+   the four layout versions, with no warning. This is an exception to
+   `AGENTS.md` §5 rule 7. These versions control only data that
+   UCommander does not read (subclass data, fields after the label), so
+   a warning gives no useful information. The owner accepted this after
+   the branch review.
 
 ## Open questions (answered)
 

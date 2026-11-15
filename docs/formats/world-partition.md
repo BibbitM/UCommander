@@ -262,7 +262,7 @@ expected values.
 | Base64 text. | The UE decode rules above. |
 | A custom version of the four is missing, or less than the minimum. | Error: unsupported descriptor (UE 5.5 or earlier). Point 5 owner decision 3. |
 | A custom version of the four is newer than the newest UE 5.8.3 value. | Warning. Read with the UE 5.8.3 layout. |
-| Other custom versions in the list. | Ignore them, with no warning. They are for the data of descriptor subclasses, which UCommander does not read. UE stops for a version that it does not know, but UCommander does not need these versions. |
+| Other custom versions in the list. | Ignore them, with no warning. They are for the data of descriptor subclasses, which UCommander does not read. UE stops for a version that it does not know, but UCommander does not need these versions. Point 5 owner decision 9. |
 | "Is default descriptor" is not 0. | Error: not an actor descriptor. |
 | Delta label with flag 0. | No label. |
 | Label, class path or name with the text `None`. | No value. UE compares names without case for ASCII letters, so `none` is also no value. |
