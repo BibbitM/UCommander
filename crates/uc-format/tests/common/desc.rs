@@ -99,6 +99,27 @@ impl Desc {
     }
 }
 
+/// Encodes bytes as Base64 text (RFC 4648, standard alphabet, with `=`
+/// padding), as UE writes the `ActorMetaData` tag.
+pub fn base64(bytes: &[u8]) -> String {
+    const ALPHABET: &[u8; 64] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut text = String::new();
+    for chunk in bytes.chunks(3) {
+        let mut group = [0u8; 3];
+        group[..chunk.len()].copy_from_slice(chunk);
+        let bits = u32::from_be_bytes([0, group[0], group[1], group[2]]);
+        for i in 0..4 {
+            if i <= chunk.len() {
+                let index = (bits >> (18 - 6 * i)) & 0x3F;
+                text.push(char::from(ALPHABET[index as usize]));
+            } else {
+                text.push('=');
+            }
+        }
+    }
+    text
+}
+
 fn delta<T>(w: &mut Writer, value: &Delta<T>, write: impl Fn(&mut Writer, &T)) {
     match value {
         None => w.bytes(&[0]),

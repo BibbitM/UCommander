@@ -1,10 +1,14 @@
 //! World Partition data: the actor descriptor of an OFPA actor. The
 //! layout is in `docs/formats/world-partition.md`.
 
+use crate::base64;
 use crate::error::Error;
-use crate::package::Warning;
+use crate::package::{AssetRegistryData, Warning};
 use crate::reader::Reader;
 use crate::types::Guid;
+
+/// The asset registry tag with the actor descriptor, as Base64 text.
+const ACTOR_METADATA_TAG: &str = "ActorMetaData";
 
 /// Size of one custom version entry: GUID and `i32`.
 const CUSTOM_VERSION_SIZE: usize = 20;
@@ -79,6 +83,77 @@ pub struct ActorDesc {
 pub struct ActorDescRead {
     pub desc: ActorDesc,
     pub warnings: Vec<Warning>,
+}
+
+/// The OFPA actor data of an external actor package.
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
+pub struct OfpaActor {
+    /// The object path of the actor, for example
+    /// `/Game/Map.Map:PersistentLevel.PointLight_UAID_…`.
+    pub actor_path: String,
+    /// The package path of the map of the actor, for example `/Game/Map`.
+    pub map_path: String,
+    pub desc: ActorDesc,
+}
+
+/// The result of [`read_ofpa_actor`].
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
+pub struct OfpaActorRead {
+    /// `None` when the package is not an external actor package.
+    pub actor: Option<OfpaActor>,
+    pub warnings: Vec<Warning>,
+}
+
+/// Gives the OFPA actor data of a package from its asset registry data.
+///
+/// An external actor is an asset registry object with a full object path
+/// (it starts with `/`), the `ActorMetaData` tag, and a descriptor that is
+/// not a class descriptor. A package with no external actor gives no
+/// actor, not an error. If more than one object is an external actor, the
+/// function uses the first one and gives [`Warning::MoreActors`].
+pub fn read_ofpa_actor(data: &AssetRegistryData) -> Result<OfpaActorRead, Error> {
+    let mut actor = None;
+    let mut warnings = Vec::new();
+    let mut count = 0;
+    for object in &data.objects {
+        if !object.object_path.starts_with('/') {
+            continue;
+        }
+        // A tag key is a name: UE ignores the case of ASCII letters.
+        let Some(tag) = object
+            .tags
+            .iter()
+            .find(|tag| tag.key.eq_ignore_ascii_case(ACTOR_METADATA_TAG))
+        else {
+            continue;
+        };
+        let read = match read_actor_desc(&base64::decode(&tag.value)?) {
+            Err(Error::ClassDescriptor) => continue,
+            result => result?,
+        };
+        count += 1;
+        if actor.is_none() {
+            warnings.extend(read.warnings);
+            actor = Some(OfpaActor {
+                actor_path: object.object_path.clone(),
+                map_path: map_path(&object.object_path).to_owned(),
+                desc: read.desc,
+            });
+        }
+    }
+    if count > 1 {
+        warnings.push(Warning::MoreActors { count });
+    }
+    Ok(OfpaActorRead { actor, warnings })
+}
+
+/// The package part of an object path: the text before the first `.`.
+fn map_path(object_path: &str) -> &str {
+    object_path
+        .split_once('.')
+        .map_or(object_path, |(package, _)| package)
 }
 
 /// Reads an actor descriptor from its bytes (the decoded value of the

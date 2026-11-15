@@ -184,6 +184,9 @@ pub enum Warning {
         value: i32,
         newest: i32,
     },
+    /// The asset registry data has `count` external actors. A package
+    /// has only one. The parser uses the first.
+    MoreActors { count: usize },
 }
 
 impl fmt::Display for Warning {
@@ -196,6 +199,10 @@ impl fmt::Display for Warning {
             } => write!(
                 f,
                 "{field} {value} is newer than the newest known version {newest}"
+            ),
+            Self::MoreActors { count } => write!(
+                f,
+                "{count} external actors in the asset registry data, the first is used"
             ),
         }
     }

@@ -47,6 +47,14 @@ the function that adds the asset registry tags of an actor.
 UE uses a descriptor only when both tags are present. Source: same file,
 the function that checks the asset data.
 
+The asset registry object of an external actor has the full object path
+of the actor (`/Game/Map.Map:PersistentLevel.Name`), not a path relative
+to its package. Each external actor package of the point 5 fixtures has
+one object, with a third tag `ActorLabel` (the actor label as text).
+Observed in the `PkgInfo` output of fixtures F5 to F15 (UE 5.8.3 and UE
+5.7.4). UCommander reads the label from the descriptor, not from this
+tag.
+
 A level that is not OFPA has the tag `ActorsMetaData` (with `s`) on its
 world: the descriptors of the actors of the level. Each entry contains
 the actor path, the native class path and a Base64 descriptor, with `,`
@@ -251,3 +259,7 @@ expected values.
 | Label, class path or name with the text `None`. | No value. UE compares names without case for ASCII letters, so `none` is also no value. |
 | Bytes after the label. | Not read. |
 | Count of an array larger than the remaining bytes. | Error: truncated. No allocation. |
+| External actor of a package. | An asset registry object with a full object path (it starts with `/`), the `ActorMetaData` tag (key without case for ASCII letters), and a descriptor that is not a class descriptor. Point 5 owner decision 8. |
+| No external actor in a package. | No actor data. Not an error. |
+| More than one external actor in a package. | Use the first one. Warning. |
+| Map path. | The text of the actor path before the first `.`. |
