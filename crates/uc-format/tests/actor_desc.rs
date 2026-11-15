@@ -61,9 +61,13 @@ fn reads_the_label_after_the_delta_fields_and_arrays() {
     let desc = Desc {
         is_spatially_loaded: Some(0),
         runtime_grid: Some(Str::Ansi("MainGrid")),
+        is_editor_only: Some(1),
+        is_runtime_only: Some(1),
         references: vec![[1, 2, 3, 4], [5, 6, 7, 8]],
+        editor_only_references: vec![[9, 9, 9, 9]],
         tags: Some(vec![Str::Ansi("Tag_1"), Str::Utf16("Znacznik")]),
         data_layers: Some(vec![Str::Ansi("/Game/DL.DL")]),
+        is_using_data_layer_asset: Some(1),
         label: Some(Str::Ansi("After")),
         ..Desc::default()
     };

@@ -21,9 +21,13 @@ pub struct Desc {
     pub guid: [u32; 4],
     pub is_spatially_loaded: Delta<u32>,
     pub runtime_grid: Delta<Str>,
+    pub is_editor_only: Delta<u32>,
+    pub is_runtime_only: Delta<u32>,
     pub references: Vec<[u32; 4]>,
+    pub editor_only_references: Vec<[u32; 4]>,
     pub tags: Delta<Vec<Str>>,
     pub data_layers: Delta<Vec<Str>>,
+    pub is_using_data_layer_asset: Delta<u32>,
     pub label: Delta<Str>,
     /// Bytes after the label, which the parser does not read.
     pub rest: Vec<u8>,
@@ -46,9 +50,13 @@ impl Default for Desc {
             guid: ACTOR_GUID,
             is_spatially_loaded: None,
             runtime_grid: None,
+            is_editor_only: None,
+            is_runtime_only: None,
             references: Vec::new(),
+            editor_only_references: Vec::new(),
             tags: None,
             data_layers: None,
+            is_using_data_layer_asset: None,
             label: Some(Str::Ansi("PointLight")),
             rest: vec![0; 40],
         }
@@ -82,9 +90,9 @@ impl Desc {
         }
         delta(&mut w, &self.is_spatially_loaded, |w, value| w.u32(*value));
         delta(&mut w, &self.runtime_grid, Writer::string);
-        delta(&mut w, &None::<u32>, |w, value| w.u32(*value));
-        delta(&mut w, &None::<u32>, |w, value| w.u32(*value));
-        for references in [&self.references, &Vec::new()] {
+        delta(&mut w, &self.is_editor_only, |w, value| w.u32(*value));
+        delta(&mut w, &self.is_runtime_only, |w, value| w.u32(*value));
+        for references in [&self.references, &self.editor_only_references] {
             w.i32(references.len() as i32);
             for guid in references {
                 w.guid(*guid);
@@ -92,7 +100,9 @@ impl Desc {
         }
         delta(&mut w, &self.tags, names);
         delta(&mut w, &self.data_layers, names);
-        delta(&mut w, &None::<u32>, |w, value| w.u32(*value));
+        delta(&mut w, &self.is_using_data_layer_asset, |w, value| {
+            w.u32(*value)
+        });
         delta(&mut w, &self.label, Writer::string);
         w.bytes(&self.rest);
         w.0
