@@ -160,3 +160,25 @@ fn a_truncated_descriptor_gives_an_error() {
 
     assert!(matches!(read(&[object]), Err(Error::Truncated { .. })));
 }
+
+#[test]
+fn each_truncation_of_an_external_actor_package_gives_an_error() {
+    let metadata = base64(&Desc::default().to_bytes());
+    let objects = [actor_object(ACTOR_PATH, metadata)];
+    let bytes = package(section(Some(SECTION_END), &objects)).to_bytes();
+    let header = read_header(&bytes).unwrap().header;
+    let start = header.summary.asset_registry_data_offset as usize;
+
+    // The tables end before the section, so the header stays valid. The
+    // asset registry data gives the error.
+    for end in start..bytes.len() {
+        let result = read_asset_registry(&bytes[..end], &header.summary);
+
+        assert!(
+            matches!(result, Err(Error::Truncated { .. })),
+            "end {end}: {result:?}"
+        );
+    }
+    let data = read_asset_registry(&bytes, &header.summary).unwrap();
+    assert!(read_ofpa_actor(&data).unwrap().actor.is_some());
+}

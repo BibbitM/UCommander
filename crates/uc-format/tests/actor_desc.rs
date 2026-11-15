@@ -213,11 +213,27 @@ fn the_class_descriptor_of_a_blueprint_fixture_gives_an_error() {
 }
 
 #[test]
-fn a_truncated_descriptor_gives_an_error() {
-    let bytes = Desc::default().to_bytes();
-    let rest = Desc::default().rest.len();
+fn each_truncation_of_a_descriptor_gives_an_error() {
+    // All delta fields with flag 1, so that each field can be cut.
+    let desc = Desc {
+        base_class: (Str::Ansi("/Game/BP_A"), Str::Ansi("BP_A_C")),
+        is_spatially_loaded: Some(0),
+        runtime_grid: Some(Str::Ansi("MainGrid")),
+        is_editor_only: Some(1),
+        is_runtime_only: Some(1),
+        references: vec![[1, 2, 3, 4]],
+        editor_only_references: vec![[9, 9, 9, 9]],
+        tags: Some(vec![Str::Ansi("Tag_1"), Str::Utf16("Znacznik")]),
+        data_layers: Some(vec![Str::Ansi("/Game/DL.DL")]),
+        is_using_data_layer_asset: Some(1),
+        label: Some(Str::Utf16("Lampa żółta")),
+        ..Desc::default()
+    };
+    let bytes = desc.to_bytes();
+    let rest = desc.rest.len();
 
-    for end in [0, 3, 30, 100, 300, bytes.len() - rest - 1] {
+    // Each end before the end of the label.
+    for end in 0..bytes.len() - rest {
         let result = read_actor_desc(&bytes[..end]);
 
         assert!(
