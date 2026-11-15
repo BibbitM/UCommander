@@ -87,6 +87,29 @@ impl PackageHeader {
         name.starts_with('/').then_some(name)
     }
 
+    /// Gives the path of the direct parent class of a Blueprint class, for
+    /// example `/Script/Engine.Actor`. Call it on the Blueprint package of
+    /// the class. `class_path` is the path of the generated class, for
+    /// example `/Game/X/BP_Y.BP_Y_C`.
+    ///
+    /// The parent is the super index of the top-level export with the
+    /// class name. UE ignores the case of ASCII letters in names. `None`
+    /// when the package or the class is not in this package, or when the
+    /// super index does not give a path.
+    pub fn blueprint_parent_class_path(&self, class_path: &str) -> Option<String> {
+        let (package, class) = class_path.split_once('.')?;
+        if !self.long_package_name()?.eq_ignore_ascii_case(package) {
+            return None;
+        }
+        let export = self.exports.iter().find(|export| {
+            export.outer_index == PackageIndex(0)
+                && self
+                    .name_text(export.object_name)
+                    .is_some_and(|name| name.eq_ignore_ascii_case(class))
+        })?;
+        self.object_path(export.super_index)
+    }
+
     /// Gives the full path of an import or an export, from its outer chain.
     /// An export path starts with the package name, except when its outer
     /// chain contains an import. `None` for a null index, an index out of

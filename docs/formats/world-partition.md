@@ -188,6 +188,28 @@ Notes:
   gives the class paths as they are in the file. Fixture F6 was saved
   after the rename of its Blueprint, so its file has the new path.
 
+### Blueprint parent class
+
+The descriptor gives the Blueprint class of the actor (the base class)
+and the first native class. It does not give the direct parent of the
+Blueprint class. For a Blueprint class with a Blueprint parent, these
+are different classes. The direct parent is only in the Blueprint
+package of the actor class:
+
+- The top-level export of the generated class (for example
+  `BP_Y_C`) has a super index (export table, see
+  [package.md](package.md)). Its object path is the path of the direct
+  parent class. Observed in fixture `BP_SummaryActor.uasset`: the
+  parent is `/Script/Engine.Actor`.
+- The Blueprint asset and the generated class also have the tag
+  `ParentClass`, with the same class in the form
+  `<class of class>'<class path>'`. Source: UE583 `Engine/Private/
+  Blueprint.cpp`, the function that adds the asset registry tags.
+
+UCommander uses the super index. It is in the export table, so it does
+not need the asset registry data. The `PkgInfo` output gives the
+`ParentClass` tag, so the fixture tests compare with it.
+
 ### Custom versions
 
 These four custom versions control the layout. GUIDs: UE583
@@ -273,4 +295,5 @@ expected values.
 | More than one external actor in a package. | Use the first one. Warning. |
 | Damaged Base64 text or a damaged descriptor of an object with a full object path and the `ActorMetaData` tag. | Error for the whole call, also when another object is a valid actor. A package has one such object (observed in all fixtures). The version check comes before the class descriptor check, as in UE, so a class descriptor with an old layout also gives an error. |
 | Class paths. | As they are in the file. No class redirects. |
+| Blueprint parent class. | The object path of the super index of the generated class, in the Blueprint package. The caller finds the Blueprint package file. No value when the package does not have the class. |
 | Map path. | The text of the actor path before the first `.`. |
