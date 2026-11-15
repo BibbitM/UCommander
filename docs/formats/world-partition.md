@@ -21,6 +21,7 @@ The UE583 and UEGH files, with paths relative to `Engine/Source/Runtime/`:
 | `ActorDescArchive.h` | `Engine/Public/WorldPartition/WorldPartitionActorDescArchive.h` |
 | `WorldPartition.cpp` | `Engine/Private/WorldPartition/WorldPartition.cpp` |
 | `Level.cpp` | `Engine/Private/Level.cpp` |
+| `Array.h` | `Core/Public/Containers/Array.h` |
 | `Base64.cpp` | `Core/Private/Misc/Base64.cpp` |
 | `Base64.h` | `Core/Public/Misc/Base64.h` |
 | `Archive.cpp` | `Core/Private/Serialization/Archive.cpp` |
@@ -102,7 +103,7 @@ UE reads the fields with a memory reader (UE583 `MemoryArchive.h`):
 | Quaternion | Four `f64` (x, y, z, w). | Same rule. Observed in F2: `0, 0, 0, 1`. |
 | Transform | Rotation (quaternion), translation (vector), scale (vector): 80 bytes. | UE583 `TransformNonVectorized.h`. Observed in F2. |
 | Relative bounds | Center (vector), rotation (quaternion), extents (vector), is valid (boolean): 84 bytes. | UE583 `ActorDesc.h`, operator of the relative bounds type. Observed in F2. |
-| GUID array, name array | `i32` count, then the elements. | Usual UE array layout. |
+| GUID array, name array | `i32` count, then the elements. | UE583 `Array.h`, the serialize operator of an array. Observed in fixture F2: GUID arrays with count 0. |
 
 ### Delta fields
 
@@ -178,6 +179,14 @@ Notes:
   WorldPartition/` and the plugins `Water`, `MeshPartition` and `PCG`).
 - A subclass can add more custom versions to the list. They do not
   change the fields up to the label.
+- When UE loads a descriptor, it applies the class redirects to the
+  native class path and the base class path. For the base class, it also
+  follows the redirector assets of the asset registry. So the editor can
+  show a class path that is not in the file, for example after a rename
+  of a Blueprint, before the actor is saved again. Source: UE583
+  `ActorDescArchive.cpp`, the init function of the archive. UCommander
+  gives the class paths as they are in the file. Fixture F6 was saved
+  after the rename of its Blueprint, so its file has the new path.
 
 ### Custom versions
 
@@ -262,4 +271,6 @@ expected values.
 | External actor of a package. | An asset registry object with a full object path (it starts with `/`), the `ActorMetaData` tag (key without case for ASCII letters), and a descriptor that is not a class descriptor. Point 5 owner decision 8. |
 | No external actor in a package. | No actor data. Not an error. |
 | More than one external actor in a package. | Use the first one. Warning. |
+| Damaged Base64 text or a damaged descriptor of an object with a full object path and the `ActorMetaData` tag. | Error for the whole call, also when another object is a valid actor. A package has one such object (observed in all fixtures). The version check comes before the class descriptor check, as in UE, so a class descriptor with an old layout also gives an error. |
+| Class paths. | As they are in the file. No class redirects. |
 | Map path. | The text of the actor path before the first `.`. |
