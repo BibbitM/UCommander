@@ -1,0 +1,220 @@
+Summary size: 585
+Legacy file version: -9
+Legacy UE3 version: 864
+File version UE4: 522
+File version UE5: 1018
+File version licensee: 0
+Saved hash: 78b7791be2e5f53f8fb0633d32d1d268cb856f1b
+Total header size: 3284
+Custom version count: 9
+Custom version 12F88B9F-88754AFC-A67CD90C-383ABD29: 49
+Custom version 59DA5D52-12324948-B8785978-70B8E98B: 9
+Custom version 5B4C06B7-24634AF8-805BBF70-CDF5D0DD: 15
+Custom version 601D1886-AC644F84-AA16D3DE-0DEAC7D6: 268
+Custom version 697DD581-E64F41AB-AA4A51EC-BEB7B628: 123
+Custom version CFFC743F-43B04480-939114DF-171D2073: 37
+Custom version D89B5E42-24BD4D46-8412ACA8-DF641779: 68
+Custom version E4B068ED-F49442E9-A231DA0B-2E46BB41: 40
+Custom version E7086368-6B234C58-84391B70-16265E91: 20
+Package name: /Game/__ExternalActors__/Ofpa/L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8
+Package flags: 0x00004040
+Name count: 40
+Name offset: 585
+Soft object paths count: 0
+Soft object paths offset: 1590
+Localization ID: 0635951DB780B9C4E74AF72265E980CD
+Gatherable text data count: 0
+Gatherable text data offset: 1590
+Export count: 2
+Export offset: 2003
+Import count: 9
+Import offset: 1643
+Cell export count: 0
+Cell export offset: 2227
+Cell import count: 0
+Cell import offset: 2227
+Metadata offset: 1590
+Depends offset: 2227
+Soft package references count: 0
+Soft package references offset: 2235
+Searchable names offset: 2235
+Thumbnail table offset: 0
+Import type hierarchies count: 0
+Import type hierarchies offset: 2239
+Package GUID: (not in file)
+Persistent GUID: B77027D2-45173393-5107849F-5146C599
+Owner persistent GUID: (not in file)
+Generation count: 1
+Generation 0: 2 exports, 40 names
+Saved by engine version: 5.8.3-58210709+++UE5+Release-5.8
+Engine changelist: (not in file)
+Compatible with engine version: 5.8.0-55116800+++UE5+Release-5.8
+Compression flags: 0x00000000
+Package source: 0x422917C7
+Additional packages to cook count: 0
+Asset registry data offset: 2243
+Bulk data start offset: 3826
+World tile info data offset: 0
+Chunk IDs: (none)
+Preload dependency count: -1
+Preload dependency offset: 3284
+Names referenced from export data count: 26
+Payload TOC offset: 3830
+Data resource offset: 0
+Name 0: /Script/CoreUObject
+Name 1: /Script/Engine
+Name 2: ActorGuid
+Name 3: ActorLabel
+Name 4: ArrayProperty
+Name 5: BlueprintCreatedComponents
+Name 6: bNetAddressable
+Name 7: BoolProperty
+Name 8: ByteProperty
+Name 9: CreationMethod
+Name 10: EComponentCreationMethod
+Name 11: EComponentCreationMethod::SimpleConstructionScript
+Name 12: EnumProperty
+Name 13: FolderGuid
+Name 14: Guid
+Name 15: IntProperty
+Name 16: None
+Name 17: ObjectProperty
+Name 18: PackageLocalizationNamespace
+Name 19: RelativeLocation
+Name 20: RootComponent
+Name 21: StaticMesh
+Name 22: StrProperty
+Name 23: StructProperty
+Name 24: UCSSerializationIndex
+Name 25: Vector
+Name 26: /Game/Ofpa/L_OfpaMap
+Name 27: /Game/Summary/BP_SummaryActorRenamed
+Name 28: BlueprintGeneratedClass
+Name 29: BP_SummaryActorRenamed_C
+Name 30: BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403
+Name 31: Class
+Name 32: L_OfpaMap
+Name 33: Level
+Name 34: Package
+Name 35: PersistentLevel
+Name 36: SceneComponent
+Name 37: StaticMesh_GEN_VARIABLE
+Name 38: StaticMeshComponent
+Name 39: World
+Import 0 object name: BP_SummaryActorRenamed_C
+Import 0 path: /Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C
+Import 0 outer: -6 (/Game/Summary/BP_SummaryActorRenamed)
+Import 0 class package: /Script/Engine
+Import 0 class name: BlueprintGeneratedClass
+Import 0 package name: None
+Import 0 import optional: no
+Import 1 object name: SceneComponent
+Import 1 path: /Script/Engine.SceneComponent
+Import 1 outer: -7 (/Script/Engine)
+Import 1 class package: /Script/CoreUObject
+Import 1 class name: Class
+Import 1 package name: None
+Import 1 import optional: no
+Import 2 object name: StaticMeshComponent
+Import 2 path: /Script/Engine.StaticMeshComponent
+Import 2 outer: -7 (/Script/Engine)
+Import 2 class package: /Script/CoreUObject
+Import 2 class name: Class
+Import 2 package name: None
+Import 2 import optional: no
+Import 3 object name: PersistentLevel
+Import 3 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+Import 3 outer: -9 (/Game/Ofpa/L_OfpaMap.L_OfpaMap)
+Import 3 class package: /Script/Engine
+Import 3 class name: Level
+Import 3 package name: None
+Import 3 import optional: no
+Import 4 object name: /Game/Ofpa/L_OfpaMap
+Import 4 path: /Game/Ofpa/L_OfpaMap
+Import 4 outer: 0 (null)
+Import 4 class package: /Script/CoreUObject
+Import 4 class name: Package
+Import 4 package name: None
+Import 4 import optional: no
+Import 5 object name: /Game/Summary/BP_SummaryActorRenamed
+Import 5 path: /Game/Summary/BP_SummaryActorRenamed
+Import 5 outer: 0 (null)
+Import 5 class package: /Script/CoreUObject
+Import 5 class name: Package
+Import 5 package name: None
+Import 5 import optional: no
+Import 6 object name: /Script/Engine
+Import 6 path: /Script/Engine
+Import 6 outer: 0 (null)
+Import 6 class package: /Script/CoreUObject
+Import 6 class name: Package
+Import 6 package name: None
+Import 6 import optional: no
+Import 7 object name: StaticMesh_GEN_VARIABLE
+Import 7 path: /Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C:StaticMesh_GEN_VARIABLE
+Import 7 outer: -1 (/Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C)
+Import 7 class package: /Script/Engine
+Import 7 class name: StaticMeshComponent
+Import 7 package name: None
+Import 7 import optional: no
+Import 8 object name: L_OfpaMap
+Import 8 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap
+Import 8 outer: -5 (/Game/Ofpa/L_OfpaMap)
+Import 8 class package: /Script/Engine
+Import 8 class name: World
+Import 8 package name: None
+Import 8 import optional: no
+Export 0 object name: BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193
+Export 0 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193
+Export 0 class: -1 (/Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C)
+Export 0 super: 0 (null)
+Export 0 template: 0 (null)
+Export 0 outer: -4 (/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel)
+Export 0 object flags: 0x00000008
+Export 0 serial size: 293
+Export 0 serial offset: 3284
+Export 0 forced export: no
+Export 0 not for client: no
+Export 0 not for server: no
+Export 0 package GUID: (not in file)
+Export 0 is inherited instance: no
+Export 0 package flags: 0x00000000
+Export 0 not always loaded for editor game: yes
+Export 0 is asset: yes
+Export 0 generate public hash: no
+Export 0 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 0 script serialization offsets: 0 to 285
+Export 1 object name: StaticMesh
+Export 1 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193.StaticMesh
+Export 1 class: -3 (/Script/Engine.StaticMeshComponent)
+Export 1 super: 0 (null)
+Export 1 template: 0 (null)
+Export 1 outer: 1 (/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193)
+Export 1 object flags: 0x00000000
+Export 1 serial size: 249
+Export 1 serial offset: 3577
+Export 1 forced export: no
+Export 1 not for client: no
+Export 1 not for server: no
+Export 1 package GUID: (not in file)
+Export 1 is inherited instance: no
+Export 1 package flags: 0x00000000
+Export 1 not always loaded for editor game: yes
+Export 1 is asset: no
+Export 1 generate public hash: no
+Export 1 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 1 script serialization offsets: 0 to 205
+Asset registry dependency data offset: 3268
+Asset registry object count: 1
+Asset registry object 0 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193
+Asset registry object 0 class: /Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C
+Asset registry object 0 tag count: 3
+Asset registry object 0 tag ActorLabel: Summary Actor
+Asset registry object 0 tag ActorMetaData: (728 characters)
+Asset registry object 0 tag ActorMetaDataClass: /Script/Engine.Actor
+Actor path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.BP_SummaryActorRenamed_C_UAID_10FFE033EECBF01403_2130097193
+Actor map: /Game/Ofpa/L_OfpaMap
+Actor GUID: 1CA4E676-4BC097DE-88999CB8-871EFD67
+Actor label: Summary Actor
+Actor native class: /Script/Engine.Actor
+Actor Blueprint class: /Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C

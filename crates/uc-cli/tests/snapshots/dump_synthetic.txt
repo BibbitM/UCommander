@@ -5,7 +5,7 @@ File version UE4: 522
 File version UE5: 1018
 File version licensee: 0
 Saved hash: 0102030405060708090a0b0c0d0e0f1011121314
-Total header size: 845
+Total header size: 943
 Custom version count: 2
 Custom version 9C54D522-A8264FBE-94210746-61B482D0: 52
 Custom version 11111111-22222222-33333333-44444444: 7
@@ -48,7 +48,7 @@ Package source: 0xDEADBEEF
 Additional packages to cook count: 2
 Additional package to cook: /Game/A
 Additional package to cook: /Game/B
-Asset registry data offset: 206
+Asset registry data offset: 845
 Bulk data start offset: 4294967815
 World tile info data offset: 208
 Chunk IDs: 3, 4
@@ -118,3 +118,10 @@ Export 1 is asset: no
 Export 1 generate public hash: no
 Export 1 preload dependencies: first 0, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
 Export 1 script serialization offsets: 0 to 0
+Asset registry dependency data offset: 0
+Asset registry object count: 1
+Asset registry object 0 path: BP_Test
+Asset registry object 0 class: /Script/Engine.Blueprint
+Asset registry object 0 tag count: 1
+Asset registry object 0 tag ParentClass: /Script/Engine.Actor
+OFPA actor: (none)

@@ -1,0 +1,211 @@
+Summary size: 565
+Legacy file version: -9
+Legacy UE3 version: 864
+File version UE4: 522
+File version UE5: 1018
+File version licensee: 0
+Saved hash: 583c37f9467d51e3f4303b822e6a9f2234b566ac
+Total header size: 3061
+Custom version count: 8
+Custom version 12F88B9F-88754AFC-A67CD90C-383ABD29: 49
+Custom version 59DA5D52-12324948-B8785978-70B8E98B: 9
+Custom version 601D1886-AC644F84-AA16D3DE-0DEAC7D6: 268
+Custom version 697DD581-E64F41AB-AA4A51EC-BEB7B628: 123
+Custom version CFFC743F-43B04480-939114DF-171D2073: 37
+Custom version D89B5E42-24BD4D46-8412ACA8-DF641779: 68
+Custom version E4B068ED-F49442E9-A231DA0B-2E46BB41: 40
+Custom version E7086368-6B234C58-84391B70-16265E91: 20
+Package name: /Game/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI
+Package flags: 0x00004040
+Name count: 39
+Name offset: 565
+Soft object paths count: 1
+Soft object paths offset: 1466
+Localization ID: E8A60F17C2C1C9A6CCA6DD799FF20224
+Gatherable text data count: 0
+Gatherable text data offset: 1486
+Export count: 2
+Export offset: 1859
+Import count: 8
+Import offset: 1539
+Cell export count: 0
+Cell export offset: 2083
+Cell import count: 0
+Cell import offset: 2083
+Metadata offset: 1486
+Depends offset: 2083
+Soft package references count: 1
+Soft package references offset: 2091
+Searchable names offset: 2099
+Thumbnail table offset: 0
+Import type hierarchies count: 0
+Import type hierarchies offset: 2103
+Package GUID: (not in file)
+Persistent GUID: 813CAC8E-4B622C3B-DAB6A0B8-5F233507
+Owner persistent GUID: (not in file)
+Generation count: 1
+Generation 0: 2 exports, 39 names
+Saved by engine version: 5.8.3-58210709+++UE5+Release-5.8
+Engine changelist: (not in file)
+Compatible with engine version: 5.8.0-55116800+++UE5+Release-5.8
+Compression flags: 0x00000000
+Package source: 0x9C17DB25
+Additional packages to cook count: 0
+Asset registry data offset: 2107
+Bulk data start offset: 3630
+World tile info data offset: 0
+Chunk IDs: (none)
+Preload dependency count: -1
+Preload dependency offset: 3061
+Names referenced from export data count: 28
+Payload TOC offset: 3634
+Data resource offset: 0
+Name 0: /Engine/EditorResources/LightIcons/S_LightError
+Name 1: /Script/CoreUObject
+Name 2: /Script/Engine
+Name 3: ActorGuid
+Name 4: ActorLabel
+Name 5: ByteProperty
+Name 6: ELightUnits
+Name 7: ELightUnits::Candelas
+Name 8: EnumProperty
+Name 9: FloatProperty
+Name 10: Guid
+Name 11: Intensity
+Name 12: IntensityUnits
+Name 13: IntProperty
+Name 14: LightComponent
+Name 15: LightGuid
+Name 16: None
+Name 17: ObjectProperty
+Name 18: OriginalLightGuid
+Name 19: PackageLocalizationNamespace
+Name 20: PointLightComponent
+Name 21: PreviewShadowMapChannel
+Name 22: RelativeLocation
+Name 23: RootComponent
+Name 24: S_LightError
+Name 25: StrProperty
+Name 26: StructProperty
+Name 27: Vector
+Name 28: /Game/Ofpa/L_OfpaMap
+Name 29: Class
+Name 30: Default__PointLight
+Name 31: L_OfpaMap
+Name 32: Level
+Name 33: LightComponent0
+Name 34: Package
+Name 35: PersistentLevel
+Name 36: PointLight
+Name 37: PointLight_UAID_10FFE033EECBF01403
+Name 38: World
+Import 0 object name: PointLight
+Import 0 path: /Script/Engine.PointLight
+Import 0 outer: -5 (/Script/Engine)
+Import 0 class package: /Script/CoreUObject
+Import 0 class name: Class
+Import 0 package name: None
+Import 0 import optional: no
+Import 1 object name: PointLightComponent
+Import 1 path: /Script/Engine.PointLightComponent
+Import 1 outer: -5 (/Script/Engine)
+Import 1 class package: /Script/CoreUObject
+Import 1 class name: Class
+Import 1 package name: None
+Import 1 import optional: no
+Import 2 object name: PersistentLevel
+Import 2 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+Import 2 outer: -8 (/Game/Ofpa/L_OfpaMap.L_OfpaMap)
+Import 2 class package: /Script/Engine
+Import 2 class name: Level
+Import 2 package name: None
+Import 2 import optional: no
+Import 3 object name: /Game/Ofpa/L_OfpaMap
+Import 3 path: /Game/Ofpa/L_OfpaMap
+Import 3 outer: 0 (null)
+Import 3 class package: /Script/CoreUObject
+Import 3 class name: Package
+Import 3 package name: None
+Import 3 import optional: no
+Import 4 object name: /Script/Engine
+Import 4 path: /Script/Engine
+Import 4 outer: 0 (null)
+Import 4 class package: /Script/CoreUObject
+Import 4 class name: Package
+Import 4 package name: None
+Import 4 import optional: no
+Import 5 object name: Default__PointLight
+Import 5 path: /Script/Engine.Default__PointLight
+Import 5 outer: -5 (/Script/Engine)
+Import 5 class package: /Script/Engine
+Import 5 class name: PointLight
+Import 5 package name: None
+Import 5 import optional: no
+Import 6 object name: LightComponent0
+Import 6 path: /Script/Engine.Default__PointLight:LightComponent0
+Import 6 outer: -6 (/Script/Engine.Default__PointLight)
+Import 6 class package: /Script/Engine
+Import 6 class name: PointLightComponent
+Import 6 package name: None
+Import 6 import optional: no
+Import 7 object name: L_OfpaMap
+Import 7 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap
+Import 7 outer: -4 (/Game/Ofpa/L_OfpaMap)
+Import 7 class package: /Script/Engine
+Import 7 class name: World
+Import 7 package name: None
+Import 7 import optional: no
+Export 0 object name: PointLight_UAID_10FFE033EECBF01403_2129935192
+Export 0 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192
+Export 0 class: -1 (/Script/Engine.PointLight)
+Export 0 super: 0 (null)
+Export 0 template: 0 (null)
+Export 0 outer: -3 (/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel)
+Export 0 object flags: 0x00000008
+Export 0 serial size: 222
+Export 0 serial offset: 3061
+Export 0 forced export: no
+Export 0 not for client: no
+Export 0 not for server: no
+Export 0 package GUID: (not in file)
+Export 0 is inherited instance: no
+Export 0 package flags: 0x00000000
+Export 0 not always loaded for editor game: yes
+Export 0 is asset: yes
+Export 0 generate public hash: no
+Export 0 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 0 script serialization offsets: 0 to 214
+Export 1 object name: LightComponent0
+Export 1 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192.LightComponent0
+Export 1 class: -2 (/Script/Engine.PointLightComponent)
+Export 1 super: 0 (null)
+Export 1 template: 0 (null)
+Export 1 outer: 1 (/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192)
+Export 1 object flags: 0x00040008
+Export 1 serial size: 347
+Export 1 serial offset: 3283
+Export 1 forced export: no
+Export 1 not for client: no
+Export 1 not for server: no
+Export 1 package GUID: (not in file)
+Export 1 is inherited instance: yes
+Export 1 package flags: 0x00000000
+Export 1 not always loaded for editor game: yes
+Export 1 is asset: no
+Export 1 generate public hash: no
+Export 1 preload dependencies: first -1, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
+Export 1 script serialization offsets: 0 to 339
+Asset registry dependency data offset: 3041
+Asset registry object count: 1
+Asset registry object 0 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192
+Asset registry object 0 class: /Script/Engine.PointLight
+Asset registry object 0 tag count: 3
+Asset registry object 0 tag ActorLabel: Lampa żółta
+Asset registry object 0 tag ActorMetaData: (672 characters)
+Asset registry object 0 tag ActorMetaDataClass: /Script/Engine.PointLight
+Actor path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192
+Actor map: /Game/Ofpa/L_OfpaMap
+Actor GUID: 00B22501-45F611EC-B769568D-0F1275DB
+Actor label: Lampa żółta
+Actor native class: /Script/Engine.PointLight
+Actor Blueprint class: (none)

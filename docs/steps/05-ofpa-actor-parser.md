@@ -207,19 +207,29 @@ in the PR.
 New sections after the export table:
 
 ```
+Asset registry dependency data offset: 3041
 Asset registry object count: 1
-Asset registry object 0: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_… (/Script/Engine.PointLight)
-  Tag ActorMetaDataClass: /Script/Engine.PointLight
-  Tag ActorMetaData: (812 characters)
-Actor GUID: …
+Asset registry object 0 path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_…
+Asset registry object 0 class: /Script/Engine.PointLight
+Asset registry object 0 tag count: 3
+Asset registry object 0 tag ActorLabel: Lampa żółta
+Asset registry object 0 tag ActorMetaData: (672 characters)
+Asset registry object 0 tag ActorMetaDataClass: /Script/Engine.PointLight
+Actor path: /Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_…
+Actor map: /Game/Ofpa/L_OfpaMap
+Actor GUID: 00B22501-45F611EC-B769568D-0F1275DB
 Actor label: Lampa żółta
 Actor native class: /Script/Engine.PointLight
 Actor Blueprint class: (none)
-Actor map: /Game/Ofpa/L_OfpaMap
 ```
 
+A package with no external actor gives the line `OFPA actor: (none)`.
+A damaged section gives the line `Asset registry error: …` or
+`Actor error: …`, and the header lines stay.
+
 The `ActorMetaData` value is long Base64 text, so `uc dump` shows its
-length only. The other tag values are shown in full. The existing F1
+length only. The other tag values are shown in full. An empty value is
+`(empty)`. The existing F1
 snapshot gets the asset registry section. This is display text, not an
 expected value (`AGENTS.md` §6).
 

@@ -1,14 +1,21 @@
 //! `uc dump <file>`: shows the package summary, the name map, the import
-//! table and the export table as text, one field on each line. The output
-//! is for people, not for scripts.
+//! table, the export table, the asset registry data and the OFPA actor
+//! data as text, one field on each line. The output is for people, not
+//! for scripts.
 
 use std::fmt::Display;
 use std::fs::File;
 use std::path::Path;
 
 use uc_format::package::{
-    EngineVersion, HeaderRead, NameRef, PackageHeader, PackageIndex, Table, read_header_from,
+    AssetRegistryData, EngineVersion, HeaderBytes, NameRef, PackageHeader, PackageIndex, Table,
+    Warning, read_asset_registry, read_header_bytes_from,
 };
+use uc_format::world_partition::{OfpaActor, read_ofpa_actor};
+
+/// The asset registry tag with the actor descriptor. Its value is long
+/// Base64 text, so the output shows only its length.
+const ACTOR_METADATA_TAG: &str = "ActorMetaData";
 
 /// Reads the header of the package at `path`, and gives the output text.
 pub fn run(path: &Path) -> Result<String, String> {
@@ -17,9 +24,9 @@ pub fn run(path: &Path) -> Result<String, String> {
 }
 
 /// Reads only the header bytes of the file.
-fn read_file(path: &Path) -> Result<HeaderRead, String> {
+fn read_file(path: &Path) -> Result<HeaderBytes, String> {
     let file = File::open(path).map_err(|error| error.to_string())?;
-    read_header_from(file).map_err(|error| error.to_string())
+    read_header_bytes_from(file).map_err(|error| error.to_string())
 }
 
 /// Lines of `Name: value`.
@@ -66,7 +73,8 @@ fn hex(value: u32) -> String {
     format!("0x{value:08X}")
 }
 
-fn format_header(read: &HeaderRead) -> String {
+fn format_header(input: &HeaderBytes) -> String {
+    let read = &input.read;
     let header = &read.header;
     let s = &header.summary;
     let mut l = Lines::default();
@@ -149,10 +157,66 @@ fn format_header(read: &HeaderRead) -> String {
     format_names(&mut l, header);
     format_imports(&mut l, header);
     format_exports(&mut l, header);
-    for warning in &read.warnings {
+    let mut warnings: Vec<Warning> = read.warnings.clone();
+    // A damaged section after the tables does not stop the output.
+    match read_asset_registry(&input.bytes, s) {
+        Ok(data) => {
+            format_registry(&mut l, &data);
+            match read_ofpa_actor(&data) {
+                Ok(read) => {
+                    format_actor(&mut l, read.actor.as_ref());
+                    warnings.extend(read.warnings);
+                }
+                Err(error) => l.add("Actor error", error),
+            }
+        }
+        Err(error) => l.add("Asset registry error", error),
+    }
+    for warning in &warnings {
         l.add("Warning", warning);
     }
     l.0
+}
+
+fn format_registry(l: &mut Lines, data: &AssetRegistryData) {
+    l.option(
+        "Asset registry dependency data offset",
+        data.dependency_data_offset,
+    );
+    l.add("Asset registry object count", data.objects.len());
+    for (i, object) in data.objects.iter().enumerate() {
+        let p = format!("Asset registry object {i}");
+        l.add(&format!("{p} path"), &object.object_path);
+        l.add(&format!("{p} class"), &object.class_name);
+        l.add(&format!("{p} tag count"), object.tags.len());
+        for tag in &object.tags {
+            let name = format!("{p} tag {}", tag.key);
+            if tag.key.eq_ignore_ascii_case(ACTOR_METADATA_TAG) {
+                l.add(&name, format!("({} characters)", tag.value.chars().count()));
+            } else if tag.value.is_empty() {
+                l.add(&name, "(empty)");
+            } else {
+                l.add(&name, &tag.value);
+            }
+        }
+    }
+}
+
+fn format_actor(l: &mut Lines, actor: Option<&OfpaActor>) {
+    let Some(actor) = actor else {
+        l.add("OFPA actor", "(none)");
+        return;
+    };
+    let none = || "(none)".to_owned();
+    l.add("Actor path", &actor.actor_path);
+    l.add("Actor map", &actor.map_path);
+    l.add("Actor GUID", actor.desc.guid);
+    l.add("Actor label", actor.desc.label.clone().unwrap_or_else(none));
+    l.add("Actor native class", &actor.desc.native_class_path);
+    l.add(
+        "Actor Blueprint class",
+        actor.desc.base_class_path.clone().unwrap_or_else(none),
+    );
 }
 
 /// The text for an object path that the parser does not give, because it
