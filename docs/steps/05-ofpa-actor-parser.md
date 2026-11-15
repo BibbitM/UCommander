@@ -129,9 +129,10 @@ records the layout and the version conditions.
 
 The section is separate from `read_header`, so that a damaged asset
 registry section does not stop the point 3 and point 4 fields
-(criterion 5). `read_header_from` already reads up to the total header
-size, or more; increment 3 checks this and adds a reader function if
-necessary.
+(criterion 5). `read_header_from` stops when the tables are complete,
+and it does not give its bytes. A new function `read_header_bytes_from`
+reads up to the total header size and gives the bytes (see "Changes
+during the work").
 
 ### Base64
 
@@ -343,6 +344,23 @@ values agree.
 | 10 | Set point 5 status to done | `docs/PLAN.md`. The last commit, after the review. |
 
 Each feature increment follows the TDD sequence in `AGENTS.md` §6.
+
+### Changes during the work
+
+| Commit | Change |
+|---|---|
+| Increment 4 | The test reads the expected objects and tags from the `PkgInfo` output directly. No new `asset_registry` key in `.expected.json`: the `FiBData` value of F1 has control characters that a hand copy cannot keep. |
+| Record the external actor package rule | Owner decision 8, after the F1 finding. |
+| Add OFPA asset registry fixture tests | The asset registry tests of F5, F6 and the other new packages (part of increment 4, after the fixtures came). |
+| Share descriptor and registry test builders | Refactor of the test helpers, for increment 7. |
+| Add OFPA actor fixture tests | The fixture part of increment 7, in its own commit. |
+| Read the header bytes for later sections | New `read_header_bytes_from`, for `uc dump` (increment 8) and the content plugin (point 6). |
+| Test descriptor fields with flag 1, Test a damaged total header size, Record class redirects and actor error rules | Findings of the branch review. |
+
+Open item for point 6: `read_asset_registry` has no limit on the object
+and tag count, other than the header size. A damaged 16 MiB header with
+many empty tags can use about 190 MB of memory (branch review). Point 6
+decides a limit before the content plugin uses the function.
 
 ## New dependencies (gate)
 
