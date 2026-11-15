@@ -5,7 +5,7 @@ mod common;
 
 use common::Str;
 use common::desc::{Desc, FORTNITE_MAIN, FORTNITE_SEASON, UE5_MAIN, UE5_RELEASE, base64};
-use common::registry::{Object, package, section};
+use common::registry::{Object, SECTION_END, package, section};
 use uc_format::Error;
 use uc_format::package::{Warning, read_asset_registry, read_header};
 use uc_format::world_partition::{OfpaActorRead, read_ofpa_actor};
@@ -30,7 +30,7 @@ fn actor_object(path: &'static str, metadata: String) -> Object {
 }
 
 fn read(objects: &[Object]) -> Result<OfpaActorRead, Error> {
-    let bytes = package(section(Some(0), objects)).to_bytes();
+    let bytes = package(section(Some(SECTION_END), objects)).to_bytes();
     let header = read_header(&bytes).unwrap().header;
     let data = read_asset_registry(&bytes, &header.summary).unwrap();
     read_ofpa_actor(&data)

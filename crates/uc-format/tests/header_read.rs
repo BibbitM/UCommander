@@ -141,7 +141,7 @@ fn package_with_a_large_registry() -> Vec<u8> {
         class: Str::Ansi("/Script/Engine.Actor"),
         tags: vec![(Str::Ansi("Key"), Str::Ansi(value))],
     }];
-    registry::package(section(Some(0), &objects)).to_bytes()
+    registry::package(section(Some(registry::SECTION_END), &objects)).to_bytes()
 }
 
 #[test]

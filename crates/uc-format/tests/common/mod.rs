@@ -591,8 +591,14 @@ impl Package {
 
         let mut summary = self.summary.clone();
         if let Some(section) = &self.asset_registry {
-            summary.asset_registry_data_offset = (start + tables.0.len()) as i32;
-            tables.bytes(section);
+            let offset = start + tables.0.len();
+            summary.asset_registry_data_offset = offset as i32;
+            let mut section = section.clone();
+            if section.get(..8) == Some(&registry::SECTION_END.to_le_bytes()) {
+                let end = (offset + section.len()) as i64;
+                section[..8].copy_from_slice(&end.to_le_bytes());
+            }
+            tables.bytes(&section);
         }
         summary.name_count = self.name_count.unwrap_or(self.names.len() as i32);
         summary.name_offset = self.name_offset.unwrap_or(start as i32);

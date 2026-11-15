@@ -554,7 +554,11 @@ Notes:
   `.`. Source: UE583 `PackageReader.cpp`, the main read function.
 - A cooked save writes no objects (count 0) and no dependency data
   offset. Source: UE583 `SavePackageUtilities.cpp`.
-- The dependency data is after the objects. Point 5 does not read it.
+- The dependency data starts directly after the objects. The editor
+  writes a placeholder offset first. After the objects, it writes the
+  current file position into the placeholder. Source: UE583
+  `SavePackageUtilities.cpp`, the function that writes the asset
+  registry data. Point 5 does not read the dependency data.
 - Observed in fixture F2 (`L_SummaryLevel.umap`): asset registry data
   offset 4878, dependency data offset 5910, 1 object (`L_SummaryLevel`,
   class `/Script/Engine.World`, 6 tags), total header size 5930. So the
@@ -712,6 +716,7 @@ the point 1 and point 2 briefs.
 | Asset registry filter: subclasses. | A class name that ends with the skipped class name (`BlueprintGeneratedClass`, or `Blueprint` in a cooked package) counts as a subclass. The file does not give the class hierarchy. |
 | Asset registry data offset of 0 or less. | No asset registry data. Not an error. UE does not read the section for this offset (UE583 `PackageReader.cpp`, the function that starts a section). |
 | Asset registry data: a count less than 0, or larger than the remaining bytes of the header. | Error: bad value or truncated. As UE, but the limit is the header bytes, not the file size. |
+| Asset registry data: the objects do not end at the dependency data offset. | Error: bad value at the start of the section. A damaged count can give a list that ends too early. The UE reader does not check this (UE583 `PackageReader.cpp`). |
 | Asset registry data: a tag with an empty key or an empty value. | Keep it. UCommander shows the data as in the file. |
 | Asset registry data: relative object path. | Keep the path as in the file. A caller that needs the full path adds the package name and `.`. |
 | Asset registry data: an error in the section. | The error is only for the asset registry data. The summary and the tables stay valid (point 5, criterion 5). |

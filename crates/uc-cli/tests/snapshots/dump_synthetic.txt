@@ -118,7 +118,7 @@ Export 1 is asset: no
 Export 1 generate public hash: no
 Export 1 preload dependencies: first 0, serialization before serialization 0, create before serialization 0, serialization before create 0, create before create 0
 Export 1 script serialization offsets: 0 to 0
-Asset registry dependency data offset: 0
+Asset registry dependency data offset: 943
 Asset registry object count: 1
 Asset registry object 0 path: BP_Test
 Asset registry object 0 class: /Script/Engine.Blueprint

@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
 
 use common::desc::{Desc, base64};
-use common::registry::{Object, section};
+use common::registry::{Object, SECTION_END, section};
 use common::{Export, Import, Package, Str};
 
 /// Compares `actual` with the stored file `tests/snapshots/<name>`. Set the
@@ -56,7 +56,7 @@ fn package() -> Package {
         tags: vec![(Str::Ansi("ParentClass"), Str::Ansi("/Script/Engine.Actor"))],
     }];
     Package {
-        asset_registry: Some(section(Some(0), &objects)),
+        asset_registry: Some(section(Some(SECTION_END), &objects)),
         imports: vec![
             Import {
                 class_package: (0, 0),
@@ -306,7 +306,7 @@ fn dump_prints_the_ofpa_actor_data() {
         tags: vec![(Str::Ansi("ActorMetaData"), Str::Ansi(metadata.leak()))],
     }];
     let mut input = package();
-    input.asset_registry = Some(section(Some(0), &objects));
+    input.asset_registry = Some(section(Some(SECTION_END), &objects));
     let path = temp_file("ofpa-actor.uasset", &input.to_bytes());
 
     let output = dump(&path);

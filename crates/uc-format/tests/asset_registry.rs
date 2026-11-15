@@ -2,7 +2,7 @@
 
 mod common;
 
-use common::registry::{Object, package, section};
+use common::registry::{Object, SECTION_END, package, section};
 use common::{PKG_FILTER_EDITOR_ONLY, Package, Str, Writer};
 use uc_format::Error;
 use uc_format::package::{AssetRegistryData, read_asset_registry, read_header};
@@ -38,9 +38,12 @@ fn reads_the_objects_and_their_tags_in_file_order() {
         },
     ];
 
-    let data = read(&package(section(Some(5910), &objects))).unwrap();
+    let bytes = package(section(Some(SECTION_END), &objects)).to_bytes();
+    let header = read_header(&bytes).unwrap().header;
 
-    assert_eq!(data.dependency_data_offset, Some(5910));
+    let data = read_asset_registry(&bytes, &header.summary).unwrap();
+
+    assert_eq!(data.dependency_data_offset, Some(bytes.len() as i64));
     assert_eq!(data.objects.len(), 2);
     let level = &data.objects[0];
     assert_eq!(level.object_path, "L_Level");
@@ -62,7 +65,7 @@ fn reads_the_objects_and_their_tags_in_file_order() {
 
 #[test]
 fn no_objects_give_an_empty_list() {
-    let data = read(&package(section(Some(0), &[]))).unwrap();
+    let data = read(&package(section(Some(SECTION_END), &[]))).unwrap();
 
     assert!(data.objects.is_empty());
 }
@@ -78,7 +81,7 @@ fn reads_utf16_text_and_keeps_empty_tags() {
         ],
     };
 
-    let data = read(&package(section(Some(0), &[object]))).unwrap();
+    let data = read(&package(section(Some(SECTION_END), &[object]))).unwrap();
 
     let object = &data.objects[0];
     assert_eq!(object.object_path, "Lampa_żółta");
@@ -113,7 +116,7 @@ fn a_package_before_dependency_flags_has_no_dependency_data_offset() {
 #[test]
 fn an_offset_of_zero_or_less_gives_no_data() {
     for offset in [0, -1] {
-        let mut input = package(section(Some(0), &[level_object()]));
+        let mut input = package(section(Some(SECTION_END), &[level_object()]));
         input.asset_registry = None;
         input.summary.asset_registry_data_offset = offset;
 
@@ -126,7 +129,7 @@ fn an_offset_of_zero_or_less_gives_no_data() {
 
 #[test]
 fn a_truncated_section_gives_an_error() {
-    let bytes = package(section(Some(0), &[level_object()])).to_bytes();
+    let bytes = package(section(Some(SECTION_END), &[level_object()])).to_bytes();
     let header = read_header(&bytes).unwrap().header;
 
     for cut in [1, 5, 20] {
@@ -141,7 +144,7 @@ fn a_truncated_section_gives_an_error() {
 
 #[test]
 fn an_offset_after_the_input_gives_truncated() {
-    let mut input = package(section(Some(0), &[]));
+    let mut input = package(section(Some(SECTION_END), &[]));
     input.asset_registry = None;
     input.summary.asset_registry_data_offset = 100_000;
 
@@ -216,4 +219,28 @@ fn a_tag_count_larger_than_the_input_gives_truncated() {
         read(&package(bytes.0)),
         Err(Error::Truncated { .. })
     ));
+}
+
+#[test]
+fn a_dependency_data_offset_that_is_not_the_section_end_gives_a_bad_value() {
+    let input = package(section(Some(SECTION_END), &[level_object()]));
+    let end = input.to_bytes().len() as i64;
+
+    // A damaged object count can stop the objects before the end of the
+    // section. UE writes the dependency data directly after the objects.
+    for offset in [0, end - 1, end + 1] {
+        let bytes = package(section(Some(offset), &[level_object()])).to_bytes();
+        let header = read_header(&bytes).unwrap().header;
+
+        let result = read_asset_registry(&bytes, &header.summary);
+
+        assert_eq!(
+            result,
+            Err(Error::BadValue {
+                offset: header.summary.asset_registry_data_offset as usize,
+                field: "asset registry dependency data offset",
+            }),
+            "offset {offset}"
+        );
+    }
 }

@@ -9,6 +9,10 @@ pub struct Object {
     pub tags: Vec<(Str, Str)>,
 }
 
+/// A placeholder for the dependency data offset. [`Package::to_bytes`]
+/// writes the end of the section in its place, as UE does.
+pub const SECTION_END: i64 = i64::MIN;
+
 /// Writes the section: the dependency data offset (when present), the
 /// object count, then the objects.
 pub fn section(dependency_data_offset: Option<i64>, objects: &[Object]) -> Vec<u8> {

@@ -47,7 +47,8 @@ pub struct AssetRegistryTag {
 /// The section starts at the asset registry data offset of `summary`. An
 /// offset of 0 or less gives no data, as in UE. The function does no
 /// I/O. If `bytes` ends before the section ends, the error is
-/// [`Error::Truncated`].
+/// [`Error::Truncated`]. If the objects do not end at the dependency data
+/// offset, the error is [`Error::BadValue`] at the start of the section.
 pub fn read_asset_registry(
     bytes: &[u8],
     summary: &PackageSummary,
@@ -80,6 +81,14 @@ pub fn read_asset_registry(
             object_path,
             class_name,
             tags,
+        });
+    }
+    // UE writes the dependency data directly after the objects. Another
+    // end shows a damaged count or a damaged offset.
+    if dependency_data_offset.is_some_and(|end| usize::try_from(end) != Ok(r.offset())) {
+        return Err(Error::BadValue {
+            offset,
+            field: "asset registry dependency data offset",
         });
     }
     Ok(AssetRegistryData {
