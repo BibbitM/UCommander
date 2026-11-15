@@ -1,0 +1,12 @@
+{
+  "source": "Stock UE 5.8.3-58210709+++UE5+Release-5.8. actor_guid, actor_native_class_path, actor_blueprint_class_path, actor_path and package_path: L_OfpaMap.DumpActorDescs.csv (wp.Editor.DumpActorDescs). actor_label: WorldPartitionBlueprintLibrary.GetActorDescs in L_OfpaMap.EditorEvidence.json, and the ActorLabel tag in the PkgInfo output (the CSV loses non-ASCII letters). map_path: the outer map package path in the EditorEvidence file. asset_class and asset_class_path: the asset registry section of the PkgInfo output.",
+  "actor_guid": "00B2250145F611ECB769568D0F1275DB",
+  "actor_label": "Lampa żółta",
+  "actor_native_class_path": "/Script/Engine.PointLight",
+  "actor_blueprint_class_path": null,
+  "actor_path": "/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192",
+  "map_path": "/Game/Ofpa/L_OfpaMap",
+  "asset_class": "PointLight",
+  "asset_class_path": "/Script/Engine.PointLight",
+  "package_path": "/Game/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI"
+}

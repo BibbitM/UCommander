@@ -1,0 +1,108 @@
+﻿********************************************
+Package '/Temp/Ofpa/DL_OfpaFixture' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/Ofpa/DL_OfpaFixture.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 0
+	        NameCount: 17
+	       NameOffset: 403
+	      ImportCount: 2
+	     ImportOffset: 842
+	      ExportCount: 1
+	     ExportOffset: 922
+	Compression Flags: 0
+	       Total Size: 1453
+	  Custom Versions:
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+
+	        SavedHash: 72316e825c1b0b69fefcd98286f883b4d064951c
+	   PersistentGuid: 31A461A24311303CFDE99B8B3A6EB7B9
+	      Generations:
+			0) ExportCount=1, NameCount=17 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	1: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	2: Name 'ByteProperty' Comparison Index 2 Display Index 2 [Internal: ByteProperty, 0]
+	3: Name 'Color' Comparison Index 146 Display Index 146 [Internal: Color, 0]
+	4: Name 'DataLayerType' Comparison Index 491080 Display Index 491080 [Internal: DataLayerType, 0]
+	5: Name 'DebugColor' Comparison Index 461721 Display Index 461721 [Internal: DebugColor, 0]
+	6: Name 'EDataLayerType' Comparison Index 102692 Display Index 102692 [Internal: EDataLayerType, 0]
+	7: Name 'EDataLayerType::Runtime' Comparison Index 377443 Display Index 377443 [Internal: EDataLayerType::Runtime, 0]
+	8: Name 'EnumProperty' Comparison Index 93 Display Index 93 [Internal: EnumProperty, 0]
+	9: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	10: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	11: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	12: Name '/Game/Ofpa/DL_OfpaFixture' Comparison Index 1039260 Display Index 1039260 [Internal: /Game/Ofpa/DL_OfpaFixture, 0]
+	13: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	14: Name 'DataLayerAsset' Comparison Index 149476 Display Index 149476 [Internal: DataLayerAsset, 0]
+	15: Name 'DL_OfpaFixture' Comparison Index 1045136 Display Index 1045136 [Internal: DL_OfpaFixture, 0]
+	16: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'DataLayerAsset'
+		       Outer: '/Script/Engine' (-2)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+--------------------------------------------
+	Packages referenced by /Temp/Ofpa/DL_OfpaFixture:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'DL_OfpaFixture'
+		         Class: 'DataLayerAsset' (-1)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '' (0)
+		   ObjectFlags: 0x0000000B
+		    Total Size: 135
+		        Offset: 1266
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        162
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.DataLayerAsset'/Temp/Ofpa/DL_OfpaFixture.DL_OfpaFixture' (1 Tags)
+			"NativeClass": "/Script/CoreUObject.Class'/Script/Engine.DataLayerAsset'"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

@@ -20,6 +20,10 @@
 # (BOM, mixed line ends, control characters).
 **/tests/fixtures/**/*.pkginfo.txt -text
 
+# DumpActorDescs output of the fixtures: keep the bytes exactly as UE wrote
+# them (ANSI code page, CRLF).
+**/tests/fixtures/**/*.csv -text
+
 # Other binary files.
 *.png binary
 *.ico binary

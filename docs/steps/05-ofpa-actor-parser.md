@@ -276,6 +276,45 @@ only):
 | `map_path` | `/Game/Ofpa/L_OfpaMap` (`/Game/Ofpa/L_OfpaMap57` for F7), from the editor. |
 | `asset_class`, `asset_class_path`, `package_path` | As for F1–F3 (point 3 and 4 keys). |
 
+### Result
+
+The owner made the fixtures (UE 5.8.3 and UE 5.7.4). Each folder has
+an `EditorEvidence.json` file with the editor values of each actor.
+
+| Fixture | Package (`__ExternalActors__/Ofpa/…`) | Actor |
+|---|---|---|
+| F5 | `L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI` | Point Light `Lampa żółta` |
+| F6 | `L_OfpaMap/6/VM/S206VJ57URX2IZEGIAFTJ8` | `BP_SummaryActorRenamed_C`, `Summary Actor`, folder `Group/Sub` |
+| F8 | `L_OfpaMap/1/5X/LDR80LGXHNUA4U4CBHWYNV` | Target Point `Always Loaded Target`, not spatially loaded |
+| F9 | `L_OfpaMap/4/TV/YHL37N60V5A37O1U3ASTQ7` | Text Render Actor `Custom Grid Text`, runtime grid `FixtureGrid` |
+| F10 | `L_OfpaMap/7/GM/CD2EGZM9LI8RXFXKWX2IC8` | `BP_FixtureChild_C` (parent `BP_FixtureParent_C`), `Child Blueprint Actor` |
+| F11 | `L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE` | Spot Light `Data Layer Spot`, data layer `DL_OfpaFixture` |
+| F12 | `L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA` | `WorldDataLayers` (template) |
+| F13 | `L_OfpaMap/B/DH/DPUOQ7MHWJ6AFJ48NJZJ24` | `WorldPartitionMiniMap` (template) |
+| F7 | `L_OfpaMap57/B/I4/4LDIAYPOR4RGIIJ2QNMPSY` (UE 5.7) | Point Light `Lampa żółta` |
+| F14 | `L_OfpaMap57/3/5F/UY7CAHIHPCHXPYHP6UAZC4` (UE 5.7) | `WorldDataLayers` (template) |
+| F15 | `L_OfpaMap57/5/2D/65F9D6M5A1KPQ0QFCEMT5H` (UE 5.7) | `WorldPartitionMiniMap` (template) |
+
+Differences from the request:
+
+1. `/Game/Summary/BP_SummaryActor` is a redirector to
+   `BP_SummaryActorRenamed` in the fixtures project. So the Blueprint
+   class of F6 is
+   `/Game/Summary/BP_SummaryActorRenamed.BP_SummaryActorRenamed_C`.
+2. UE writes the CSV with the ANSI code page, so the label of F5 and F7
+   is `Lampa ???ta` in it. The expected label comes from the
+   `EditorEvidence.json` file (`GetActorDescs` in the editor). The
+   `ActorLabel` tag in the `PkgInfo` output gives the same label.
+3. The asset registry object path of an actor in the `PkgInfo` output
+   starts with `/Game`, not `/Temp`. The `/Temp` replacement of owner
+   decision 5 is not necessary.
+4. The HLOD layer assets of the template, the map of F7 and the actor
+   Blueprints of F10 are not in the repository. No test uses them.
+
+A script compared the three sources (CSV, `EditorEvidence.json`,
+`PkgInfo`) for each actor, and wrote the `.expected.json` files. All
+values agree.
+
 ## Increments (one commit each)
 
 | # | Commit title | Content |

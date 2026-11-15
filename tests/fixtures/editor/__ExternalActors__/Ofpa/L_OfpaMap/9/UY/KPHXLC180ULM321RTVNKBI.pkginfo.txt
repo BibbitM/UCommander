@@ -1,0 +1,210 @@
+﻿********************************************
+Package '/Temp/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 4040
+	        NameCount: 39
+	       NameOffset: 565
+	      ImportCount: 8
+	     ImportOffset: 1539
+	      ExportCount: 2
+	     ExportOffset: 1859
+	Compression Flags: 0
+	       Total Size: 3682
+	  Custom Versions:
+		Key=12f88b9f-8875-4afc-a67c-d90c383abd29 Version = 49 Friendly Name = Dev-Rendering
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=cffc743f-43b0-4480-9391-14df171d2073 Version = 37 Friendly Name = Dev-Framework
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+		Key=e7086368-6b23-4c58-8439-1b7016265e91 Version = 20 Friendly Name = FortniteRelease
+
+	        SavedHash: 583c37f9467d51e3f4303b822e6a9f2234b566ac
+	   PersistentGuid: 813CAC8E4B622C3BDAB6A0B85F233507
+	      Generations:
+			0) ExportCount=2, NameCount=39 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Engine/EditorResources/LightIcons/S_LightError' Comparison Index 954719 Display Index 954719 [Internal: /Engine/EditorResources/LightIcons/S_LightError, 0]
+	1: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	2: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	3: Name 'ActorGuid' Comparison Index 270760 Display Index 270760 [Internal: ActorGuid, 0]
+	4: Name 'ActorLabel' Comparison Index 308357 Display Index 308357 [Internal: ActorLabel, 0]
+	5: Name 'ByteProperty' Comparison Index 2 Display Index 2 [Internal: ByteProperty, 0]
+	6: Name 'ELightUnits' Comparison Index 141557 Display Index 141557 [Internal: ELightUnits, 0]
+	7: Name 'ELightUnits::Candelas' Comparison Index 412585 Display Index 412585 [Internal: ELightUnits::Candelas, 0]
+	8: Name 'EnumProperty' Comparison Index 93 Display Index 93 [Internal: EnumProperty, 0]
+	9: Name 'FloatProperty' Comparison Index 11 Display Index 11 [Internal: FloatProperty, 0]
+	10: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	11: Name 'Intensity' Comparison Index 255471 Display Index 255471 [Internal: Intensity, 0]
+	12: Name 'IntensityUnits' Comparison Index 496634 Display Index 496634 [Internal: IntensityUnits, 0]
+	13: Name 'IntProperty' Comparison Index 5 Display Index 5 [Internal: IntProperty, 0]
+	14: Name 'LightComponent' Comparison Index 120705 Display Index 120705 [Internal: LightComponent, 0]
+	15: Name 'LightGuid' Comparison Index 456530 Display Index 456530 [Internal: LightGuid, 0]
+	16: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	17: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+	18: Name 'OriginalLightGuid' Comparison Index 456532 Display Index 456532 [Internal: OriginalLightGuid, 0]
+	19: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	20: Name 'PointLightComponent' Comparison Index 120921 Display Index 120921 [Internal: PointLightComponent, 0]
+	21: Name 'PreviewShadowMapChannel' Comparison Index 456526 Display Index 456526 [Internal: PreviewShadowMapChannel, 0]
+	22: Name 'RelativeLocation' Comparison Index 53611 Display Index 53611 [Internal: RelativeLocation, 0]
+	23: Name 'RootComponent' Comparison Index 451717 Display Index 451717 [Internal: RootComponent, 0]
+	24: Name 'S_LightError' Comparison Index 956474 Display Index 956474 [Internal: S_LightError, 0]
+	25: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	26: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	27: Name 'Vector' Comparison Index 140 Display Index 140 [Internal: Vector, 0]
+	28: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 522391 Display Index 522391 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	29: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	30: Name 'Default__PointLight' Comparison Index 111903 Display Index 111903 [Internal: Default__PointLight, 0]
+	31: Name 'L_OfpaMap' Comparison Index 522389 Display Index 522389 [Internal: L_OfpaMap, 0]
+	32: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	33: Name 'LightComponent0' Comparison Index 516292 Display Index 516292 [Internal: LightComponent0, 0]
+	34: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	35: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	36: Name 'PointLight' Comparison Index 111901 Display Index 111901 [Internal: PointLight, 0]
+	37: Name 'PointLight_UAID_10FFE033EECBF01403' Comparison Index 1038999 Display Index 1038999 [Internal: PointLight_UAID_10FFE033EECBF01403, 0]
+	38: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'PointLight'
+		       Outer: '/Script/Engine' (-5)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'PointLightComponent'
+		       Outer: '/Script/Engine' (-5)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 2: 'PersistentLevel'
+		       Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap' (-8)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'Level'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Level /Temp/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+	*************************
+	Import 3: '/Game/Ofpa/L_OfpaMap'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 4: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 5: 'Default__PointLight'
+		       Outer: '/Script/Engine' (-5)
+		     Package: '/Script/Engine'
+		       Class: 'PointLight'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 6: 'LightComponent0'
+		       Outer: '/Script/Engine.Default__PointLight' (-6)
+		     Package: '/Script/Engine'
+		       Class: 'PointLightComponent'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 7: 'L_OfpaMap'
+		       Outer: '/Game/Ofpa/L_OfpaMap' (-4)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'World'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) World /Temp/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap
+--------------------------------------------
+	Packages referenced by /Temp/__ExternalActors__/Ofpa/L_OfpaMap/9/UY/KPHXLC180ULM321RTVNKBI:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+		2) /Game/Ofpa/L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'PointLight_UAID_10FFE033EECBF01403_2129935192'
+		         Class: 'PointLight' (-1)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (-3)
+		   ObjectFlags: 0x00000008
+		    Total Size: 222
+		        Offset: 3061
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 1: 'LightComponent0'
+		         Class: 'PointLightComponent' (-2)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192' (1)
+		   ObjectFlags: 0x00040008
+		    Total Size: 347
+		        Offset: 3283
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:        954
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.PointLight'/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.PointLight_UAID_10FFE033EECBF01403_2129935192' (3 Tags)
+			"ActorMetaDataClass": "/Script/Engine.PointLight"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAAAAAAUAAABOb25lAAUAAABOb25lAA8AAAAvU2NyaXB0L0VuZ2luZQALAAAAUG9pbnRMaWdodAABJbIA7BH2RY1WabfbdRIPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAaUAAAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAAAAAAQI9AAAAAAABAj0AAAAAAAECPQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAAAAAAQI9AAAAAAABAj0AAAAAAAECPQAEAAAAAAAAAAAAAAAAAAAAAAAAB9P///0wAYQBtAHAAYQAgAHwB8wBCAXQAYQAAAAAABQAAAE5vbmUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+			"ActorLabel": "Lampa żółta"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

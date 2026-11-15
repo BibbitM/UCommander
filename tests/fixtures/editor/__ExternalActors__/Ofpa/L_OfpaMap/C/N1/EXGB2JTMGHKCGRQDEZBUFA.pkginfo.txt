@@ -1,0 +1,195 @@
+﻿********************************************
+Package '/Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA' Summary
+--------------------------------------------
+	         Filename: E:/GitHub/Bibbit/UCommanderFixtures/Content/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA.uasset
+	     File Version: 1018
+	   Engine Version: 5.8.3-58210709+++UE5+Release-5.8
+	   Compat Version: 5.8.0-55116800+++UE5+Release-5.8
+	     PackageFlags: 4040
+	        NameCount: 25
+	       NameOffset: 505
+	      ImportCount: 8
+	     ImportOffset: 1141
+	      ExportCount: 2
+	     ExportOffset: 1461
+	Compression Flags: 0
+	       Total Size: 3057
+	  Custom Versions:
+		Key=59da5d52-1232-4948-b878-597870b8e98b Version = 9 Friendly Name = UE5-SpecialProject
+		Key=601d1886-ac64-4f84-aa16-d3de0deac7d6 Version = 268 Friendly Name = FortniteMain
+		Key=697dd581-e64f-41ab-aa4a-51ecbeb7b628 Version = 123 Friendly Name = UE5-Main
+		Key=d89b5e42-24bd-4d46-8412-aca8df641779 Version = 68 Friendly Name = UE5-Release
+		Key=e4b068ed-f494-42e9-a231-da0b2e46bb41 Version = 40 Friendly Name = Dev-Editor
+
+	        SavedHash: 6a8558ce6cceb98e7b5a548308f8a1747e5f0e1f
+	   PersistentGuid: AB7A501B433728912811CE956BCB0B40
+	      Generations:
+			0) ExportCount=2, NameCount=25 
+--------------------------------------------
+Name Map
+========
+	0: Name '/Script/CoreUObject' Comparison Index 6527 Display Index 6527 [Internal: /Script/CoreUObject, 0]
+	1: Name 'ActorGuid' Comparison Index 270759 Display Index 270759 [Internal: ActorGuid, 0]
+	2: Name 'ActorLabel' Comparison Index 308356 Display Index 308356 [Internal: ActorLabel, 0]
+	3: Name 'DataLayerAsset' Comparison Index 149476 Display Index 149476 [Internal: DataLayerAsset, 0]
+	4: Name 'DataLayerInstances' Comparison Index 474112 Display Index 474112 [Internal: DataLayerInstances, 0]
+	5: Name 'Guid' Comparison Index 8842 Display Index 8842 [Internal: Guid, 0]
+	6: Name 'None' Comparison Index 0 Display Index 0 [Internal: None, 0]
+	7: Name 'ObjectProperty' Comparison Index 14 Display Index 14 [Internal: ObjectProperty, 0]
+	8: Name 'PackageLocalizationNamespace' Comparison Index 7214 Display Index 7214 [Internal: PackageLocalizationNamespace, 0]
+	9: Name 'SetProperty' Comparison Index 81 Display Index 81 [Internal: SetProperty, 0]
+	10: Name 'StrProperty' Comparison Index 38 Display Index 38 [Internal: StrProperty, 0]
+	11: Name 'StructProperty' Comparison Index 29 Display Index 29 [Internal: StructProperty, 0]
+	12: Name '/Game/Ofpa/DL_OfpaFixture' Comparison Index 1039310 Display Index 1039310 [Internal: /Game/Ofpa/DL_OfpaFixture, 0]
+	13: Name '/Game/Ofpa/L_OfpaMap' Comparison Index 522391 Display Index 522391 [Internal: /Game/Ofpa/L_OfpaMap, 0]
+	14: Name '/Script/Engine' Comparison Index 7219 Display Index 7219 [Internal: /Script/Engine, 0]
+	15: Name 'Class' Comparison Index 239 Display Index 239 [Internal: Class, 0]
+	16: Name 'DataLayer_F350337B41CB4074ED8C0FAF5EB6F255' Comparison Index 1359258 Display Index 1359258 [Internal: DataLayer_F350337B41CB4074ED8C0FAF5EB6F255, 0]
+	17: Name 'DataLayerInstanceWithAsset' Comparison Index 149577 Display Index 149577 [Internal: DataLayerInstanceWithAsset, 0]
+	18: Name 'DL_OfpaFixture' Comparison Index 1045186 Display Index 1045186 [Internal: DL_OfpaFixture, 0]
+	19: Name 'L_OfpaMap' Comparison Index 522389 Display Index 522389 [Internal: L_OfpaMap, 0]
+	20: Name 'Level' Comparison Index 8908 Display Index 8908 [Internal: Level, 0]
+	21: Name 'Package' Comparison Index 332 Display Index 332 [Internal: Package, 0]
+	22: Name 'PersistentLevel' Comparison Index 352 Display Index 352 [Internal: PersistentLevel, 0]
+	23: Name 'World' Comparison Index 8906 Display Index 8906 [Internal: World, 0]
+	24: Name 'WorldDataLayers' Comparison Index 149705 Display Index 149705 [Internal: WorldDataLayers, 0]
+--------------------------------------------
+Import Map
+==========
+	*************************
+	Import 0: 'DataLayerInstanceWithAsset'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 1: 'WorldDataLayers'
+		       Outer: '/Script/Engine' (-7)
+		     Package: '/Script/Engine'
+		       Class: 'Class'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 2: 'DL_OfpaFixture'
+		       Outer: '/Game/Ofpa/DL_OfpaFixture' (-5)
+		     Package: '/Game/Ofpa/DL_OfpaFixture'
+		       Class: 'DataLayerAsset'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) DataLayerAsset /Game/Ofpa/DL_OfpaFixture.DL_OfpaFixture
+	*************************
+	Import 3: 'PersistentLevel'
+		       Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap' (-8)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'Level'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) Level /Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel
+	*************************
+	Import 4: '/Game/Ofpa/DL_OfpaFixture'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 5: '/Game/Ofpa/L_OfpaMap'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 6: '/Script/Engine'
+		       Outer: 'None' (0)
+		     Package: 'None'
+		       Class: 'Package'
+		ClassPackage: '/Script/CoreUObject'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+	*************************
+	Import 7: 'L_OfpaMap'
+		       Outer: '/Game/Ofpa/L_OfpaMap' (-6)
+		     Package: '/Game/Ofpa/L_OfpaMap'
+		       Class: 'World'
+		ClassPackage: '/Script/Engine'
+		     XObject: NULL
+		 SourceIndex: -1
+		  All Depends:
+			0) World /Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA_InstanceOf_/Game/Ofpa/L_OfpaMap.L_OfpaMap
+--------------------------------------------
+	Packages referenced by /Temp/__ExternalActors__/Ofpa/L_OfpaMap/C/N1/EXGB2JTMGHKCGRQDEZBUFA:
+		0) /Script/Engine
+		1) /Script/CoreUObject
+		2) /Game/Ofpa/DL_OfpaFixture
+		3) /Game/Ofpa/L_OfpaMap
+--------------------------------------------
+Export Map
+==========
+	*************************
+	Export 0: 'DataLayer_F350337B41CB4074ED8C0FAF5EB6F255'
+		         Class: 'DataLayerInstanceWithAsset' (-1)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldDataLayers' (2)
+		   ObjectFlags: 0x00000008
+		    Total Size: 42
+		        Offset: 2787
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+	*************************
+	Export 1: 'WorldDataLayers'
+		         Class: 'WorldDataLayers' (-2)
+		        Parent: '' (0)
+		      Template: '' (0)
+		         Outer: '/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel' (-4)
+		   ObjectFlags: 0x00000008
+		    Total Size: 176
+		        Offset: 2829
+		        Object: VALID
+		      HashNext: -1
+		 bNotForClient: 0
+		 bNotForServer: 0
+		  DependsMap:
+		  All Depends:
+--------------------------------------------
+Gatherable Text Data Map
+==========
+Number of Text Data Entries: 0
+--------------------------------------------
+Thumbnail Data
+==========
+--------------------------------------------
+Lazy Pointer Data
+===============
+--------------------------------------------
+Asset Registry Size:       1086
+Asset Registry Data
+==========
+Number of assets with Asset Registry data: 1
+		0) /Script/Engine.WorldDataLayers'/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.WorldDataLayers' (3 Tags)
+			"ActorMetaDataClass": "/Script/Engine.WorldDataLayers"
+			"ActorMetaData": "BAAAAIHVfWmrQU/m7FFKqii2t757AAAAtwZMW/hKYyRwv1uA3dD1zQ8AAACGGB1ghE9krN7TFqrWx+oNDAEAAEJem9hGTb0kqKwShHkXZN9EAAAAAAAAAAUAAABOb25lAAUAAABOb25lAA8AAAAvU2NyaXB0L0VuZ2luZQAQAAAAV29ybGREYXRhTGF5ZXJzAAyevq/NuPdLujAlua4JyS4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAAAV29ybGREYXRhTGF5ZXJzAAAABQAAAE5vbmUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAKwAAAERhdGFMYXllcl9GMzUwMzM3QjQxQ0I0MDc0RUQ4QzBGQUY1RUI2RjI1NQAFAAAATm9uZQABAAAAKQAAAC9HYW1lL09mcGEvRExfT2ZwYUZpeHR1cmUuRExfT2ZwYUZpeHR1cmUAAQAAAAAAAAAAAAAAAAAAAAA="
+			"ActorLabel": "WorldDataLayers"
+--------------------------------------------
+Serialize calls for exports
+===========================
+Total number of Serialize calls: 0

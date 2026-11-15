@@ -1,0 +1,12 @@
+{
+  "source": "Stock UE 5.8.3-58210709+++UE5+Release-5.8. actor_guid, actor_native_class_path, actor_blueprint_class_path, actor_path and package_path: L_OfpaMap.DumpActorDescs.csv (wp.Editor.DumpActorDescs). actor_label: WorldPartitionBlueprintLibrary.GetActorDescs in L_OfpaMap.EditorEvidence.json, and the ActorLabel tag in the PkgInfo output (the CSV loses non-ASCII letters). map_path: the outer map package path in the EditorEvidence file. asset_class and asset_class_path: the asset registry section of the PkgInfo output.",
+  "actor_guid": "FBFCFAFC43780D9746778FB765B3FACC",
+  "actor_label": "Data Layer Spot",
+  "actor_native_class_path": "/Script/Engine.SpotLight",
+  "actor_blueprint_class_path": null,
+  "actor_path": "/Game/Ofpa/L_OfpaMap.L_OfpaMap:PersistentLevel.SpotLight_UAID_10FFE033EECBF01403_2130179194",
+  "map_path": "/Game/Ofpa/L_OfpaMap",
+  "asset_class": "SpotLight",
+  "asset_class_path": "/Script/Engine.SpotLight",
+  "package_path": "/Game/__ExternalActors__/Ofpa/L_OfpaMap/C/LG/7A5579ZXJXD32CJYP3WICE"
+}
